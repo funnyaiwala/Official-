@@ -104,7 +104,6 @@ function hideAllSections() {
 function showProfile() {
     hideAllSections();
     profileSection.classList.remove("hidden");
-    // Remove active class from menu
     document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
 }
 
@@ -132,25 +131,40 @@ function updateActiveMenu(activeId) {
 async function renderContent(section) {
     contentArea.innerHTML = `<p style="text-align: center; color: #94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Fetching Data from Server...</p>`;
     
+    // Auto-detect Website URL for Viewer API
+    let currentUrl = window.location.href.split('index.html')[0];
+    if(!currentUrl.endsWith('/')) currentUrl += '/';
+
     try {
         const querySnapshot = await getDocs(collection(db, section));
-        let html = `<div style="padding: 20px 0;"><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">`;
+        let html = `<div style="padding: 20px 0;"><div style="display: flex; flex-direction: column; gap: 15px;">`;
         let itemsFound = false;
 
         querySnapshot.forEach((docSnap) => {
             itemsFound = true;
             const data = docSnap.data();
-            const filePath = `uploads/${data.fileName}`;
+            
+            // Standard File Path
+            let filePath = `uploads/${data.fileName}`;
+            let viewerLink = filePath; // Default
 
+            // Viewer Logic: Word, Excel, PPT ko Professional Viewer me kholna
+            if (section === "documents" && (data.type === "word" || data.type === "excel" || data.type === "ppt")) {
+                let absoluteUrl = currentUrl + filePath;
+                viewerLink = `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}`;
+            }
+
+            // APPS SECTION
             if (section === "apps") {
                 html += `
                     <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
                         <i class="fa-brands fa-android" style="font-size: 2.5rem; color: #3b82f6; margin-bottom: 10px;"></i>
                         <h3 style="margin-bottom: 5px;">${data.title}</h3>
                         <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px;">${data.desc}</p>
-                        <a href="${filePath}" download class="submit-btn btn" style="display:block; text-align:center; text-decoration:none; font-size: 0.9rem;">Download APK</a>
+                        <a href="${filePath}" download class="submit-btn btn" style="display:inline-block; flex: none; width: auto; padding: 10px 20px; text-decoration:none; font-size: 0.9rem;">Download APK</a>
                     </div>`;
             } 
+            // DOCUMENTS SECTION
             else if (section === "documents") {
                 let icon = "fa-file-word";
                 if(data.type === "excel") icon = "fa-file-excel";
@@ -163,32 +177,33 @@ async function renderContent(section) {
                         <div style="display: flex; align-items: center; gap: 15px;">
                             <i class="fa-solid ${icon}" style="font-size: 2rem; color: #f97316;"></i>
                             <div style="text-align: left;">
-                                <h4 style="margin-bottom:2px;">${data.title}</h4>
+                                <h4 style="margin-bottom:2px; font-size: 1rem;">${data.title}</h4>
                                 <span style="font-size: 0.70rem; color: #94a3b8; text-transform:uppercase;">${data.type} File</span>
                             </div>
                         </div>
-                        <a href="${filePath}" target="_blank" class="submit-btn btn" style="padding: 8px 15px; font-size: 0.8rem; text-decoration:none;">View</a>
+                        <a href="${viewerLink}" target="_blank" class="submit-btn btn" style="flex: none; width: auto; padding: 8px 15px; font-size: 0.8rem; text-decoration:none;">View</a>
                     </div>`;
             } 
+            // NOTES SECTION
             else if (section === "notes") {
                 html += `
                     <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
-                        <h4 style="color: #c084fc; margin-bottom: 10px;">${data.title}</h4>
+                        <h4 style="color: #c084fc; margin-bottom: 5px;">${data.title}</h4>
                         <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom:15px;">${data.content}</p>
-                        <a href="${filePath}" target="_blank" class="submit-btn btn" style="padding: 8px 15px; font-size: 0.8rem; text-decoration:none; display:inline-block;">Read Note</a>
+                        <a href="${filePath}" target="_blank" class="submit-btn btn" style="flex: none; width: auto; padding: 8px 15px; font-size: 0.8rem; text-decoration:none; display:inline-block;">Read Note</a>
                     </div>`;
             }
         });
 
         if (!itemsFound) {
-            html += `<p style="grid-column: 1 / -1; text-align: center; color: #94a3b8;">No ${section} uploaded yet.</p>`;
+            html += `<p style="text-align: center; color: #94a3b8;">No ${section} uploaded yet.</p>`;
         }
 
         html += `</div></div>`;
         contentArea.innerHTML = html;
 
     } catch (error) {
-        contentArea.innerHTML = `<p style="color: #ef4444; text-align: center;">Error fetching data. Check Firebase Rules.</p>`;
+        contentArea.innerHTML = `<p style="color: #ef4444; text-align: center;">Error fetching data.</p>`;
         console.error(error);
     }
 }
