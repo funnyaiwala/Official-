@@ -1,0 +1,232 @@
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+/* Global Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: #0f172a; /* Dark Tech Background */
+    color: #f8fafc;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* Background Animated Shapes (Consistent with Landing Page) */
+.bg-shape {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    z-index: -1;
+    animation: float 10s infinite alternate ease-in-out;
+}
+.shape1 { width: 300px; height: 300px; background: #3b82f6; top: -50px; left: -50px; }
+.shape2 { width: 400px; height: 400px; background: #8b5cf6; bottom: -100px; right: -100px; animation-delay: 2s; }
+
+@keyframes float {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(50px, 50px); }
+}
+
+/* =========================================
+   1. WELCOME ANIMATION SCREEN
+========================================= */
+.welcome-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: #0f172a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    transition: opacity 0.8s ease-out;
+}
+
+.welcome-text {
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    font-weight: 700;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn 1s ease forwards;
+}
+
+.pop-in {
+    opacity: 0;
+    transform: scale(0.5);
+    animation: popIn 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) 0.8s forwards;
+}
+
+.highlight {
+    background: linear-gradient(45deg, #60a5fa, #c084fc);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0px 5px 20px rgba(139, 92, 246, 0.4);
+}
+
+@keyframes fadeIn {
+    to { opacity: 1; }
+}
+
+@keyframes popIn {
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* =========================================
+   2. ADMIN DASHBOARD LAYOUT
+========================================= */
+.hidden { display: none !important; }
+
+.dashboard-wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    gap: 20px;
+    max-width: 1600px;
+    margin: 0 auto;
+    min-height: 100vh;
+}
+
+/* Glassmorphism Styles */
+.glass-sidebar, .glass-content, .glass-box {
+    background: rgba(255, 255, 255, 0.03);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+}
+
+/* Sidebar Profile */
+.admin-profile-sm {
+    text-align: center;
+    padding: 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+.admin-profile-sm img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #3b82f6;
+    margin-bottom: 10px;
+    object-fit: cover;
+}
+
+/* Navigation Buttons */
+.admin-menu {
+    display: flex;
+    flex-direction: row;
+    overflow-x: auto; /* Scrollable horizontally on mobile */
+    padding: 15px;
+    gap: 10px;
+}
+
+.admin-menu::-webkit-scrollbar { display: none; }
+
+.nav-btn {
+    background: transparent;
+    border: none;
+    color: #94a3b8;
+    padding: 12px 20px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.nav-btn:hover { background: rgba(255,255,255,0.05); color: #f8fafc; }
+.nav-btn.active { background: #3b82f6; color: #fff; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4); }
+
+.live-link { text-decoration: none; color: #10b981 !important; margin-top: auto; }
+.live-link:hover { background: rgba(16, 185, 129, 0.1); }
+
+/* Main Content Area */
+.glass-content { padding: 30px; flex: 1; }
+.admin-section h2 { margin-bottom: 10px; font-weight: 600; color: #fff; }
+.admin-section p { color: #94a3b8; margin-bottom: 25px; }
+.admin-section h3 { margin: 30px 0 15px; font-weight: 500; }
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.08);
+    text-align: center;
+}
+
+.stat-card h3 { margin: 0 0 10px; color: #cbd5e1; font-size: 1.1rem; }
+.stat-card p { font-size: 2.5rem; font-weight: 700; color: #3b82f6; margin: 0; }
+
+/* Upload Forms */
+.upload-form { padding: 25px; display: flex; flex-direction: column; gap: 15px; }
+
+.upload-form input, .upload-form select, .upload-form textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    color: #f8fafc;
+    font-size: 1rem;
+    outline: none;
+    transition: border 0.3s;
+}
+
+.upload-form input:focus, .upload-form select:focus, .upload-form textarea:focus {
+    border-color: #3b82f6;
+}
+
+.file-input-wrapper input[type="file"] {
+    background: transparent;
+    padding: 10px 0;
+}
+
+.upload-btn {
+    background: #8b5cf6;
+    color: #fff;
+    border: none;
+    padding: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.upload-btn:hover { background: #7c3aed; }
+.success-msg { color: #10b981; font-size: 0.9rem; margin-top: 10px; font-weight: 500; }
+
+/* Desktop & TV Responsiveness */
+@media (min-width: 768px) {
+    .dashboard-wrapper { flex-direction: row; height: 95vh; align-items: stretch; }
+    .glass-sidebar { width: 280px; display: flex; flex-direction: column; }
+    .admin-menu { flex-direction: column; padding: 20px; overflow-x: visible; flex: 1; }
+    .glass-content { overflow-y: auto; }
+}
+
+@media (min-width: 1920px) {
+    .dashboard-wrapper { max-width: 80%; } /* Centers on large TVs */
+}
