@@ -1,4 +1,4 @@
-// Firebase SDKs ko CDN se Import karna (GitHub Pages ke liye best)
+// Firebase SDKs ko CDN se Import karna
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
@@ -17,7 +17,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Variables
-let SYSTEM_PASSWORD = "310726"; // Default password (Jab tak DB se load na ho jaye)
+let SYSTEM_PASSWORD = "310726";
 let isUnlocked = false;
 let requestedSection = "";
 
@@ -33,11 +33,12 @@ async function fetchLatestPassword() {
         console.log("Error fetching password", e);
     }
 }
-fetchLatestPassword(); // Load hote hi check karega
+fetchLatestPassword();
 
 // DOM Elements
 const profileSection = document.getElementById("profile-section");
 const contentSection = document.getElementById("content-section");
+const settingsSection = document.getElementById("settings-section");
 const passwordModal = document.getElementById("password-modal");
 const passwordInput = document.getElementById("access-password");
 const errorMsg = document.getElementById("error-msg");
@@ -48,12 +49,19 @@ const contentArea = document.getElementById("content-area");
 document.getElementById("nav-apps").addEventListener("click", () => requestAccess("apps"));
 document.getElementById("nav-documents").addEventListener("click", () => requestAccess("documents"));
 document.getElementById("nav-notes").addEventListener("click", () => requestAccess("notes"));
-document.getElementById("nav-profile").addEventListener("click", showProfile);
+document.getElementById("nav-settings").addEventListener("click", showSettings);
+
+// Photo par click karne se wapas Profile (Home) par aane ka shortcut
+const profilePic = document.querySelector(".profile-pic");
+if(profilePic) {
+    profilePic.style.cursor = "pointer";
+    profilePic.title = "Go to Home";
+    profilePic.addEventListener("click", showProfile);
+}
 
 // Request Access Function
 function requestAccess(section) {
     requestedSection = section;
-
     if (isUnlocked) {
         openSection(section);
     } else {
@@ -86,27 +94,37 @@ function verifyPassword() {
     }
 }
 
-function showProfile() {
+// Sections Hide/Show Logic
+function hideAllSections() {
+    profileSection.classList.add("hidden");
     contentSection.classList.add("hidden");
+    settingsSection.classList.add("hidden");
+}
+
+function showProfile() {
+    hideAllSections();
     profileSection.classList.remove("hidden");
-    updateActiveMenu("nav-profile");
+    // Remove active class from menu
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+}
+
+function showSettings() {
+    hideAllSections();
+    settingsSection.classList.remove("hidden");
+    updateActiveMenu("nav-settings");
 }
 
 function openSection(section) {
-    profileSection.classList.add("hidden");
+    hideAllSections();
     contentSection.classList.remove("hidden");
     updateActiveMenu("nav-" + section);
 
     sectionTitle.innerText = section.charAt(0).toUpperCase() + section.slice(1);
-    
-    // Live Data Load karna
     renderContent(section);
 }
 
 function updateActiveMenu(activeId) {
-    document.querySelectorAll('.menu-item').forEach(item => {
-        item.classList.remove('active');
-    });
+    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
     document.getElementById(activeId).classList.add('active');
 }
 
@@ -119,11 +137,9 @@ async function renderContent(section) {
         let html = `<div style="padding: 20px 0;"><div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">`;
         let itemsFound = false;
 
-        querySnapshot.forEach((doc) => {
+        querySnapshot.forEach((docSnap) => {
             itemsFound = true;
-            const data = doc.data();
-            
-            // "uploads/" folder me save ki hui file ka path
+            const data = docSnap.data();
             const filePath = `uploads/${data.fileName}`;
 
             if (section === "apps") {
