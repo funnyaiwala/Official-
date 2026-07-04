@@ -148,10 +148,16 @@ async function renderContent(section) {
             let filePath = `uploads/${data.fileName}`;
             let viewerLink = filePath; // Default
 
-            // Viewer Logic: Word, Excel, PPT ko Professional Viewer me kholna
-            if (section === "documents" && (data.type === "word" || data.type === "excel" || data.type === "ppt")) {
+            // Extract Exact File Extension (e.g., "DOCX", "PPT", "PDF")
+            let ext = data.fileName.split('.').pop().toUpperCase();
+
+            // Microsoft Office Web Viewer Logic (No Login Required!)
+            let isOfficeFile = ["DOC", "DOCX", "PPT", "PPTX", "XLS", "XLSX"].includes(ext);
+
+            if (section === "documents" && isOfficeFile) {
                 let absoluteUrl = currentUrl + filePath;
-                viewerLink = `https://docs.google.com/viewer?url=${encodeURIComponent(absoluteUrl)}`;
+                // Using Microsoft's official viewer (best for presentations, requires no login)
+                viewerLink = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`;
             }
 
             // APPS SECTION
@@ -178,10 +184,10 @@ async function renderContent(section) {
                             <i class="fa-solid ${icon}" style="font-size: 2rem; color: #f97316;"></i>
                             <div style="text-align: left;">
                                 <h4 style="margin-bottom:2px; font-size: 1rem;">${data.title}</h4>
-                                <span style="font-size: 0.70rem; color: #94a3b8; text-transform:uppercase;">${data.type} File</span>
+                                <span style="font-size: 0.70rem; color: #94a3b8; text-transform:uppercase;">${ext} FILE</span>
                             </div>
                         </div>
-                        <a href="${viewerLink}" target="_blank" class="submit-btn btn" style="flex: none; width: auto; padding: 8px 15px; font-size: 0.8rem; text-decoration:none;">View</a>
+                        <a href="${viewerLink}" target="_blank" class="submit-btn btn" style="flex: none; width: auto; padding: 8px 15px; font-size: 0.8rem; text-decoration:none;">View / Present</a>
                     </div>`;
             } 
             // NOTES SECTION
