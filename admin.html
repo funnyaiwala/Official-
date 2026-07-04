@@ -1,1 +1,136 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Santosh</title>
+    <link rel="stylesheet" href="admin-style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <!-- Background Elements -->
+    <div class="bg-shape shape1"></div>
+    <div class="bg-shape shape2"></div>
+
+    <!-- 1. Welcome Animation Screen -->
+    <div id="welcome-screen" class="welcome-overlay">
+        <h1 class="welcome-text">
+            <span class="fade-in">WELCOME</span> 
+            <span class="pop-in highlight">SANTOS</span>
+        </h1>
+    </div>
+
+    <!-- 2. Secure Login Screen (Hidden by default) -->
+    <div id="login-screen" class="dashboard-wrapper hidden" style="justify-content: center; align-items: center; height: 100vh;">
+        <div class="glass-box" style="padding: 40px; text-align: center; max-width: 400px; width: 100%;">
+            <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin" style="width: 80px; border-radius: 50%; margin-bottom: 20px; border: 2px solid #3b82f6;">
+            <h2 style="margin-bottom: 20px;">Admin Access</h2>
+            <input type="email" id="admin-email" placeholder="Admin Email" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none;">
+            <input type="password" id="admin-login-password" placeholder="Password" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none;">
+            <button id="login-btn" class="upload-btn" style="width: 100%; margin-top: 15px;">Login securely</button>
+            <p id="login-error" style="color: #ef4444; margin-top: 15px; font-size: 0.9rem;" class="hidden">Invalid Email or Password!</p>
+        </div>
+    </div>
+
+    <!-- 3. Main Admin Dashboard (Hidden until Logged In) -->
+    <div id="admin-dashboard" class="dashboard-wrapper hidden">
+        
+        <!-- Sidebar Navigation -->
+        <aside class="glass-sidebar">
+            <div class="admin-profile-sm">
+                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin">
+                <h3>Admin Panel</h3>
+            </div>
+            
+            <nav class="admin-menu">
+                <button class="nav-btn active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+                <button class="nav-btn" onclick="switchTab('apps')"><i class="fa-brands fa-android"></i> Manage Apps</button>
+                <button class="nav-btn" onclick="switchTab('documents')"><i class="fa-solid fa-file-word"></i> Manage Docs</button>
+                <button class="nav-btn" onclick="switchTab('notes')"><i class="fa-solid fa-book"></i> Manage Notes</button>
+                <button class="nav-btn" onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i> Settings</button>
+                <a href="index.html" class="nav-btn live-link"><i class="fa-solid fa-globe"></i> View Live Site</a>
+                <!-- Logout Button -->
+                <button class="nav-btn" onclick="logoutAdmin()" style="color: #ef4444; margin-top: 10px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </nav>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="glass-content">
+            
+            <!-- Dashboard Overview -->
+            <section id="dashboard-sec" class="admin-section active-sec">
+                <h2>Welcome Back, Santos!</h2>
+                <p>Manage all your uploads, documents, and settings from here.</p>
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>Apps</h3><p id="app-count"><i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i></p></div>
+                    <div class="stat-card"><h3>Documents</h3><p id="doc-count"><i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i></p></div>
+                    <div class="stat-card"><h3>Notes</h3><p id="note-count"><i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i></p></div>
+                </div>
+            </section>
+
+            <!-- Manage Apps Section -->
+            <section id="apps-sec" class="admin-section hidden">
+                <h2><i class="fa-brands fa-android"></i> Add New App</h2>
+                <div class="upload-form glass-box">
+                    <input type="text" id="app-title" placeholder="App Name (e.g., ZenV Media)">
+                    <input type="text" id="app-desc" placeholder="Short Description">
+                    <input type="text" id="app-filename" placeholder="File Name in uploads folder (e.g., zenv_v1.apk)">
+                    <button class="upload-btn" onclick="uploadItem('apps')">Save App Info</button>
+                </div>
+                <h3>Uploaded Apps</h3>
+                <div id="apps-list" class="item-list"><p>Loading...</p></div>
+            </section>
+
+            <!-- Manage Documents Section -->
+            <section id="documents-sec" class="admin-section hidden">
+                <h2><i class="fa-solid fa-file-word"></i> Add Document</h2>
+                <div class="upload-form glass-box">
+                    <input type="text" id="doc-title" placeholder="Document Title">
+                    <select id="doc-type">
+                        <option value="word">Word / Doc</option>
+                        <option value="excel">Excel / Xlsx</option>
+                        <option value="ppt">PowerPoint / PPT</option>
+                        <option value="html">HTML / Web</option>
+                        <option value="svg">SVG / XML Vector</option>
+                    </select>
+                    <input type="text" id="doc-filename" placeholder="File Name (e.g., resume.docx)">
+                    <button class="upload-btn" onclick="uploadItem('documents')">Save Document Info</button>
+                </div>
+                <h3>Uploaded Documents</h3>
+                <div id="documents-list" class="item-list"><p>Loading...</p></div>
+            </section>
+
+            <!-- Manage Notes Section -->
+            <section id="notes-sec" class="admin-section hidden">
+                <h2><i class="fa-solid fa-book"></i> Add Notes</h2>
+                <div class="upload-form glass-box">
+                    <input type="text" id="note-title" placeholder="Note Title">
+                    <textarea id="note-content" placeholder="Write your note description here..." rows="4"></textarea>
+                    <input type="text" id="note-filename" placeholder="File Name (e.g., biology_ch1.pdf)">
+                    <button class="upload-btn" onclick="uploadItem('notes')">Save Note Info</button>
+                </div>
+                <h3>Uploaded Notes</h3>
+                <div id="notes-list" class="item-list"><p>Loading...</p></div>
+            </section>
+
+            <!-- Settings / Password Management -->
+            <section id="settings-sec" class="admin-section hidden">
+                <h2><i class="fa-solid fa-gear"></i> Security Settings</h2>
+                <div class="upload-form glass-box">
+                    <label style="color: #cbd5e1; font-size: 0.9rem;">Change Landing Page Password (Default 310726)</label>
+                    <input type="text" id="new-password" placeholder="Enter new user access password">
+                    <button class="upload-btn" onclick="changePassword()" style="background: #ef4444;">Update Password in Database</button>
+                    <p id="password-msg" class="success-msg hidden">Password Updated Successfully on Server!</p>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- Script updated to Module -->
+    <script type="module" src="admin-script.js"></script>
+</body>
+</html>
