@@ -3,71 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Privacy Policy | funnyaiwala8 Inc</title>
+    <title>Santosh Kumar Rana | Hub</title>
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        /* Specific tweaks for the Privacy page */
-        .privacy-container {
-            text-align: left; /* Left align for reading long text */
-            padding: 40px;
-            margin-top: 50px;
-            margin-bottom: 50px;
-        }
-        
-        .back-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            color: #3b82f6;
-            text-decoration: none;
-            font-weight: 600;
-            margin-bottom: 25px;
-            transition: color 0.3s;
-            font-size: 1rem;
-        }
-        
-        .back-btn:hover {
-            color: #60a5fa;
-            transform: translateX(-5px); /* Slide effect on hover */
-        }
-        
-        .privacy-container h1 {
-            color: #f8fafc;
-            margin-bottom: 20px;
-            font-size: clamp(1.8rem, 4vw, 2.5rem);
-        }
-        
-        .privacy-container h2 {
-            color: #c084fc;
-            margin-top: 30px;
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-        }
-        
-        .privacy-container p, .privacy-container li {
-            color: #cbd5e1;
-            line-height: 1.8;
-            margin-bottom: 15px;
-            font-size: 0.95rem;
-        }
-        
-        .privacy-container ul {
-            margin-left: 20px;
-            margin-bottom: 20px;
-        }
-
-        .privacy-footer {
-            margin-top: 50px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-            color: #64748b;
-            font-size: 0.85rem;
-        }
-    </style>
 </head>
 <body>
 
@@ -75,44 +14,92 @@
     <div class="bg-shape shape1"></div>
     <div class="bg-shape shape2"></div>
 
-    <!-- Main Content Container -->
-    <section class="glass-container privacy-container">
+    <!-- Main Profile Section (Visible by Default) -->
+    <section id="profile-section" class="glass-container active-section">
+        <div class="profile-pic-container">
+            <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Santosh Kumar Rana" class="profile-pic">
+        </div>
+        <h1 class="name">Santosh Kumar Rana</h1>
+        <h2 class="title">Founder of ZenV Media</h2>
         
-        <!-- Back Button -->
-        <a href="index.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i> Back to Home</a>
+        <!-- Professional Badges with Icons -->
+        <div class="skills-badges">
+            <span class="badge"><i class="fa-solid fa-graduation-cap"></i> B.Sc Zoology</span>
+            <span class="badge"><i class="fa-brands fa-android"></i> App Developer</span>
+            <span class="badge"><i class="fa-solid fa-code"></i> Web Developer</span>
+            <span class="badge"><i class="fa-solid fa-film"></i> Video Editor</span>
+            <span class="badge"><i class="fa-solid fa-bezier-curve"></i> Graphic Designer</span>
+            <span class="badge"><i class="fa-solid fa-robot"></i> AI Enthusiast</span>
+        </div>
         
-        <h1>Privacy Policy</h1>
-        <p><strong>Effective Date:</strong> July 2026</p>
+        <!-- Social Links (Including X) -->
+        <div class="social-links">
+            <a href="https://youtube.com/@funnyaiwala8" target="_blank" class="social-icon youtube"><i class="fa-brands fa-youtube"></i></a>
+            <a href="https://www.instagram.com/funnyaiwal8" target="_blank" class="social-icon instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="https://x.com/funnyaiwala8" target="_blank" class="social-icon twitter"><i class="fa-brands fa-x-twitter"></i></a>
+        </div>
+    </section>
 
-        <p>Welcome to ZenV Media & funnyaiwala8 Inc. This Privacy Policy explains how we collect, use, and protect your information when you use our website, download our Android applications, or interact with our digital products.</p>
+    <!-- Content Section (For Apps, Docs, Notes) -->
+    <section id="content-section" class="glass-container hidden">
+        <h2 id="section-title">Loading...</h2>
+        <div id="content-area">
+            <p style="text-align: center;"><i class="fa-solid fa-spinner fa-spin"></i> Fetching Data...</p>
+        </div>
+    </section>
 
-        <h2>1. Information We Collect</h2>
-        <p>Since this platform acts as a personal portfolio and resource hub, data collection is kept to an absolute minimum:</p>
-        <ul>
-            <li><strong>Usage Data:</strong> Basic browser analytics might be collected to improve user experience.</li>
-            <li><strong>Authentication:</strong> Only administrators use authentication via Firebase. Normal visitors do not need to create accounts.</li>
-        </ul>
+    <!-- Settings Section (Replaced Profile tab) -->
+    <section id="settings-section" class="glass-container hidden">
+        <h2 style="margin-bottom: 20px;"><i class="fa-solid fa-gear"></i> Settings</h2>
+        
+        <div class="settings-menu">
+            <a href="privacy.html" class="settings-link">
+                <i class="fa-solid fa-shield-halved"></i> 
+                <span>Privacy Policy</span>
+                <i class="fa-solid fa-chevron-right arrow"></i>
+            </a>
+            <!-- Aap chaho toh bhawishya me aur links yahan add kar sakte ho -->
+        </div>
 
-        <h2>2. How We Use Your Information</h2>
-        <p>Any basic data collected is used solely to secure our platform, ensure seamless delivery of APKs and documents, and improve the overall performance of ZenV Media apps.</p>
-
-        <h2>3. Third-Party Services</h2>
-        <p>We use trusted third-party services like Google Firebase (for secure backend logic) and GitHub (for hosting files). These services have their own strict privacy policies and security measures.</p>
-
-        <h2>4. Security</h2>
-        <p>We value your trust and use modern, commercially acceptable means of protecting your data. Sections of this site are password-protected to ensure secure access to private files and notes.</p>
-
-        <h2>5. Changes to This Policy</h2>
-        <p>We may update our Privacy Policy from time to time as new products and apps are launched. Any changes will be updated directly on this page.</p>
-
-        <h2>6. Contact Us</h2>
-        <p>If you have any questions or suggestions about our Privacy Policy, feel free to reach out to Santosh Kumar Rana via our official social media channels (X, Instagram, or YouTube).</p>
-
-        <!-- Copyright Footer -->
-        <div class="privacy-footer">
+        <div class="footer-copyright">
             <p>&copy; 2026 funnyaiwala8 Inc. All rights reserved.</p>
         </div>
     </section>
 
+    <!-- Password Modal -->
+    <div id="password-modal" class="modal-overlay hidden">
+        <div class="glass-modal">
+            <h3>Security Check</h3>
+            <p>Please enter the password to access this section.</p>
+            <input type="password" id="access-password" placeholder="Enter Password">
+            <p id="error-msg" class="error-msg hidden">Incorrect Password!</p>
+            <div class="modal-buttons">
+                <button id="cancel-btn" class="btn cancel-btn">Cancel</button>
+                <button id="submit-btn" class="btn submit-btn">Unlock</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modern Bottom Floating Menu -->
+    <nav class="bottom-menu">
+        <div class="menu-item" id="nav-apps">
+            <i class="fa-brands fa-android"></i>
+            <span>Apps</span>
+        </div>
+        <div class="menu-item" id="nav-documents">
+            <i class="fa-solid fa-file-word"></i>
+            <span>Documents</span>
+        </div>
+        <div class="menu-item" id="nav-notes">
+            <i class="fa-solid fa-book"></i>
+            <span>Notes</span>
+        </div>
+        <div class="menu-item" id="nav-settings">
+            <i class="fa-solid fa-gear"></i>
+            <span>Settings</span>
+        </div>
+    </nav>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>
