@@ -1,9 +1,9 @@
-// Firebase SDKs Import karna (Added 'updateDoc' for Editing)
+// Firebase SDKs Import
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Aapka Firebase Configuration
+// Firebase Configuration (Same as original)
 const firebaseConfig = {
   apiKey: "AIzaSyAAV38UqBfRwfmITkx-izewPjI4WMYQCa4",
   authDomain: "site-a2e87.firebaseapp.com",
@@ -22,7 +22,7 @@ const db = getFirestore(app);
 window.allData = { apps: {}, documents: {}, notes: {} };
 
 // ==========================================
-// 1. WELCOME ANIMATION & AUTHENTICATION STATE
+// 1. WELCOME ANIMATION & AUTH STATE
 // ==========================================
 let isAnimationDone = false;
 let currentUser = null;
@@ -32,6 +32,7 @@ onAuthStateChanged(auth, (user) => {
     if (isAnimationDone) showCorrectScreen();
 });
 
+// Premium Welcome Screen Timing
 setTimeout(() => {
     isAnimationDone = true;
     document.getElementById("welcome-screen").style.opacity = "0";
@@ -39,15 +40,16 @@ setTimeout(() => {
         document.getElementById("welcome-screen").classList.add("hidden");
         showCorrectScreen();
     }, 800);
-}, 2500);
+}, 3000);
 
 function showCorrectScreen() {
     if (currentUser) {
         document.getElementById("login-screen").classList.add("hidden");
         document.getElementById("admin-dashboard").classList.remove("hidden");
         
+        // Soft fade in for dashboard
         document.getElementById("admin-dashboard").style.opacity = "0";
-        document.getElementById("admin-dashboard").style.transition = "opacity 0.5s ease";
+        document.getElementById("admin-dashboard").style.transition = "opacity 0.8s ease";
         setTimeout(() => { document.getElementById("admin-dashboard").style.opacity = "1"; }, 50);
 
         loadData(); 
@@ -68,26 +70,35 @@ document.getElementById("login-btn").addEventListener("click", async () => {
 
     if(!email || !password) return;
 
-    btn.innerText = "Logging in...";
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...`;
     try {
         await signInWithEmailAndPassword(auth, email, password);
         errorText.classList.add("hidden");
     } catch (error) {
         errorText.classList.remove("hidden");
-        errorText.innerText = "Invalid Email or Password!";
+        errorText.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Invalid Credentials!`;
     }
-    btn.innerText = "Login securely";
+    btn.innerHTML = `Authenticate <i class="fa-solid fa-arrow-right-to-bracket"></i>`;
 });
 
 window.logoutAdmin = () => { signOut(auth); };
 
 // ==========================================
-// 3. TAB SWITCHING LOGIC
+// 3. TAB SWITCHING LOGIC (Smooth Transitions)
 // ==========================================
 window.switchTab = function(tabName) {
-    document.querySelectorAll(".admin-section").forEach(sec => sec.classList.add("hidden"));
+    // Hide all sections and re-trigger animation
+    document.querySelectorAll(".admin-section").forEach(sec => {
+        sec.classList.add("hidden");
+        sec.classList.remove("fade-in-up");
+    });
+    
     document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
-    document.getElementById(`${tabName}-sec`).classList.remove("hidden");
+    
+    const activeSec = document.getElementById(`${tabName}-sec`);
+    activeSec.classList.remove("hidden");
+    void activeSec.offsetWidth; // Trigger reflow for animation
+    activeSec.classList.add("fade-in-up");
 
     document.querySelectorAll(".nav-btn").forEach(btn => {
         if(btn.getAttribute("onclick") && btn.getAttribute("onclick").includes(tabName)) {
@@ -97,7 +108,7 @@ window.switchTab = function(tabName) {
 };
 
 // ==========================================
-// 4. FIREBASE CRUD LOGIC (UPLOAD, READ, DELETE, EDIT)
+// 4. FIREBASE CRUD LOGIC
 // ==========================================
 
 // Upload New Item
@@ -111,31 +122,31 @@ window.uploadItem = async function(category) {
             data.fileName = document.getElementById("app-filename").value;
             data.appSize = document.getElementById("app-size").value;
             data.appReq = document.getElementById("app-req").value;
-            if(!data.title || !data.fileName) throw "Please enter App Title and File Name";
+            if(!data.title || !data.fileName) throw "App Name and File Name are required.";
         } 
         else if (category === 'documents') {
             data.title = document.getElementById("doc-title").value;
             data.type = document.getElementById("doc-type").value;
             data.fileName = document.getElementById("doc-filename").value;
-            if(!data.title || !data.fileName) throw "Please enter Title and File Name";
+            if(!data.title || !data.fileName) throw "Document Title and File Name are required.";
         }
         else if (category === 'notes') {
             data.title = document.getElementById("note-title").value;
             data.content = document.getElementById("note-content").value;
             data.fileName = document.getElementById("note-filename").value;
-            if(!data.title || !data.fileName) throw "Please enter Title and File Name";
+            if(!data.title || !data.fileName) throw "Note Title and File Name are required.";
         }
 
         await addDoc(collection(db, category), data);
         document.querySelectorAll("input[type=text], textarea").forEach(input => input.value = "");
-        alert(`${category.slice(0,-1).toUpperCase()} details saved on server!`);
+        alert(`Deploy Successful: ${category.slice(0,-1).toUpperCase()} saved on server!`);
         loadData(); 
     } catch (error) {
         alert(error.message || error);
     }
 }
 
-// Fetch Items
+// Fetch Items & Inject Premium UI
 window.loadData = async function() {
     const categories = ["apps", "documents", "notes"];
     
@@ -150,21 +161,23 @@ window.loadData = async function() {
                 const data = docSnap.data();
                 const id = docSnap.id; 
                 
-                window.allData[category][id] = data; // Save to global object for Editing
+                window.allData[category][id] = data; // Save to global object
 
                 if (category === "apps") {
-                    html += createListHTML(data.title, `Size: ${data.appSize} | Req: ${data.appReq}`, data.fileName, 'apps', id, '#3b82f6');
+                    html += createListHTML(data.title, `Size: ${data.appSize} | Req: ${data.appReq}`, data.fileName, 'apps', id, 'text-blue');
                 } else if (category === "documents") {
-                    html += createListHTML(data.title, data.type.toUpperCase() + " File", data.fileName, 'documents', id, '#f97316');
+                    html += createListHTML(data.title, data.type.toUpperCase() + " Format", data.fileName, 'documents', id, 'text-green');
                 } else if (category === "notes") {
-                    html += createListHTML(data.title, data.content, data.fileName, 'notes', id, '#c084fc');
+                    html += createListHTML(data.title, data.content, data.fileName, 'notes', id, 'text-purple');
                 }
             });
 
             const statMap = { 'apps': 'app-count', 'documents': 'doc-count', 'notes': 'note-count' };
             document.getElementById(statMap[category]).innerText = count;
 
-            if (count === 0) html = "<p style='color: #94a3b8;'>No items uploaded yet.</p>";
+            if (count === 0) {
+                html = `<div class="loading-state"><i class="fa-solid fa-ghost" style="font-size:1.5rem; margin-bottom:10px;"></i><br>No active endpoints found.</div>`;
+            }
             document.getElementById(`${category}-list`).innerHTML = html;
 
         } catch (error) {
@@ -175,7 +188,7 @@ window.loadData = async function() {
 
 // Delete Item
 window.deleteItem = async function(category, id) {
-    if(confirm("Are you sure you want to permanently delete this from server?")) {
+    if(confirm("CRITICAL ACTION: Are you sure you want to permanently delete this from the live server?")) {
         try {
             await deleteDoc(doc(db, category, id));
             loadData(); 
@@ -185,24 +198,24 @@ window.deleteItem = async function(category, id) {
     }
 }
 
-// Generate Admin List HTML (Added Edit Button)
-function createListHTML(title, subtitle, filename, category, id, color) {
+// Generate Admin List HTML (Premium Classes)
+function createListHTML(title, subtitle, filename, category, id, titleColorClass) {
     return `
-    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
-        <div style="flex: 1; min-width: 0;">
-            <h4 style="color:${color}; margin-bottom: 5px; font-size:1rem;">${title}</h4>
-            <p style="font-size: 0.8rem; color: #cbd5e1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${subtitle}</p>
-            <small style="color: #64748b;">File: ${filename}</small>
+    <div class="admin-list-card">
+        <div class="admin-card-info">
+            <h4 class="${titleColorClass}">${title}</h4>
+            <p>${subtitle}</p>
+            <span class="file-badge"><i class="fa-solid fa-server"></i> ${filename}</span>
         </div>
-        <div style="display: flex; gap: 8px;">
-            <button onclick="openEditModal('${category}', '${id}')" style="background: #3b82f6; color: white; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s;"><i class="fa-solid fa-pen"></i></button>
-            <button onclick="deleteItem('${category}', '${id}')" style="background: #ef4444; color: white; border: none; padding: 10px 12px; border-radius: 8px; cursor: pointer; transition: 0.3s;"><i class="fa-solid fa-trash"></i></button>
+        <div class="action-btns">
+            <button onclick="openEditModal('${category}', '${id}')" class="action-btn edit-btn" title="Edit Data"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deleteItem('${category}', '${id}')" class="action-btn delete-btn" title="Delete Data"><i class="fa-solid fa-trash"></i></button>
         </div>
     </div>`;
 }
 
 // ==========================================
-// 5. EDIT MODAL LOGIC (New Feature)
+// 5. EDIT MODAL LOGIC (New UI Integration)
 // ==========================================
 window.currentEditCategory = "";
 window.currentEditId = "";
@@ -216,34 +229,46 @@ window.openEditModal = function(category, id) {
     let html = "";
     if (category === "apps") {
         html = `
-            <input type="text" id="edit-app-icon" value="${data.appIcon || ''}" placeholder="App Icon Name">
-            <input type="text" id="edit-app-title" value="${data.title || ''}" placeholder="App Name">
-            <input type="text" id="edit-app-filename" value="${data.fileName || ''}" placeholder="APK File Name">
-            <input type="text" id="edit-app-size" value="${data.appSize || ''}" placeholder="App Size (e.g. 15 MB)">
-            <input type="text" id="edit-app-req" value="${data.appReq || ''}" placeholder="Requirements">
+            <div class="input-group"><label>App Icon Name</label><input type="text" id="edit-app-icon" value="${data.appIcon || ''}"></div>
+            <div class="input-group"><label>App Name</label><input type="text" id="edit-app-title" value="${data.title || ''}"></div>
+            <div class="input-group"><label>APK File Name</label><input type="text" id="edit-app-filename" value="${data.fileName || ''}"></div>
+            <div class="input-group"><label>App Size</label><input type="text" id="edit-app-size" value="${data.appSize || ''}"></div>
+            <div class="input-group"><label>Requirements</label><input type="text" id="edit-app-req" value="${data.appReq || ''}"></div>
         `;
     } else if (category === "documents") {
         html = `
-            <input type="text" id="edit-doc-title" value="${data.title || ''}" placeholder="Document Title">
-            <select id="edit-doc-type">
-                <option value="word" ${data.type==='word'?'selected':''}>Word / Doc</option>
-                <option value="excel" ${data.type==='excel'?'selected':''}>Excel / Xlsx</option>
-                <option value="ppt" ${data.type==='ppt'?'selected':''}>PowerPoint / PPT</option>
-                <option value="html" ${data.type==='html'?'selected':''}>HTML / Web</option>
-                <option value="svg" ${data.type==='svg'?'selected':''}>SVG / XML Vector</option>
-            </select>
-            <input type="text" id="edit-doc-filename" value="${data.fileName || ''}" placeholder="File Name">
+            <div class="input-group"><label>Document Title</label><input type="text" id="edit-doc-title" value="${data.title || ''}"></div>
+            <div class="input-group">
+                <label>Document Type</label>
+                <div class="select-wrapper">
+                    <select id="edit-doc-type">
+                        <option value="word" ${data.type==='word'?'selected':''}>Word / Doc</option>
+                        <option value="excel" ${data.type==='excel'?'selected':''}>Excel / Xlsx</option>
+                        <option value="ppt" ${data.type==='ppt'?'selected':''}>PowerPoint / PPT</option>
+                        <option value="html" ${data.type==='html'?'selected':''}>HTML / Web</option>
+                        <option value="svg" ${data.type==='svg'?'selected':''}>SVG / XML Vector</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-group"><label>File Name</label><input type="text" id="edit-doc-filename" value="${data.fileName || ''}"></div>
         `;
     } else if (category === "notes") {
         html = `
-            <input type="text" id="edit-note-title" value="${data.title || ''}" placeholder="Note Title">
-            <textarea id="edit-note-content" placeholder="Note content" rows="4">${data.content || ''}</textarea>
-            <input type="text" id="edit-note-filename" value="${data.fileName || ''}" placeholder="File Name">
+            <div class="input-group"><label>Note Title</label><input type="text" id="edit-note-title" value="${data.title || ''}"></div>
+            <div class="input-group"><label>Content snippet</label><textarea id="edit-note-content" rows="4">${data.content || ''}</textarea></div>
+            <div class="input-group"><label>File Name</label><input type="text" id="edit-note-filename" value="${data.fileName || ''}"></div>
         `;
     }
     
     container.innerHTML = html;
-    document.getElementById("edit-modal").classList.remove("hidden");
+    
+    // Reset Modal Animation
+    const modalOverlay = document.getElementById("edit-modal");
+    const editBox = modalOverlay.querySelector('.edit-box');
+    modalOverlay.classList.remove("hidden");
+    editBox.classList.remove("scale-in");
+    void editBox.offsetWidth;
+    editBox.classList.add("scale-in");
 }
 
 window.closeEditModal = function() {
@@ -256,7 +281,7 @@ document.getElementById("save-edit-btn").addEventListener("click", async () => {
     const id = window.currentEditId;
     let updateData = {};
     const btn = document.getElementById("save-edit-btn");
-    btn.innerText = "Saving...";
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...`;
 
     if (category === "apps") {
         updateData.appIcon = document.getElementById("edit-app-icon").value;
@@ -281,17 +306,17 @@ document.getElementById("save-edit-btn").addEventListener("click", async () => {
     } catch(e) {
         alert("Error updating data: " + e.message);
     }
-    btn.innerText = "Save Changes";
+    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Changes`;
 });
 
 // ==========================================
-// 6. UPDATE USER PASSWORD IN DB
+// 6. UPDATE MASTER PASSWORD
 // ==========================================
 window.changePassword = async function() {
     const newPassword = document.getElementById("new-password").value;
     const msgBox = document.getElementById("password-msg");
 
-    if (newPassword.trim() === "") return alert("Please enter a valid password!");
+    if (newPassword.trim() === "") return alert("Please enter a secure password!");
 
     try {
         await setDoc(doc(db, "settings", "security"), { password: newPassword });
@@ -299,6 +324,6 @@ window.changePassword = async function() {
         setTimeout(() => { msgBox.classList.add("hidden"); }, 4000);
         document.getElementById("new-password").value = "";
     } catch (error) {
-        alert("Error updating password.");
+        alert("Error updating cryptographic key.");
     }
 }
