@@ -1,8 +1,8 @@
-// Firebase SDKs ko CDN se Import karna
+// Firebase SDKs Import
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Aapka Firebase Configuration
+// Firebase Configuration (Aapka Original Config)
 const firebaseConfig = {
   apiKey: "AIzaSyAAV38UqBfRwfmITkx-izewPjI4WMYQCa4",
   authDomain: "site-a2e87.firebaseapp.com",
@@ -16,7 +16,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
-// Variables
+// Global Variables
 let SYSTEM_PASSWORD = "310726";
 let isUnlocked = false;
 let requestedSection = "";
@@ -45,14 +45,14 @@ const errorMsg = document.getElementById("error-msg");
 const sectionTitle = document.getElementById("section-title");
 const contentArea = document.getElementById("content-area");
 
-// 🆕 Event Listeners for Bottom Menu (Added Home)
+// Event Listeners for New Floating Dock Menu
 document.getElementById("nav-home").addEventListener("click", showProfile);
 document.getElementById("nav-apps").addEventListener("click", () => requestAccess("apps"));
 document.getElementById("nav-documents").addEventListener("click", () => requestAccess("documents"));
 document.getElementById("nav-notes").addEventListener("click", () => requestAccess("notes"));
 document.getElementById("nav-settings").addEventListener("click", showSettings);
 
-// Photo par click karne se wapas Profile (Home) par aane ka shortcut
+// Photo par click karne se Home par aane ka shortcut
 const profilePic = document.querySelector(".profile-pic");
 if(profilePic) {
     profilePic.style.cursor = "pointer";
@@ -60,7 +60,7 @@ if(profilePic) {
     profilePic.addEventListener("click", showProfile);
 }
 
-// Request Access Function
+// Security Access Logic
 function requestAccess(section) {
     requestedSection = section;
     if (isUnlocked) {
@@ -69,7 +69,13 @@ function requestAccess(section) {
         passwordInput.value = "";
         errorMsg.classList.add("hidden");
         passwordModal.classList.remove("hidden");
-        passwordInput.focus();
+        // Re-trigger animation on modal
+        const modalContent = passwordModal.querySelector('.premium-modal');
+        modalContent.classList.remove('scale-in');
+        void modalContent.offsetWidth; // trigger reflow
+        modalContent.classList.add('scale-in');
+        
+        setTimeout(() => passwordInput.focus(), 100);
     }
 }
 
@@ -77,8 +83,7 @@ function requestAccess(section) {
 document.getElementById("cancel-btn").addEventListener("click", () => {
     passwordModal.classList.add("hidden");
     requestedSection = "";
-    // Wapas home icon ko active kar do agar cancel kiya
-    if(profileSection.classList.contains("hidden") === false) {
+    if(!profileSection.classList.contains("hidden")) {
         updateActiveMenu("nav-home");
     }
 });
@@ -99,6 +104,13 @@ function verifyPassword() {
     }
 }
 
+// Helper: Re-trigger fade animation for a section
+function triggerAnimation(element) {
+    element.classList.remove("fade-in-up");
+    void element.offsetWidth; // trigger reflow
+    element.classList.add("fade-in-up");
+}
+
 // Sections Hide/Show Logic
 function hideAllSections() {
     profileSection.classList.add("hidden");
@@ -109,32 +121,48 @@ function hideAllSections() {
 function showProfile() {
     hideAllSections();
     profileSection.classList.remove("hidden");
+    triggerAnimation(profileSection);
     updateActiveMenu("nav-home");
 }
 
 function showSettings() {
     hideAllSections();
     settingsSection.classList.remove("hidden");
+    triggerAnimation(settingsSection);
     updateActiveMenu("nav-settings");
 }
 
 function openSection(section) {
     hideAllSections();
     contentSection.classList.remove("hidden");
+    triggerAnimation(contentSection);
     updateActiveMenu("nav-" + section);
 
-    sectionTitle.innerText = section.charAt(0).toUpperCase() + section.slice(1);
+    // Update Title with subtle animation
+    sectionTitle.style.opacity = 0;
+    setTimeout(() => {
+        sectionTitle.innerText = section.charAt(0).toUpperCase() + section.slice(1);
+        sectionTitle.style.transition = "opacity 0.3s";
+        sectionTitle.style.opacity = 1;
+    }, 150);
+
     renderContent(section);
 }
 
+// Updated Dock Active State logic
 function updateActiveMenu(activeId) {
-    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
     document.getElementById(activeId).classList.add('active');
 }
 
-// FIREBASE SE DATA FETCH KARKE SCREEN PAR DIKHANA
+// FETCH & RENDER DATA WITH NEW PREMIUM UI
 async function renderContent(section) {
-    contentArea.innerHTML = `<p style="text-align: center; color: #94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Fetching Data from Server...</p>`;
+    // New Premium Loading State
+    contentArea.innerHTML = `
+        <div class="loading-state">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <p>Syncing secure data...</p>
+        </div>`;
     
     let currentUrl = window.location.href.split('index.html')[0];
     if(!currentUrl.endsWith('/')) currentUrl += '/';
@@ -142,9 +170,9 @@ async function renderContent(section) {
     try {
         const querySnapshot = await getDocs(collection(db, section));
         
-        // 🆕 App section me CSS Grid layout add kiya gaya hai
-        let wrapperClass = section === "apps" ? "content-grid-2" : "list-layout";
-        let html = `<div style="padding: 10px 0;"><div class="${wrapperClass}">`;
+        // Inject Premium Grid/List Wrapper
+        let wrapperClass = section === "apps" ? "premium-grid" : "premium-list";
+        let html = `<div class="${wrapperClass}">`;
         let itemsFound = false;
 
         querySnapshot.forEach((docSnap) => {
@@ -153,8 +181,6 @@ async function renderContent(section) {
             
             let filePath = `uploads/${data.fileName}`;
             let viewerLink = filePath;
-
-            // Extract Exact File Extension
             let ext = data.fileName ? data.fileName.split('.').pop().toUpperCase() : "FILE";
 
             // Microsoft Office Web Viewer Logic
@@ -164,64 +190,87 @@ async function renderContent(section) {
                 viewerLink = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`;
             }
 
-            // APPS SECTION (Now with Image, Size, Requirements)
+            // APPS SECTION (Premium Card)
             if (section === "apps") {
-                // Agar custom icon (image) na ho, toh default android icon dikhega
                 let iconHtml = data.appIcon ? 
                     `<img src="uploads/${data.appIcon}" class="app-icon-img" alt="App Icon">` : 
-                    `<i class="fa-brands fa-android" style="font-size: 2.5rem; color: #3b82f6; margin-bottom: 10px;"></i>`;
+                    `<i class="fa-brands fa-android" style="font-size: 3rem; color: #3b82f6; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(59,130,246,0.3));"></i>`;
 
                 html += `
-                    <div class="app-card">
+                    <div class="premium-app-card">
                         ${iconHtml}
-                        <h3 style="margin-bottom: 5px; font-size: 0.95rem; line-height: 1.2;">${data.title}</h3>
+                        <h3>${data.title}</h3>
                         <div class="app-meta">
                             <span>Size: ${data.appSize || 'N/A'}</span><br>
                             <span>Req: ${data.appReq || 'Android'}</span>
                         </div>
-                        <a href="${filePath}" download class="submit-btn btn btn-small" style="width: 100%; text-decoration:none;">Download</a>
+                        <a href="${filePath}" download class="btn btn-primary btn-small">
+                            <i class="fa-solid fa-download"></i> Get App
+                        </a>
                     </div>`;
             } 
-            // DOCUMENTS SECTION (Fixed Layout for long text)
+            // DOCUMENTS SECTION (Premium List)
             else if (section === "documents") {
                 let icon = "fa-file-word";
-                if(data.type === "excel") icon = "fa-file-excel";
-                else if(data.type === "ppt") icon = "fa-file-powerpoint";
-                else if(data.type === "html") icon = "fa-file-code";
-                else if(data.type === "svg") icon = "fa-bezier-curve";
+                let iconColor = "#3b82f6"; // Default Blue
+                if(data.type === "excel") { icon = "fa-file-excel"; iconColor = "#10b981"; }
+                else if(data.type === "ppt") { icon = "fa-file-powerpoint"; iconColor = "#f97316"; }
+                else if(data.type === "html") { icon = "fa-file-code"; iconColor = "#8b5cf6"; }
+                else if(data.type === "svg") { icon = "fa-bezier-curve"; iconColor = "#ec4899"; }
 
                 html += `
-                    <div class="list-card">
-                        <i class="fa-solid ${icon}" style="font-size: 2rem; color: #f97316; flex-shrink:0;"></i>
+                    <div class="premium-list-card">
+                        <div class="icon-box" style="background: ${iconColor}20; color: ${iconColor};">
+                            <i class="fa-solid ${icon}"></i>
+                        </div>
                         <div class="list-info">
                             <h4>${data.title}</h4>
-                            <span style="font-size: 0.65rem; color: #94a3b8; text-transform:uppercase;">${ext} FILE</span>
+                            <p>${ext} FILE</p>
                         </div>
-                        <a href="${viewerLink}" target="_blank" class="submit-btn btn btn-small" style="text-decoration:none;">View/Present</a>
+                        <a href="${viewerLink}" target="_blank" class="btn btn-primary btn-small" style="width: auto;">
+                            <i class="fa-solid fa-eye"></i> View
+                        </a>
                     </div>`;
             } 
-            // NOTES SECTION
+            // NOTES SECTION (Premium List)
             else if (section === "notes") {
                 html += `
-                    <div class="list-card" style="align-items: flex-start; flex-direction: column; gap: 10px;">
-                        <div class="list-info" style="width: 100%;">
-                            <h4 style="color: #c084fc; margin-bottom: 5px; font-size:1rem;">${data.title}</h4>
-                            <p style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.5;">${data.content}</p>
+                    <div class="premium-list-card" style="align-items: flex-start; flex-direction: column;">
+                        <div style="display: flex; gap: 15px; width: 100%; align-items: center; margin-bottom: 10px;">
+                            <div class="icon-box" style="background: rgba(139, 92, 246, 0.2); color: #c084fc;">
+                                <i class="fa-solid fa-book-open"></i>
+                            </div>
+                            <div class="list-info">
+                                <h4>${data.title}</h4>
+                            </div>
                         </div>
-                        <a href="${filePath}" target="_blank" class="submit-btn btn btn-small" style="text-decoration:none; align-self: flex-end;">Read Note</a>
+                        <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; width: 100%;">
+                            ${data.content}
+                        </p>
+                        <a href="${filePath}" target="_blank" class="btn btn-primary btn-small">
+                            <i class="fa-solid fa-book-reader"></i> Read Note
+                        </a>
                     </div>`;
             }
         });
 
         if (!itemsFound) {
-            html += `<p style="grid-column: 1 / -1; text-align: center; color: #94a3b8;">No ${section} uploaded yet.</p>`;
+            html += `
+                <div style="grid-column: 1 / -1; text-align: center; color: #64748b; padding: 30px 0;">
+                    <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                    <p>No ${section} uploaded yet.</p>
+                </div>`;
         }
 
-        html += `</div></div>`;
+        html += `</div>`;
         contentArea.innerHTML = html;
 
     } catch (error) {
-        contentArea.innerHTML = `<p style="color: #ef4444; text-align: center;">Error fetching data.</p>`;
+        contentArea.innerHTML = `
+            <div style="text-align: center; color: #ef4444; padding: 20px;">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                <p>Failed to decrypt server data.</p>
+            </div>`;
         console.error(error);
     }
 }
