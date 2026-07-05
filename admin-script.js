@@ -32,7 +32,7 @@ onAuthStateChanged(auth, (user) => {
     if (isAnimationDone) showCorrectScreen();
 });
 
-// Corporate Minimal Loader Timing
+// Clean Material Loader Timing
 setTimeout(() => {
     isAnimationDone = true;
     const loader = document.getElementById("welcome-screen");
@@ -40,8 +40,8 @@ setTimeout(() => {
     setTimeout(() => {
         loader.classList.add("hidden");
         showCorrectScreen();
-    }, 500);
-}, 2000);
+    }, 400);
+}, 1500);
 
 function showCorrectScreen() {
     if (currentUser) {
@@ -49,7 +49,6 @@ function showCorrectScreen() {
         const dashboard = document.getElementById("admin-dashboard");
         dashboard.classList.remove("hidden");
         
-        // Soft load
         dashboard.style.opacity = "0";
         dashboard.style.transition = "opacity 0.5s ease";
         setTimeout(() => { dashboard.style.opacity = "1"; }, 50);
@@ -72,20 +71,39 @@ document.getElementById("login-btn").addEventListener("click", async () => {
 
     if(!email || !password) return;
 
-    btn.innerHTML = `<i class="ph ph-spinner-gap spinner" style="font-size: 1.2rem; margin: 0; animation: spin 1s linear infinite;"></i> Authenticating...`;
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Loading...`;
     try {
         await signInWithEmailAndPassword(auth, email, password);
         errorText.classList.add("hidden");
     } catch (error) {
         errorText.classList.remove("hidden");
     }
-    btn.innerHTML = `Authenticate <i class="ph ph-arrow-right"></i>`;
+    btn.innerHTML = `Login`;
 });
 
 window.logoutAdmin = () => { signOut(auth); };
 
 // ==========================================
-// 3. CONSOLE NAVIGATION (TAB SWITCHING)
+// 3. MOBILE SIDEBAR LOGIC (FIXED)
+// ==========================================
+const adminSidebar = document.getElementById('admin-sidebar');
+const sidebarToggleBtn = document.getElementById('sidebar-toggle-btn');
+const sidebarCloseBtn = document.getElementById('sidebar-close-btn');
+
+if (sidebarToggleBtn) {
+    sidebarToggleBtn.addEventListener('click', () => {
+        adminSidebar.classList.add('show');
+    });
+}
+
+if (sidebarCloseBtn) {
+    sidebarCloseBtn.addEventListener('click', () => {
+        adminSidebar.classList.remove('show');
+    });
+}
+
+// ==========================================
+// 4. CONSOLE NAVIGATION (TAB SWITCHING)
 // ==========================================
 window.switchTab = function(tabName) {
     // Hide all sections
@@ -102,19 +120,24 @@ window.switchTab = function(tabName) {
         }
     });
 
+    // Close sidebar on mobile after clicking a tab
+    if (window.innerWidth <= 900) {
+        adminSidebar.classList.remove('show');
+    }
+
     // Update Header Title Dynamically
     const titles = {
         'dashboard': 'Dashboard Overview',
-        'apps': 'Application Deployment',
-        'documents': 'Document Repository',
-        'notes': 'Knowledge Base',
+        'apps': 'Manage Apps',
+        'documents': 'Manage Documents',
+        'notes': 'Manage Notes',
         'settings': 'Security Settings'
     };
-    document.getElementById("current-section-title").innerText = titles[tabName] || 'Console';
+    document.getElementById("current-section-title").innerText = titles[tabName] || 'Admin Console';
 };
 
 // ==========================================
-// 4. FIREBASE CRUD LOGIC (CORPORATE UI)
+// 5. FIREBASE CRUD LOGIC (MATERIAL UI)
 // ==========================================
 
 // Deploy / Upload New Item
@@ -128,7 +151,7 @@ window.uploadItem = async function(category) {
             data.fileName = document.getElementById("app-filename").value;
             data.appSize = document.getElementById("app-size").value;
             data.appReq = document.getElementById("app-req").value;
-            if(!data.title || !data.fileName) throw "Application Name and File Name are required.";
+            if(!data.title || !data.fileName) throw "App Name and File Name are required.";
         } 
         else if (category === 'documents') {
             data.title = document.getElementById("doc-title").value;
@@ -145,14 +168,14 @@ window.uploadItem = async function(category) {
 
         await addDoc(collection(db, category), data);
         document.querySelectorAll("input[type=text], textarea").forEach(input => input.value = "");
-        alert(`System Alert: ${category.slice(0,-1).toUpperCase()} deployed successfully.`);
+        alert(`${category.slice(0,-1).toUpperCase()} saved successfully!`);
         loadData(); 
     } catch (error) {
         alert(error.message || error);
     }
 }
 
-// Fetch Records & Inject Corporate UI Lists
+// Fetch Records & Inject Material UI Lists
 window.loadData = async function() {
     const categories = ["apps", "documents", "notes"];
     
@@ -174,7 +197,7 @@ window.loadData = async function() {
                 } else if (category === "documents") {
                     html += createListHTML(data.title, `Type: ${data.type.toUpperCase()}`, data.fileName, 'documents', id);
                 } else if (category === "notes") {
-                    html += createListHTML(data.title, data.content || 'No description provided.', data.fileName, 'notes', id);
+                    html += createListHTML(data.title, data.content || 'No description.', data.fileName, 'notes', id);
                 }
             });
 
@@ -183,8 +206,8 @@ window.loadData = async function() {
             document.getElementById(statMap[category]).innerText = count;
 
             if (count === 0) {
-                html = `<div class="empty-state">
-                            <i class="ph ph-folder-dashed" style="font-size: 2rem; margin-bottom: 8px; display: block; opacity: 0.5;"></i>
+                html = `<div class="material-loader">
+                            <i class="fa-solid fa-folder-open" style="font-size: 2rem; margin-bottom: 8px; display: block; opacity: 0.5;"></i>
                             No records found.
                         </div>`;
             }
@@ -198,7 +221,7 @@ window.loadData = async function() {
 
 // Delete Record
 window.deleteItem = async function(category, id) {
-    if(confirm("CRITICAL WARNING: Are you sure you want to permanently remove this record from the active database?")) {
+    if(confirm("Are you sure you want to delete this record? This action cannot be undone.")) {
         try {
             await deleteDoc(doc(db, category, id));
             loadData(); 
@@ -208,24 +231,24 @@ window.deleteItem = async function(category, id) {
     }
 }
 
-// Minimal Console List HTML Generator
+// Minimal Material List HTML Generator
 function createListHTML(title, subtitle, filename, category, id) {
     return `
     <div class="admin-list-card">
         <div class="admin-card-info">
             <h4>${title}</h4>
             <p>${subtitle}</p>
-            <span class="file-badge"><i class="ph ph-file-code"></i> ${filename}</span>
+            <span class="file-badge"><i class="fa-solid fa-file-code"></i> ${filename}</span>
         </div>
         <div class="action-btns">
-            <button onclick="openEditModal('${category}', '${id}')" class="btn-icon" title="Modify Record"><i class="ph ph-pencil-simple"></i></button>
-            <button onclick="deleteItem('${category}', '${id}')" class="btn-icon" style="color: var(--danger); border-color: rgba(215, 58, 73, 0.3);" title="Remove Record"><i class="ph ph-trash"></i></button>
+            <button onclick="openEditModal('${category}', '${id}')" class="icon-btn" style="color: var(--primary);" title="Edit"><i class="fa-solid fa-pen"></i></button>
+            <button onclick="deleteItem('${category}', '${id}')" class="icon-btn" style="color: var(--danger);" title="Delete"><i class="fa-solid fa-trash"></i></button>
         </div>
     </div>`;
 }
 
 // ==========================================
-// 5. EDIT MODAL (Grid Form Integration)
+// 6. EDIT MODAL (Form Integration)
 // ==========================================
 window.currentEditCategory = "";
 window.currentEditId = "";
@@ -239,22 +262,22 @@ window.openEditModal = function(category, id) {
     let html = "";
     if (category === "apps") {
         html = `
-            <div class="form-group full-width"><label>Application Name</label><input type="text" id="edit-app-title" class="form-control" value="${data.title || ''}"></div>
+            <div class="form-group full-width"><label>App Name</label><input type="text" id="edit-app-title" class="form-control" value="${data.title || ''}"></div>
             <div class="form-group full-width"><label>APK File Name</label><input type="text" id="edit-app-filename" class="form-control" value="${data.fileName || ''}"></div>
             <div class="form-group"><label>Icon File Name</label><input type="text" id="edit-app-icon" class="form-control" value="${data.appIcon || ''}"></div>
-            <div class="form-group"><label>Package Size</label><input type="text" id="edit-app-size" class="form-control" value="${data.appSize || ''}"></div>
+            <div class="form-group"><label>App Size</label><input type="text" id="edit-app-size" class="form-control" value="${data.appSize || ''}"></div>
             <div class="form-group full-width"><label>Requirements</label><input type="text" id="edit-app-req" class="form-control" value="${data.appReq || ''}"></div>
         `;
     } else if (category === "documents") {
         html = `
             <div class="form-group full-width"><label>Document Title</label><input type="text" id="edit-doc-title" class="form-control" value="${data.title || ''}"></div>
             <div class="form-group">
-                <label>Format Type</label>
+                <label>Format</label>
                 <select id="edit-doc-type" class="form-control">
                     <option value="word" ${data.type==='word'?'selected':''}>Word (.docx)</option>
                     <option value="excel" ${data.type==='excel'?'selected':''}>Excel (.xlsx)</option>
-                    <option value="ppt" ${data.type==='ppt'?'selected':''}>PowerPoint (.pptx)</option>
-                    <option value="html" ${data.type==='html'?'selected':''}>Web (.html)</option>
+                    <option value="ppt" ${data.type==='ppt'?'selected':''}>PowerPoint (.ppt)</option>
+                    <option value="html" ${data.type==='html'?'selected':''}>HTML Web File</option>
                     <option value="svg" ${data.type==='svg'?'selected':''}>SVG Vector</option>
                 </select>
             </div>
@@ -262,7 +285,7 @@ window.openEditModal = function(category, id) {
         `;
     } else if (category === "notes") {
         html = `
-            <div class="form-group full-width"><label>Topic / Title</label><input type="text" id="edit-note-title" class="form-control" value="${data.title || ''}"></div>
+            <div class="form-group full-width"><label>Note Title</label><input type="text" id="edit-note-title" class="form-control" value="${data.title || ''}"></div>
             <div class="form-group full-width"><label>Content</label><textarea id="edit-note-content" class="form-control" rows="3">${data.content || ''}</textarea></div>
             <div class="form-group full-width"><label>File Name</label><input type="text" id="edit-note-filename" class="form-control" value="${data.fileName || ''}"></div>
         `;
@@ -282,7 +305,7 @@ document.getElementById("save-edit-btn").addEventListener("click", async () => {
     const id = window.currentEditId;
     let updateData = {};
     const btn = document.getElementById("save-edit-btn");
-    btn.innerHTML = `<i class="ph ph-spinner-gap spinner" style="font-size: 1rem; margin: 0; animation: spin 1s linear infinite;"></i> Saving...`;
+    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...`;
 
     if (category === "apps") {
         updateData.appIcon = document.getElementById("edit-app-icon").value;
@@ -305,19 +328,19 @@ document.getElementById("save-edit-btn").addEventListener("click", async () => {
         window.closeEditModal();
         loadData(); // Refresh records
     } catch(e) {
-        alert("System Error updating record: " + e.message);
+        alert("Error updating record: " + e.message);
     }
     btn.innerText = "Save Changes";
 });
 
 // ==========================================
-// 6. MODIFY CRYPTOGRAPHIC KEY (PASSWORD)
+// 7. CHANGE ADMIN PASSWORD
 // ==========================================
 window.changePassword = async function() {
     const newPassword = document.getElementById("new-password").value;
     const msgBox = document.getElementById("password-msg");
 
-    if (newPassword.trim() === "") return alert("Input required: Please enter a secure key.");
+    if (newPassword.trim() === "") return alert("Please enter a new password!");
 
     try {
         await setDoc(doc(db, "settings", "security"), { password: newPassword });
@@ -325,6 +348,6 @@ window.changePassword = async function() {
         setTimeout(() => { msgBox.classList.add("hidden"); }, 4000);
         document.getElementById("new-password").value = "";
     } catch (error) {
-        alert("Server Error: Unable to modify access key.");
+        alert("Error updating password.");
     }
 }
