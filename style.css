@@ -13,12 +13,13 @@
     --primary: #0b57d0;          /* Google/Material Blue */
     --primary-hover: #0842a0;
     
-    --border-color: #e5e7eb;     /* Soft borders */
-    
     --font-main: 'Google Sans', 'Roboto', sans-serif;
     --radius-capsule: 24px;      /* Curved corners for bio/skills */
     --radius-card: 16px;
     --radius-btn: 100px;         /* Fully rounded pill buttons */
+    
+    /* Ultra Soft Shadow for Borderless Containers */
+    --soft-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 * {
@@ -41,7 +42,7 @@ body {
 
 .container {
     width: 100%;
-    max-width: 800px; /* Optimal reading width for a professional bio */
+    max-width: 800px; /* Optimal reading width */
     margin: 0 auto;
     padding: 0 20px;
 }
@@ -58,7 +59,7 @@ body {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03); /* Extremely light separator */
     z-index: 1000;
     display: flex;
     align-items: center;
@@ -68,6 +69,20 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+}
+
+/* Header Profile Photo Styling */
+.brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.header-profile-pic {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .brand-logo span {
@@ -112,16 +127,15 @@ body {
     padding: 5px;
 }
 
-/* Proper Sliding Mobile Menu Fix */
+/* Proper Sliding Mobile Menu */
 .mobile-nav-panel {
     position: fixed;
-    top: 65px; /* Starts just below the header */
-    right: -100%; /* Hidden off-screen by default */
+    top: 65px; 
+    right: -100%; /* Hidden off-screen */
     width: 250px;
     height: calc(100vh - 65px);
     background: var(--bg-surface);
-    border-left: 1px solid var(--border-color);
-    box-shadow: -4px 0 15px rgba(0,0,0,0.05);
+    box-shadow: -4px 0 15px rgba(0,0,0,0.03);
     z-index: 999;
     display: flex;
     flex-direction: column;
@@ -142,7 +156,7 @@ body {
 }
 
 /* =========================================
-   3. PROFILE SECTION (As per Sketch)
+   3. PROFILE SECTION
    ========================================= */
 .main-container {
     flex: 1;
@@ -162,7 +176,7 @@ body {
 .hero-name-animate {
     font-size: clamp(2.2rem, 6vw, 3rem);
     font-weight: 700;
-    margin-bottom: 30px;
+    margin-bottom: 35px;
     letter-spacing: -1px;
     background: linear-gradient(90deg, var(--primary), #009688, var(--primary));
     background-size: 200% auto;
@@ -208,7 +222,7 @@ body {
     border-radius: 4px;
 }
 
-/* Curved Capsules (Material You Style) */
+/* Curved Capsules (No Borders, Light Shadow) */
 .capsule-container {
     display: flex;
     flex-direction: column;
@@ -220,17 +234,16 @@ body {
     align-items: center;
     gap: 15px;
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
+    border: none; /* Border Removed */
     border-radius: var(--radius-capsule);
     padding: 12px 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    box-shadow: var(--soft-shadow); /* Very Light Shadow */
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
 .info-capsule:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-    border-color: #d1d5db;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
 }
 
 .icon-circle {
@@ -262,7 +275,6 @@ body {
     text-align: center;
     margin-top: 50px;
     padding-top: 30px;
-    border-top: 1px solid var(--border-color);
 }
 
 .thanks-text {
@@ -288,7 +300,6 @@ body {
     width: 50px;
     height: 50px;
     border-radius: 50%;
-    border: 1px solid var(--border-color);
     background: var(--bg-surface);
     color: var(--text-secondary);
     font-size: 1.5rem;
@@ -296,15 +307,15 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
+    box-shadow: var(--soft-shadow); /* No borders, just shadow */
     transition: all 0.3s ease;
 }
 
 .social-icon:hover {
     background: var(--primary);
     color: #fff;
-    border-color: var(--primary);
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(11, 87, 208, 0.2);
+    box-shadow: 0 6px 15px rgba(11, 87, 208, 0.2);
 }
 
 /* =========================================
@@ -338,28 +349,28 @@ body {
     margin-bottom: 15px;
 }
 
-/* Injected via JS */
+/* Material Cards (No Borders, Light Shadow) */
 .material-card {
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: var(--radius-card);
     padding: 20px;
     display: flex;
     flex-direction: column;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    box-shadow: var(--soft-shadow);
 }
 .material-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; }
 .material-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; flex: 1; }
 
 .material-list-item {
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
+    border: none;
     border-radius: var(--radius-card);
     padding: 15px 20px;
     display: flex;
     align-items: center;
     gap: 15px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    box-shadow: var(--soft-shadow);
 }
 .material-list-item .icon-circle { width: 40px; height: 40px; font-size: 1.1rem; }
 .list-content { flex: 1; min-width: 0; }
@@ -381,7 +392,7 @@ body {
     text-decoration: none;
 }
 .btn-filled { background: var(--primary); color: #fff; }
-.btn-filled:hover { background: var(--primary-hover); box-shadow: 0 2px 8px rgba(11, 87, 208, 0.3); }
+.btn-filled:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(11, 87, 208, 0.2); }
 .btn-text { background: transparent; color: var(--text-secondary); }
 .btn-text:hover { background: #f3f4f6; color: var(--text-primary); }
 
@@ -398,7 +409,8 @@ body {
     align-items: center;
     justify-content: space-between;
     background: var(--bg-surface);
-    border: 1px solid var(--border-color);
+    border: none; /* No border */
+    box-shadow: var(--soft-shadow);
     padding: 16px 20px;
     border-radius: var(--radius-card);
     text-decoration: none;
@@ -427,8 +439,7 @@ body {
 .official-footer {
     padding: 25px 0;
     text-align: center;
-    border-top: 1px solid var(--border-color);
-    background: var(--bg-surface);
+    background: transparent;
     color: var(--text-muted);
     font-size: 0.85rem;
     margin-top: auto;
@@ -439,7 +450,7 @@ body {
    ========================================= */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black overlay */
+    background: rgba(0, 0, 0, 0.4); 
     display: flex; align-items: center; justify-content: center;
     z-index: 2000;
 }
@@ -450,7 +461,7 @@ body {
     padding: 30px;
     width: 90%;
     max-width: 380px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
     animation: scaleInName 0.3s ease forwards;
 }
 
@@ -460,15 +471,15 @@ body {
 .form-group input {
     width: 100%;
     padding: 14px 16px;
-    border: 1px solid var(--border-color);
+    border: none;
+    background: #f3f4f6;
     border-radius: 12px;
     font-size: 1rem;
     outline: none;
-    background: var(--bg-main);
-    transition: border 0.2s;
+    transition: box-shadow 0.2s;
 }
 
-.form-group input:focus { border-color: var(--primary); background: #fff; }
+.form-group input:focus { background: #fff; box-shadow: 0 0 0 2px var(--primary); }
 
 .error-msg {
     display: flex; align-items: center; gap: 5px;
