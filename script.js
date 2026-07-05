@@ -2,7 +2,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Firebase Configuration (Aapka Original Config)
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAAV38UqBfRwfmITkx-izewPjI4WMYQCa4",
   authDomain: "site-a2e87.firebaseapp.com",
@@ -30,7 +30,7 @@ async function fetchLatestPassword() {
             SYSTEM_PASSWORD = docSnap.data().password;
         }
     } catch (e) {
-        console.log("Error fetching password", e);
+        console.log("Error fetching security protocol", e);
     }
 }
 fetchLatestPassword();
@@ -45,20 +45,46 @@ const errorMsg = document.getElementById("error-msg");
 const sectionTitle = document.getElementById("section-title");
 const contentArea = document.getElementById("content-area");
 
-// Event Listeners for New Floating Dock Menu
-document.getElementById("nav-home").addEventListener("click", showProfile);
-document.getElementById("nav-apps").addEventListener("click", () => requestAccess("apps"));
-document.getElementById("nav-documents").addEventListener("click", () => requestAccess("documents"));
-document.getElementById("nav-notes").addEventListener("click", () => requestAccess("notes"));
-document.getElementById("nav-settings").addEventListener("click", showSettings);
+// Mobile Menu Logic
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const mobileNavPanel = document.querySelector('.mobile-nav-panel');
 
-// Photo par click karne se Home par aane ka shortcut
-const profilePic = document.querySelector(".profile-pic");
-if(profilePic) {
-    profilePic.style.cursor = "pointer";
-    profilePic.title = "Go to Home";
-    profilePic.addEventListener("click", showProfile);
+mobileMenuBtn.addEventListener('click', () => {
+    mobileNavPanel.classList.toggle('show');
+    const icon = mobileMenuBtn.querySelector('i');
+    if (mobileNavPanel.classList.contains('show')) {
+        icon.classList.replace('ph-list', 'ph-x');
+    } else {
+        icon.classList.replace('ph-x', 'ph-list');
+    }
+});
+
+function closeMobileMenu() {
+    mobileNavPanel.classList.remove('show');
+    mobileMenuBtn.querySelector('i').classList.replace('ph-x', 'ph-list');
 }
+
+// Navigation Listeners (Desktop & Mobile)
+const navMappings = [
+    { id: 'nav-home', action: showProfile },
+    { id: 'nav-apps', action: () => requestAccess("apps") },
+    { id: 'nav-documents', action: () => requestAccess("documents") },
+    { id: 'nav-notes', action: () => requestAccess("notes") },
+    { id: 'nav-settings', action: showSettings }
+];
+
+navMappings.forEach(nav => {
+    // Desktop Nav
+    const deskElement = document.getElementById(nav.id);
+    if(deskElement) deskElement.addEventListener("click", nav.action);
+    
+    // Mobile Nav
+    const mobElement = document.getElementById(nav.id + '-mobile');
+    if(mobElement) mobElement.addEventListener("click", () => {
+        closeMobileMenu();
+        nav.action();
+    });
+});
 
 // Security Access Logic
 function requestAccess(section) {
@@ -69,12 +95,6 @@ function requestAccess(section) {
         passwordInput.value = "";
         errorMsg.classList.add("hidden");
         passwordModal.classList.remove("hidden");
-        // Re-trigger animation on modal
-        const modalContent = passwordModal.querySelector('.premium-modal');
-        modalContent.classList.remove('scale-in');
-        void modalContent.offsetWidth; // trigger reflow
-        modalContent.classList.add('scale-in');
-        
         setTimeout(() => passwordInput.focus(), 100);
     }
 }
@@ -104,11 +124,11 @@ function verifyPassword() {
     }
 }
 
-// Helper: Re-trigger fade animation for a section
+// Helper: Re-trigger animation
 function triggerAnimation(element) {
-    element.classList.remove("fade-in-up");
-    void element.offsetWidth; // trigger reflow
-    element.classList.add("fade-in-up");
+    element.style.animation = 'none';
+    element.offsetHeight; /* trigger reflow */
+    element.style.animation = null; 
 }
 
 // Sections Hide/Show Logic
@@ -138,30 +158,32 @@ function openSection(section) {
     triggerAnimation(contentSection);
     updateActiveMenu("nav-" + section);
 
-    // Update Title with subtle animation
-    sectionTitle.style.opacity = 0;
-    setTimeout(() => {
-        sectionTitle.innerText = section.charAt(0).toUpperCase() + section.slice(1);
-        sectionTitle.style.transition = "opacity 0.3s";
-        sectionTitle.style.opacity = 1;
-    }, 150);
+    // Update Title
+    const formattedTitle = section.charAt(0).toUpperCase() + section.slice(1);
+    sectionTitle.innerText = `${formattedTitle} Repository`;
+    document.querySelector('.section-meta').innerText = `Securely fetching ${section} data from ZenV servers.`;
 
     renderContent(section);
 }
 
-// Updated Dock Active State logic
+// Updated Active State logic
 function updateActiveMenu(activeId) {
-    document.querySelectorAll('.dock-item').forEach(item => item.classList.remove('active'));
-    document.getElementById(activeId).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(item => item.classList.remove('active'));
+    
+    const deskElement = document.getElementById(activeId);
+    const mobElement = document.getElementById(activeId + '-mobile');
+    
+    if(deskElement) deskElement.classList.add('active');
+    if(mobElement) mobElement.classList.add('active');
 }
 
-// FETCH & RENDER DATA WITH NEW PREMIUM UI
+// FETCH & RENDER DATA WITH CORPORATE UI
 async function renderContent(section) {
-    // New Premium Loading State
+    // Professional Loading State
     contentArea.innerHTML = `
-        <div class="loading-state">
-            <i class="fa-solid fa-circle-notch fa-spin"></i>
-            <p>Syncing secure data...</p>
+        <div class="corporate-loader">
+            <i class="ph ph-spinner-gap spinner-icon"></i>
+            <div>Establishing secure connection...</div>
         </div>`;
     
     let currentUrl = window.location.href.split('index.html')[0];
@@ -169,10 +191,7 @@ async function renderContent(section) {
 
     try {
         const querySnapshot = await getDocs(collection(db, section));
-        
-        // Inject Premium Grid/List Wrapper
-        let wrapperClass = section === "apps" ? "premium-grid" : "premium-list";
-        let html = `<div class="${wrapperClass}">`;
+        let html = "";
         let itemsFound = false;
 
         querySnapshot.forEach((docSnap) => {
@@ -190,65 +209,58 @@ async function renderContent(section) {
                 viewerLink = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`;
             }
 
-            // APPS SECTION (Premium Card)
+            // APPS SECTION
             if (section === "apps") {
                 let iconHtml = data.appIcon ? 
-                    `<img src="uploads/${data.appIcon}" class="app-icon-img" alt="App Icon">` : 
-                    `<i class="fa-brands fa-android" style="font-size: 3rem; color: #3b82f6; margin-bottom: 12px; filter: drop-shadow(0 4px 6px rgba(59,130,246,0.3));"></i>`;
+                    `<img src="uploads/${data.appIcon}" alt="App Icon">` : 
+                    `<i class="ph ph-android-logo" style="font-size: 48px; color: var(--accent-blue);"></i>`;
 
                 html += `
-                    <div class="premium-app-card">
-                        ${iconHtml}
+                    <div class="corp-app-card">
+                        <div class="app-icon-wrap">
+                            ${iconHtml}
+                        </div>
                         <h3>${data.title}</h3>
-                        <div class="app-meta">
-                            <span>Size: ${data.appSize || 'N/A'}</span><br>
-                            <span>Req: ${data.appReq || 'Android'}</span>
+                        <div class="app-details">
+                            <span><strong>Size:</strong> ${data.appSize || 'N/A'}</span>
+                            <span><strong>Requires:</strong> ${data.appReq || 'Android'}</span>
                         </div>
-                        <a href="${filePath}" download class="btn btn-primary btn-small">
-                            <i class="fa-solid fa-download"></i> Get App
+                        <a href="${filePath}" download class="btn btn-primary btn-full">
+                            Download Package
                         </a>
                     </div>`;
             } 
-            // DOCUMENTS SECTION (Premium List)
+            // DOCUMENTS SECTION
             else if (section === "documents") {
-                let icon = "fa-file-word";
-                let iconColor = "#3b82f6"; // Default Blue
-                if(data.type === "excel") { icon = "fa-file-excel"; iconColor = "#10b981"; }
-                else if(data.type === "ppt") { icon = "fa-file-powerpoint"; iconColor = "#f97316"; }
-                else if(data.type === "html") { icon = "fa-file-code"; iconColor = "#8b5cf6"; }
-                else if(data.type === "svg") { icon = "fa-bezier-curve"; iconColor = "#ec4899"; }
+                let icon = "ph-file-text";
+                if(data.type === "excel") icon = "ph-file-xls";
+                else if(data.type === "ppt") icon = "ph-projector-screen";
+                else if(data.type === "html") icon = "ph-file-code";
+                else if(data.type === "svg") icon = "ph-bezier-curve";
 
                 html += `
-                    <div class="premium-list-card">
-                        <div class="icon-box" style="background: ${iconColor}20; color: ${iconColor};">
-                            <i class="fa-solid ${icon}"></i>
-                        </div>
-                        <div class="list-info">
+                    <div class="corp-list-item">
+                        <div class="list-icon"><i class="ph ${icon}"></i></div>
+                        <div class="list-content">
                             <h4>${data.title}</h4>
-                            <p>${ext} FILE</p>
+                            <p>${ext} Format</p>
                         </div>
-                        <a href="${viewerLink}" target="_blank" class="btn btn-primary btn-small" style="width: auto;">
-                            <i class="fa-solid fa-eye"></i> View
+                        <a href="${viewerLink}" target="_blank" class="btn btn-outline">
+                            View Document
                         </a>
                     </div>`;
             } 
-            // NOTES SECTION (Premium List)
+            // NOTES SECTION
             else if (section === "notes") {
                 html += `
-                    <div class="premium-list-card" style="align-items: flex-start; flex-direction: column;">
-                        <div style="display: flex; gap: 15px; width: 100%; align-items: center; margin-bottom: 10px;">
-                            <div class="icon-box" style="background: rgba(139, 92, 246, 0.2); color: #c084fc;">
-                                <i class="fa-solid fa-book-open"></i>
-                            </div>
-                            <div class="list-info">
-                                <h4>${data.title}</h4>
-                            </div>
+                    <div class="corp-list-item" style="align-items: flex-start;">
+                        <div class="list-icon"><i class="ph ph-book-open-text"></i></div>
+                        <div class="list-content">
+                            <h4>${data.title}</h4>
+                            <p style="margin-top: 8px;">${data.content}</p>
                         </div>
-                        <p style="font-size: 0.85rem; color: #cbd5e1; line-height: 1.6; margin-bottom: 15px; width: 100%;">
-                            ${data.content}
-                        </p>
-                        <a href="${filePath}" target="_blank" class="btn btn-primary btn-small">
-                            <i class="fa-solid fa-book-reader"></i> Read Note
+                        <a href="${filePath}" target="_blank" class="btn btn-outline">
+                            Read Note
                         </a>
                     </div>`;
             }
@@ -256,20 +268,19 @@ async function renderContent(section) {
 
         if (!itemsFound) {
             html += `
-                <div style="grid-column: 1 / -1; text-align: center; color: #64748b; padding: 30px 0;">
-                    <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 15px; opacity: 0.5;"></i>
-                    <p>No ${section} uploaded yet.</p>
+                <div class="corporate-loader">
+                    <i class="ph ph-folder-open" style="font-size: 2.5rem; margin-bottom: 16px; opacity: 0.5;"></i>
+                    <div>No resources available in this repository.</div>
                 </div>`;
         }
 
-        html += `</div>`;
         contentArea.innerHTML = html;
 
     } catch (error) {
         contentArea.innerHTML = `
-            <div style="text-align: center; color: #ef4444; padding: 20px;">
-                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2rem; margin-bottom: 10px;"></i>
-                <p>Failed to decrypt server data.</p>
+            <div class="corporate-loader" style="color: #ef4444;">
+                <i class="ph ph-warning-circle" style="font-size: 2.5rem; margin-bottom: 16px;"></i>
+                <div>System failed to fetch data. Please contact administrator.</div>
             </div>`;
         console.error(error);
     }
