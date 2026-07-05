@@ -3,60 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Console | ZenV Media</title>
+    <title>Admin Dashboard | Funnyaiwala8</title>
     
     <!-- ================= SEO & META ================= -->
-    <meta name="theme-color" content="#0b0f19">
+    <meta name="theme-color" content="#ffffff">
     
     <!-- ================= STYLESHEETS & FONTS ================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Material You Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="admin-style.css">
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-    <!-- 1. System Initialization Screen (Minimal & Corporate) -->
+    <!-- 1. System Initialization Screen -->
     <div id="welcome-screen" class="system-overlay">
         <div class="loader-content">
-            <i class="ph ph-spinner-gap spinner"></i>
-            <h2>Initializing Console</h2>
-            <p>Establishing secure connection to ZenV servers...</p>
+            <i class="fa-solid fa-circle-notch fa-spin spinner"></i>
+            <h2>Starting Admin Console</h2>
         </div>
     </div>
 
     <!-- 2. Secure Login Screen -->
     <div id="login-screen" class="auth-wrapper hidden">
-        <div class="auth-card">
+        <div class="material-card auth-card">
             <div class="auth-header">
-                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="ZenV Admin">
-                <h2>Admin Console</h2>
-                <p>Authorized Personnel Only</p>
+                <div class="avatar-circle">
+                    <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin">
+                </div>
+                <h2>Admin Access</h2>
+                <p>Verify your identity</p>
             </div>
             
             <div class="auth-form">
                 <div class="form-group">
-                    <label for="admin-email">Admin Email ID</label>
+                    <label for="admin-email">Email ID</label>
                     <div class="input-with-icon">
-                        <i class="ph ph-envelope-simple"></i>
-                        <input type="email" id="admin-email" placeholder="name@zenvmedia.com">
+                        <i class="fa-solid fa-envelope"></i>
+                        <input type="email" id="admin-email" placeholder="admin@funnyaiwala8.com">
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="admin-login-password">Access Key</label>
+                    <label for="admin-login-password">Password</label>
                     <div class="input-with-icon">
-                        <i class="ph ph-lock-key"></i>
+                        <i class="fa-solid fa-lock"></i>
                         <input type="password" id="admin-login-password" placeholder="••••••••">
                     </div>
                 </div>
                 
-                <button id="login-btn" class="btn btn-primary btn-full">
-                    Authenticate <i class="ph ph-arrow-right"></i>
+                <button id="login-btn" class="btn btn-filled btn-full">
+                    Login
                 </button>
                 <div id="login-error" class="error-msg hidden">
-                    <i class="ph ph-warning-circle"></i> Invalid authentication credentials.
+                    <i class="fa-solid fa-circle-exclamation"></i> Invalid email or password.
                 </div>
             </div>
         </div>
@@ -65,122 +68,129 @@
     <!-- 3. Main Admin Dashboard Layout -->
     <div id="admin-dashboard" class="dashboard-layout hidden">
         
+        <!-- Mobile Top App Bar (Only visible on smaller screens) -->
+        <div class="mobile-app-bar">
+            <button id="sidebar-toggle-btn" class="icon-btn">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <span class="app-bar-title">Funnyaiwala8 Admin</span>
+        </div>
+
         <!-- Sidebar Navigation -->
-        <aside class="console-sidebar">
-            <div class="sidebar-brand">
-                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Logo">
-                <span>ZenV Console</span>
+        <aside id="admin-sidebar" class="console-sidebar">
+            <div class="sidebar-header">
+                <div class="sidebar-brand">
+                    <span class="brand-text">Funnyaiwala8</span>
+                </div>
+                <!-- Close button for mobile -->
+                <button id="sidebar-close-btn" class="icon-btn close-sidebar-btn">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
             </div>
             
             <div class="admin-user-info">
-                <div class="user-avatar">SK</div>
+                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin" class="user-avatar-sm">
                 <div class="user-details">
-                    <span class="user-name">Santosh K.</span>
-                    <span class="user-role">System Administrator</span>
+                    <span class="user-name">Santosh K. Rana</span>
+                    <span class="user-role">Administrator</span>
                 </div>
             </div>
             
             <nav class="sidebar-nav">
-                <span class="nav-label">Core Modules</span>
-                <button class="nav-btn active" onclick="switchTab('dashboard')"><i class="ph ph-squares-four"></i> Overview</button>
-                <button class="nav-btn" onclick="switchTab('apps')"><i class="ph ph-app-window"></i> Applications</button>
-                <button class="nav-btn" onclick="switchTab('documents')"><i class="ph ph-file-text"></i> Documents</button>
-                <button class="nav-btn" onclick="switchTab('notes')"><i class="ph ph-books"></i> Notes</button>
+                <span class="nav-label">Main Menu</span>
+                <button class="nav-btn active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
+                <button class="nav-btn" onclick="switchTab('apps')"><i class="fa-solid fa-mobile-screen"></i> Apps</button>
+                <button class="nav-btn" onclick="switchTab('documents')"><i class="fa-solid fa-file-lines"></i> Documents</button>
+                <button class="nav-btn" onclick="switchTab('notes')"><i class="fa-solid fa-book"></i> Notes</button>
                 
-                <span class="nav-label">System</span>
-                <button class="nav-btn" onclick="switchTab('settings')"><i class="ph ph-shield-check"></i> Security</button>
+                <span class="nav-label">Settings</span>
+                <button class="nav-btn" onclick="switchTab('settings')"><i class="fa-solid fa-shield-halved"></i> Security</button>
                 
                 <div class="nav-divider"></div>
                 
-                <a href="index.html" class="nav-btn link-external" target="_blank"><i class="ph ph-arrow-square-out"></i> Live Portal</a>
-                <button class="nav-btn btn-danger-text" onclick="logoutAdmin()"><i class="ph ph-sign-out"></i> Terminate Session</button>
+                <a href="index.html" class="nav-btn link-external" target="_blank"><i class="fa-solid fa-globe"></i> Live Website</a>
+                <button class="nav-btn btn-danger-text" onclick="logoutAdmin()"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
             </nav>
         </aside>
 
         <!-- Main Content Area -->
         <main class="console-main">
             
-            <!-- Dashboard Header (Persistent) -->
-            <header class="main-header">
-                <h1 id="current-section-title">Dashboard Overview</h1>
-                <div class="header-actions">
-                    <span class="status-indicator"><span class="dot pulse"></span> System Online</span>
-                </div>
-            </header>
-
             <div class="content-scroll-area">
                 
-                <!-- Overview Section -->
+                <!-- Dashboard Overview Section -->
                 <section id="dashboard-sec" class="admin-section active-sec">
-                    <p class="section-desc">Monitor active records and total deployments across the ZenV network.</p>
+                    <div class="section-header">
+                        <h1 id="current-section-title">Dashboard Overview</h1>
+                    </div>
                     
                     <div class="metrics-grid">
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-title">Active Applications</span>
-                                <i class="ph ph-app-window icon-blue"></i>
+                        <div class="material-card metric-card">
+                            <div class="metric-icon" style="background: #e8f0fe; color: #0b57d0;"><i class="fa-brands fa-android"></i></div>
+                            <div class="metric-info">
+                                <span class="metric-title">Apps Uploaded</span>
+                                <span class="metric-value" id="app-count">-</span>
                             </div>
-                            <div class="metric-value" id="app-count">-</div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-title">Stored Documents</span>
-                                <i class="ph ph-file-text icon-green"></i>
+                        <div class="material-card metric-card">
+                            <div class="metric-icon" style="background: #e6f4ea; color: #137333;"><i class="fa-solid fa-file-word"></i></div>
+                            <div class="metric-info">
+                                <span class="metric-title">Documents</span>
+                                <span class="metric-value" id="doc-count">-</span>
                             </div>
-                            <div class="metric-value" id="doc-count">-</div>
                         </div>
-                        <div class="metric-card">
-                            <div class="metric-header">
-                                <span class="metric-title">Published Notes</span>
-                                <i class="ph ph-books icon-purple"></i>
+                        <div class="material-card metric-card">
+                            <div class="metric-icon" style="background: #f3e8fd; color: #7627bb;"><i class="fa-solid fa-book"></i></div>
+                            <div class="metric-info">
+                                <span class="metric-title">Notes</span>
+                                <span class="metric-value" id="note-count">-</span>
                             </div>
-                            <div class="metric-value" id="note-count">-</div>
                         </div>
                     </div>
                 </section>
 
                 <!-- Applications Module -->
                 <section id="apps-sec" class="admin-section hidden">
+                    <div class="section-header">
+                        <h1>Manage Apps</h1>
+                    </div>
+                    
                     <div class="panel-layout">
                         <!-- Upload Form -->
-                        <div class="panel-card form-panel">
-                            <div class="panel-header">
-                                <h3>Deploy New Application</h3>
-                            </div>
+                        <div class="material-card form-panel">
+                            <h3><i class="fa-solid fa-cloud-arrow-up"></i> Upload App</h3>
                             <div class="form-grid">
                                 <div class="form-group full-width">
-                                    <label>Application Name</label>
+                                    <label>App Name</label>
                                     <input type="text" id="app-title" class="form-control" placeholder="e.g., ZenV Media">
                                 </div>
                                 <div class="form-group full-width">
-                                    <label>APK File Name (Server path)</label>
-                                    <input type="text" id="app-filename" class="form-control" placeholder="e.g., zenv_v2.apk">
+                                    <label>APK File Name</label>
+                                    <input type="text" id="app-filename" class="form-control" placeholder="e.g., zenv.apk">
                                 </div>
                                 <div class="form-group">
-                                    <label>Icon File Name</label>
+                                    <label>Icon Name (Uploads folder)</label>
                                     <input type="text" id="app-icon" class="form-control" placeholder="e.g., logo.png">
                                 </div>
                                 <div class="form-group">
-                                    <label>Package Size</label>
-                                    <input type="text" id="app-size" class="form-control" placeholder="e.g., 15.4 MB">
+                                    <label>App Size</label>
+                                    <input type="text" id="app-size" class="form-control" placeholder="e.g., 15 MB">
                                 </div>
                                 <div class="form-group full-width">
-                                    <label>System Requirements</label>
-                                    <input type="text" id="app-req" class="form-control" placeholder="e.g., Android 8.0+">
+                                    <label>Requirements</label>
+                                    <input type="text" id="app-req" class="form-control" placeholder="e.g., Android 7.0+">
                                 </div>
                                 <div class="form-actions full-width">
-                                    <button class="btn btn-primary" onclick="uploadItem('apps')">Deploy Application</button>
+                                    <button class="btn btn-filled" onclick="uploadItem('apps')">Save App</button>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Data List -->
-                        <div class="panel-card list-panel">
-                            <div class="panel-header">
-                                <h3>Active Deployments</h3>
-                            </div>
+                        <div class="material-card list-panel">
+                            <h3>Uploaded Apps</h3>
                             <div id="apps-list" class="data-list-container">
-                                <div class="empty-state">Loading data...</div>
+                                <div class="material-loader">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -188,42 +198,42 @@
 
                 <!-- Documents Module -->
                 <section id="documents-sec" class="admin-section hidden">
+                    <div class="section-header">
+                        <h1>Manage Documents</h1>
+                    </div>
+                    
                     <div class="panel-layout">
-                        <div class="panel-card form-panel">
-                            <div class="panel-header">
-                                <h3>Upload Document</h3>
-                            </div>
+                        <div class="material-card form-panel">
+                            <h3><i class="fa-solid fa-file-arrow-up"></i> Upload Document</h3>
                             <div class="form-grid">
                                 <div class="form-group full-width">
                                     <label>Document Title</label>
-                                    <input type="text" id="doc-title" class="form-control" placeholder="Enter formal title">
+                                    <input type="text" id="doc-title" class="form-control" placeholder="Enter title">
                                 </div>
                                 <div class="form-group">
-                                    <label>Format Type</label>
+                                    <label>Format</label>
                                     <select id="doc-type" class="form-control">
-                                        <option value="word">Word Document (.docx)</option>
-                                        <option value="excel">Spreadsheet (.xlsx)</option>
-                                        <option value="ppt">Presentation (.pptx)</option>
-                                        <option value="html">Web File (.html)</option>
-                                        <option value="svg">Vector Graphic (.svg)</option>
+                                        <option value="word">Word (.docx)</option>
+                                        <option value="excel">Excel (.xlsx)</option>
+                                        <option value="ppt">PowerPoint (.ppt)</option>
+                                        <option value="html">HTML Web File</option>
+                                        <option value="svg">SVG Vector</option>
                                     </select>
                                 </div>
                                 <div class="form-group">
                                     <label>File Name</label>
-                                    <input type="text" id="doc-filename" class="form-control" placeholder="e.g., report_2026.docx">
+                                    <input type="text" id="doc-filename" class="form-control" placeholder="e.g., resume.docx">
                                 </div>
                                 <div class="form-actions full-width">
-                                    <button class="btn btn-primary" onclick="uploadItem('documents')">Upload to Server</button>
+                                    <button class="btn btn-filled" onclick="uploadItem('documents')">Save Document</button>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="panel-card list-panel">
-                            <div class="panel-header">
-                                <h3>Document Repository</h3>
-                            </div>
+                        <div class="material-card list-panel">
+                            <h3>Uploaded Documents</h3>
                             <div id="documents-list" class="data-list-container">
-                                <div class="empty-state">Loading data...</div>
+                                <div class="material-loader">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -231,36 +241,36 @@
 
                 <!-- Notes Module -->
                 <section id="notes-sec" class="admin-section hidden">
+                    <div class="section-header">
+                        <h1>Manage Notes</h1>
+                    </div>
+                    
                     <div class="panel-layout">
-                        <div class="panel-card form-panel">
-                            <div class="panel-header">
-                                <h3>Publish Knowledge Base</h3>
-                            </div>
+                        <div class="material-card form-panel">
+                            <h3><i class="fa-solid fa-pen-clip"></i> Add Note</h3>
                             <div class="form-grid">
                                 <div class="form-group full-width">
-                                    <label>Topic / Title</label>
-                                    <input type="text" id="note-title" class="form-control" placeholder="Enter topic name">
+                                    <label>Note Title</label>
+                                    <input type="text" id="note-title" class="form-control" placeholder="Enter title">
                                 </div>
                                 <div class="form-group full-width">
-                                    <label>Brief Description</label>
-                                    <textarea id="note-content" class="form-control" placeholder="Write a short summary..." rows="3"></textarea>
+                                    <label>Description / Content</label>
+                                    <textarea id="note-content" class="form-control" placeholder="Write description here..." rows="3"></textarea>
                                 </div>
                                 <div class="form-group full-width">
-                                    <label>Source File Name</label>
-                                    <input type="text" id="note-filename" class="form-control" placeholder="e.g., notes_ch1.pdf">
+                                    <label>File Name (.pdf etc.)</label>
+                                    <input type="text" id="note-filename" class="form-control" placeholder="e.g., biology_ch1.pdf">
                                 </div>
                                 <div class="form-actions full-width">
-                                    <button class="btn btn-primary" onclick="uploadItem('notes')">Publish Record</button>
+                                    <button class="btn btn-filled" onclick="uploadItem('notes')">Save Note</button>
                                 </div>
                             </div>
                         </div>
                         
-                        <div class="panel-card list-panel">
-                            <div class="panel-header">
-                                <h3>Published Records</h3>
-                            </div>
+                        <div class="material-card list-panel">
+                            <h3>Uploaded Notes</h3>
                             <div id="notes-list" class="data-list-container">
-                                <div class="empty-state">Loading data...</div>
+                                <div class="material-loader">Loading...</div>
                             </div>
                         </div>
                     </div>
@@ -268,30 +278,24 @@
 
                 <!-- Security / Settings -->
                 <section id="settings-sec" class="admin-section hidden">
-                    <div class="panel-card form-panel" style="max-width: 600px;">
-                        <div class="panel-header">
-                            <h3>Cryptographic Settings</h3>
+                    <div class="section-header">
+                        <h1>Security Settings</h1>
+                    </div>
+                    
+                    <div class="material-card form-panel" style="max-width: 600px;">
+                        <h3><i class="fa-solid fa-key"></i> Change Admin Password</h3>
+                        
+                        <div class="form-group" style="margin-top: 15px;">
+                            <label>New Access Password</label>
+                            <input type="text" id="new-password" class="form-control" placeholder="Enter new password">
                         </div>
                         
-                        <div class="alert-box alert-warning">
-                            <i class="ph ph-warning"></i>
-                            <div>
-                                <strong>System Warning</strong><br>
-                                Modifying the master access key will immediately revoke access for all current visitors using the old key.
-                            </div>
+                        <div class="form-actions" style="margin-top: 20px;">
+                            <button class="btn btn-danger" onclick="changePassword()">Update Password</button>
                         </div>
                         
-                        <div class="form-group" style="margin-top: 24px;">
-                            <label>New Master Access Key</label>
-                            <input type="text" id="new-password" class="form-control" placeholder="Enter secure key">
-                        </div>
-                        
-                        <div class="form-actions" style="margin-top: 16px;">
-                            <button class="btn btn-danger" onclick="changePassword()">Update Access Key</button>
-                        </div>
-                        
-                        <div id="password-msg" class="alert-box alert-success hidden" style="margin-top: 16px;">
-                            <i class="ph ph-check-circle"></i> Access key updated successfully on the secure server.
+                        <div id="password-msg" class="success-msg hidden" style="margin-top: 15px; color: #137333;">
+                            <i class="fa-solid fa-check-circle"></i> Password updated successfully!
                         </div>
                     </div>
                 </section>
@@ -302,20 +306,17 @@
 
     <!-- Edit Record Modal -->
     <div id="edit-modal" class="modal-overlay hidden">
-        <div class="modal-dialog">
-            <div class="modal-header">
-                <h3>Modify Record</h3>
-                <button class="btn-icon" onclick="closeEditModal()"><i class="ph ph-x"></i></button>
-            </div>
+        <div class="material-modal">
+            <h3>Edit Info</h3>
             
             <!-- Dynamic Fields injected here -->
-            <div id="edit-form-container" class="modal-body form-grid">
+            <div id="edit-form-container" class="form-grid">
                 <!-- Data populated via JS -->
             </div>
             
-            <div class="modal-footer">
-                <button class="btn btn-outline" onclick="closeEditModal()">Cancel</button>
-                <button id="save-edit-btn" class="btn btn-primary">Save Changes</button>
+            <div class="modal-footer" style="margin-top: 20px;">
+                <button class="btn btn-text" onclick="closeEditModal()">Cancel</button>
+                <button id="save-edit-btn" class="btn btn-filled">Save Changes</button>
             </div>
         </div>
     </div>
