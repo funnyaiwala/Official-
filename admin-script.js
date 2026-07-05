@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// Firebase Configuration (Same as original)
+// Firebase Configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAAV38UqBfRwfmITkx-izewPjI4WMYQCa4",
   authDomain: "site-a2e87.firebaseapp.com",
@@ -22,7 +22,7 @@ const db = getFirestore(app);
 window.allData = { apps: {}, documents: {}, notes: {} };
 
 // ==========================================
-// 1. WELCOME ANIMATION & AUTH STATE
+// 1. SYSTEM INITIALIZATION & AUTH STATE
 // ==========================================
 let isAnimationDone = false;
 let currentUser = null;
@@ -32,25 +32,27 @@ onAuthStateChanged(auth, (user) => {
     if (isAnimationDone) showCorrectScreen();
 });
 
-// Premium Welcome Screen Timing
+// Corporate Minimal Loader Timing
 setTimeout(() => {
     isAnimationDone = true;
-    document.getElementById("welcome-screen").style.opacity = "0";
+    const loader = document.getElementById("welcome-screen");
+    loader.style.opacity = "0";
     setTimeout(() => {
-        document.getElementById("welcome-screen").classList.add("hidden");
+        loader.classList.add("hidden");
         showCorrectScreen();
-    }, 800);
-}, 3000);
+    }, 500);
+}, 2000);
 
 function showCorrectScreen() {
     if (currentUser) {
         document.getElementById("login-screen").classList.add("hidden");
-        document.getElementById("admin-dashboard").classList.remove("hidden");
+        const dashboard = document.getElementById("admin-dashboard");
+        dashboard.classList.remove("hidden");
         
-        // Soft fade in for dashboard
-        document.getElementById("admin-dashboard").style.opacity = "0";
-        document.getElementById("admin-dashboard").style.transition = "opacity 0.8s ease";
-        setTimeout(() => { document.getElementById("admin-dashboard").style.opacity = "1"; }, 50);
+        // Soft load
+        dashboard.style.opacity = "0";
+        dashboard.style.transition = "opacity 0.5s ease";
+        setTimeout(() => { dashboard.style.opacity = "1"; }, 50);
 
         loadData(); 
     } else {
@@ -60,7 +62,7 @@ function showCorrectScreen() {
 }
 
 // ==========================================
-// 2. LOGIN & LOGOUT LOGIC
+// 2. AUTHENTICATION (LOGIN / LOGOUT)
 // ==========================================
 document.getElementById("login-btn").addEventListener("click", async () => {
     const email = document.getElementById("admin-email").value;
@@ -70,48 +72,52 @@ document.getElementById("login-btn").addEventListener("click", async () => {
 
     if(!email || !password) return;
 
-    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Authenticating...`;
+    btn.innerHTML = `<i class="ph ph-spinner-gap spinner" style="font-size: 1.2rem; margin: 0; animation: spin 1s linear infinite;"></i> Authenticating...`;
     try {
         await signInWithEmailAndPassword(auth, email, password);
         errorText.classList.add("hidden");
     } catch (error) {
         errorText.classList.remove("hidden");
-        errorText.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> Invalid Credentials!`;
     }
-    btn.innerHTML = `Authenticate <i class="fa-solid fa-arrow-right-to-bracket"></i>`;
+    btn.innerHTML = `Authenticate <i class="ph ph-arrow-right"></i>`;
 });
 
 window.logoutAdmin = () => { signOut(auth); };
 
 // ==========================================
-// 3. TAB SWITCHING LOGIC (Smooth Transitions)
+// 3. CONSOLE NAVIGATION (TAB SWITCHING)
 // ==========================================
 window.switchTab = function(tabName) {
-    // Hide all sections and re-trigger animation
-    document.querySelectorAll(".admin-section").forEach(sec => {
-        sec.classList.add("hidden");
-        sec.classList.remove("fade-in-up");
-    });
-    
+    // Hide all sections
+    document.querySelectorAll(".admin-section").forEach(sec => sec.classList.add("hidden"));
     document.querySelectorAll(".nav-btn").forEach(btn => btn.classList.remove("active"));
     
-    const activeSec = document.getElementById(`${tabName}-sec`);
-    activeSec.classList.remove("hidden");
-    void activeSec.offsetWidth; // Trigger reflow for animation
-    activeSec.classList.add("fade-in-up");
+    // Show Target Section
+    document.getElementById(`${tabName}-sec`).classList.remove("hidden");
 
+    // Activate Nav Button
     document.querySelectorAll(".nav-btn").forEach(btn => {
         if(btn.getAttribute("onclick") && btn.getAttribute("onclick").includes(tabName)) {
             btn.classList.add("active");
         }
     });
+
+    // Update Header Title Dynamically
+    const titles = {
+        'dashboard': 'Dashboard Overview',
+        'apps': 'Application Deployment',
+        'documents': 'Document Repository',
+        'notes': 'Knowledge Base',
+        'settings': 'Security Settings'
+    };
+    document.getElementById("current-section-title").innerText = titles[tabName] || 'Console';
 };
 
 // ==========================================
-// 4. FIREBASE CRUD LOGIC
+// 4. FIREBASE CRUD LOGIC (CORPORATE UI)
 // ==========================================
 
-// Upload New Item
+// Deploy / Upload New Item
 window.uploadItem = async function(category) {
     let data = { timestamp: Date.now() };
 
@@ -122,7 +128,7 @@ window.uploadItem = async function(category) {
             data.fileName = document.getElementById("app-filename").value;
             data.appSize = document.getElementById("app-size").value;
             data.appReq = document.getElementById("app-req").value;
-            if(!data.title || !data.fileName) throw "App Name and File Name are required.";
+            if(!data.title || !data.fileName) throw "Application Name and File Name are required.";
         } 
         else if (category === 'documents') {
             data.title = document.getElementById("doc-title").value;
@@ -139,14 +145,14 @@ window.uploadItem = async function(category) {
 
         await addDoc(collection(db, category), data);
         document.querySelectorAll("input[type=text], textarea").forEach(input => input.value = "");
-        alert(`Deploy Successful: ${category.slice(0,-1).toUpperCase()} saved on server!`);
+        alert(`System Alert: ${category.slice(0,-1).toUpperCase()} deployed successfully.`);
         loadData(); 
     } catch (error) {
         alert(error.message || error);
     }
 }
 
-// Fetch Items & Inject Premium UI
+// Fetch Records & Inject Corporate UI Lists
 window.loadData = async function() {
     const categories = ["apps", "documents", "notes"];
     
@@ -164,58 +170,62 @@ window.loadData = async function() {
                 window.allData[category][id] = data; // Save to global object
 
                 if (category === "apps") {
-                    html += createListHTML(data.title, `Size: ${data.appSize} | Req: ${data.appReq}`, data.fileName, 'apps', id, 'text-blue');
+                    html += createListHTML(data.title, `Size: ${data.appSize || 'N/A'} | Req: ${data.appReq || 'None'}`, data.fileName, 'apps', id);
                 } else if (category === "documents") {
-                    html += createListHTML(data.title, data.type.toUpperCase() + " Format", data.fileName, 'documents', id, 'text-green');
+                    html += createListHTML(data.title, `Type: ${data.type.toUpperCase()}`, data.fileName, 'documents', id);
                 } else if (category === "notes") {
-                    html += createListHTML(data.title, data.content, data.fileName, 'notes', id, 'text-purple');
+                    html += createListHTML(data.title, data.content || 'No description provided.', data.fileName, 'notes', id);
                 }
             });
 
+            // Update Dashboard Metrics
             const statMap = { 'apps': 'app-count', 'documents': 'doc-count', 'notes': 'note-count' };
             document.getElementById(statMap[category]).innerText = count;
 
             if (count === 0) {
-                html = `<div class="loading-state"><i class="fa-solid fa-ghost" style="font-size:1.5rem; margin-bottom:10px;"></i><br>No active endpoints found.</div>`;
+                html = `<div class="empty-state">
+                            <i class="ph ph-folder-dashed" style="font-size: 2rem; margin-bottom: 8px; display: block; opacity: 0.5;"></i>
+                            No records found.
+                        </div>`;
             }
             document.getElementById(`${category}-list`).innerHTML = html;
 
         } catch (error) {
-            console.error("Error loading data:", error);
+            console.error("Data Fetch Error:", error);
         }
     });
 }
 
-// Delete Item
+// Delete Record
 window.deleteItem = async function(category, id) {
-    if(confirm("CRITICAL ACTION: Are you sure you want to permanently delete this from the live server?")) {
+    if(confirm("CRITICAL WARNING: Are you sure you want to permanently remove this record from the active database?")) {
         try {
             await deleteDoc(doc(db, category, id));
             loadData(); 
         } catch (error) {
-            alert("Error deleting item!");
+            alert("Error: Unable to delete record.");
         }
     }
 }
 
-// Generate Admin List HTML (Premium Classes)
-function createListHTML(title, subtitle, filename, category, id, titleColorClass) {
+// Minimal Console List HTML Generator
+function createListHTML(title, subtitle, filename, category, id) {
     return `
     <div class="admin-list-card">
         <div class="admin-card-info">
-            <h4 class="${titleColorClass}">${title}</h4>
+            <h4>${title}</h4>
             <p>${subtitle}</p>
-            <span class="file-badge"><i class="fa-solid fa-server"></i> ${filename}</span>
+            <span class="file-badge"><i class="ph ph-file-code"></i> ${filename}</span>
         </div>
         <div class="action-btns">
-            <button onclick="openEditModal('${category}', '${id}')" class="action-btn edit-btn" title="Edit Data"><i class="fa-solid fa-pen"></i></button>
-            <button onclick="deleteItem('${category}', '${id}')" class="action-btn delete-btn" title="Delete Data"><i class="fa-solid fa-trash"></i></button>
+            <button onclick="openEditModal('${category}', '${id}')" class="btn-icon" title="Modify Record"><i class="ph ph-pencil-simple"></i></button>
+            <button onclick="deleteItem('${category}', '${id}')" class="btn-icon" style="color: var(--danger); border-color: rgba(215, 58, 73, 0.3);" title="Remove Record"><i class="ph ph-trash"></i></button>
         </div>
     </div>`;
 }
 
 // ==========================================
-// 5. EDIT MODAL LOGIC (New UI Integration)
+// 5. EDIT MODAL (Grid Form Integration)
 // ==========================================
 window.currentEditCategory = "";
 window.currentEditId = "";
@@ -229,59 +239,50 @@ window.openEditModal = function(category, id) {
     let html = "";
     if (category === "apps") {
         html = `
-            <div class="input-group"><label>App Icon Name</label><input type="text" id="edit-app-icon" value="${data.appIcon || ''}"></div>
-            <div class="input-group"><label>App Name</label><input type="text" id="edit-app-title" value="${data.title || ''}"></div>
-            <div class="input-group"><label>APK File Name</label><input type="text" id="edit-app-filename" value="${data.fileName || ''}"></div>
-            <div class="input-group"><label>App Size</label><input type="text" id="edit-app-size" value="${data.appSize || ''}"></div>
-            <div class="input-group"><label>Requirements</label><input type="text" id="edit-app-req" value="${data.appReq || ''}"></div>
+            <div class="form-group full-width"><label>Application Name</label><input type="text" id="edit-app-title" class="form-control" value="${data.title || ''}"></div>
+            <div class="form-group full-width"><label>APK File Name</label><input type="text" id="edit-app-filename" class="form-control" value="${data.fileName || ''}"></div>
+            <div class="form-group"><label>Icon File Name</label><input type="text" id="edit-app-icon" class="form-control" value="${data.appIcon || ''}"></div>
+            <div class="form-group"><label>Package Size</label><input type="text" id="edit-app-size" class="form-control" value="${data.appSize || ''}"></div>
+            <div class="form-group full-width"><label>Requirements</label><input type="text" id="edit-app-req" class="form-control" value="${data.appReq || ''}"></div>
         `;
     } else if (category === "documents") {
         html = `
-            <div class="input-group"><label>Document Title</label><input type="text" id="edit-doc-title" value="${data.title || ''}"></div>
-            <div class="input-group">
-                <label>Document Type</label>
-                <div class="select-wrapper">
-                    <select id="edit-doc-type">
-                        <option value="word" ${data.type==='word'?'selected':''}>Word / Doc</option>
-                        <option value="excel" ${data.type==='excel'?'selected':''}>Excel / Xlsx</option>
-                        <option value="ppt" ${data.type==='ppt'?'selected':''}>PowerPoint / PPT</option>
-                        <option value="html" ${data.type==='html'?'selected':''}>HTML / Web</option>
-                        <option value="svg" ${data.type==='svg'?'selected':''}>SVG / XML Vector</option>
-                    </select>
-                </div>
+            <div class="form-group full-width"><label>Document Title</label><input type="text" id="edit-doc-title" class="form-control" value="${data.title || ''}"></div>
+            <div class="form-group">
+                <label>Format Type</label>
+                <select id="edit-doc-type" class="form-control">
+                    <option value="word" ${data.type==='word'?'selected':''}>Word (.docx)</option>
+                    <option value="excel" ${data.type==='excel'?'selected':''}>Excel (.xlsx)</option>
+                    <option value="ppt" ${data.type==='ppt'?'selected':''}>PowerPoint (.pptx)</option>
+                    <option value="html" ${data.type==='html'?'selected':''}>Web (.html)</option>
+                    <option value="svg" ${data.type==='svg'?'selected':''}>SVG Vector</option>
+                </select>
             </div>
-            <div class="input-group"><label>File Name</label><input type="text" id="edit-doc-filename" value="${data.fileName || ''}"></div>
+            <div class="form-group"><label>File Name</label><input type="text" id="edit-doc-filename" class="form-control" value="${data.fileName || ''}"></div>
         `;
     } else if (category === "notes") {
         html = `
-            <div class="input-group"><label>Note Title</label><input type="text" id="edit-note-title" value="${data.title || ''}"></div>
-            <div class="input-group"><label>Content snippet</label><textarea id="edit-note-content" rows="4">${data.content || ''}</textarea></div>
-            <div class="input-group"><label>File Name</label><input type="text" id="edit-note-filename" value="${data.fileName || ''}"></div>
+            <div class="form-group full-width"><label>Topic / Title</label><input type="text" id="edit-note-title" class="form-control" value="${data.title || ''}"></div>
+            <div class="form-group full-width"><label>Content</label><textarea id="edit-note-content" class="form-control" rows="3">${data.content || ''}</textarea></div>
+            <div class="form-group full-width"><label>File Name</label><input type="text" id="edit-note-filename" class="form-control" value="${data.fileName || ''}"></div>
         `;
     }
     
     container.innerHTML = html;
-    
-    // Reset Modal Animation
-    const modalOverlay = document.getElementById("edit-modal");
-    const editBox = modalOverlay.querySelector('.edit-box');
-    modalOverlay.classList.remove("hidden");
-    editBox.classList.remove("scale-in");
-    void editBox.offsetWidth;
-    editBox.classList.add("scale-in");
+    document.getElementById("edit-modal").classList.remove("hidden");
 }
 
 window.closeEditModal = function() {
     document.getElementById("edit-modal").classList.add("hidden");
 }
 
-// Save changes to Firebase
+// Save Changes
 document.getElementById("save-edit-btn").addEventListener("click", async () => {
     const category = window.currentEditCategory;
     const id = window.currentEditId;
     let updateData = {};
     const btn = document.getElementById("save-edit-btn");
-    btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...`;
+    btn.innerHTML = `<i class="ph ph-spinner-gap spinner" style="font-size: 1rem; margin: 0; animation: spin 1s linear infinite;"></i> Saving...`;
 
     if (category === "apps") {
         updateData.appIcon = document.getElementById("edit-app-icon").value;
@@ -302,21 +303,21 @@ document.getElementById("save-edit-btn").addEventListener("click", async () => {
     try {
         await updateDoc(doc(db, category, id), updateData);
         window.closeEditModal();
-        loadData(); // Refresh list
+        loadData(); // Refresh records
     } catch(e) {
-        alert("Error updating data: " + e.message);
+        alert("System Error updating record: " + e.message);
     }
-    btn.innerHTML = `<i class="fa-solid fa-floppy-disk"></i> Save Changes`;
+    btn.innerText = "Save Changes";
 });
 
 // ==========================================
-// 6. UPDATE MASTER PASSWORD
+// 6. MODIFY CRYPTOGRAPHIC KEY (PASSWORD)
 // ==========================================
 window.changePassword = async function() {
     const newPassword = document.getElementById("new-password").value;
     const msgBox = document.getElementById("password-msg");
 
-    if (newPassword.trim() === "") return alert("Please enter a secure password!");
+    if (newPassword.trim() === "") return alert("Input required: Please enter a secure key.");
 
     try {
         await setDoc(doc(db, "settings", "security"), { password: newPassword });
@@ -324,6 +325,6 @@ window.changePassword = async function() {
         setTimeout(() => { msgBox.classList.add("hidden"); }, 4000);
         document.getElementById("new-password").value = "";
     } catch (error) {
-        alert("Error updating cryptographic key.");
+        alert("Server Error: Unable to modify access key.");
     }
 }
