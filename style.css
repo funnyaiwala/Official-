@@ -17,7 +17,6 @@ body {
     flex-direction: column;
     align-items: center;
     overflow-x: hidden;
-    /* FIX: Yeh padding-bottom ensure karega ki menu ke piche kuch overlap na ho */
     padding-bottom: 120px; 
     padding-top: 40px; 
 }
@@ -46,9 +45,9 @@ body {
     -webkit-backdrop-filter: blur(15px);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
-    padding: 40px 25px; /* Thoda padding adjust kiya for mobile */
-    width: 90%;
-    max-width: 600px;
+    padding: 40px 25px;
+    width: 92%;
+    max-width: 650px;
     text-align: center;
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
     transition: all 0.4s ease;
@@ -59,234 +58,138 @@ body {
 
 /* Profile Section */
 .profile-pic-container {
-    width: 130px;
-    height: 130px;
-    margin: 0 auto 15px;
-    border-radius: 50%;
-    padding: 4px;
+    width: 130px; height: 130px; margin: 0 auto 15px; border-radius: 50%; padding: 4px;
     background: linear-gradient(45deg, #3b82f6, #8b5cf6);
 }
 
 .profile-pic {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-    border: 4px solid #0f172a;
-    transition: transform 0.3s;
-}
-
-.profile-pic:hover {
-    transform: scale(1.05);
+    width: 100%; height: 100%; object-fit: cover; border-radius: 50%; border: 4px solid #0f172a;
 }
 
 .name {
-    font-size: clamp(1.6rem, 5vw, 2.5rem);
-    font-weight: 700;
-    margin-bottom: 5px;
+    font-size: clamp(1.6rem, 5vw, 2.5rem); font-weight: 700; margin-bottom: 5px;
     background: linear-gradient(45deg, #60a5fa, #c084fc);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
 }
 
-.title {
-    font-size: clamp(0.9rem, 3vw, 1.1rem);
-    font-weight: 500;
-    color: #cbd5e1;
-    margin-bottom: 25px;
-}
+.title { font-size: clamp(0.9rem, 3vw, 1.1rem); font-weight: 500; color: #cbd5e1; margin-bottom: 25px; }
 
-/* 🆕 Compact Professional Skills Badges */
-.skills-badges {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    margin-bottom: 30px;
-}
-
+/* Compact Professional Skills Badges */
+.skills-badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-bottom: 30px; }
 .badge {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    padding: 6px 14px;
-    border-radius: 20px;
-    font-size: 0.75rem; /* Text chota kiya taaki bhada na lage */
-    font-weight: 500;
-    color: #cbd5e1;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 6px 14px; border-radius: 20px; font-size: 0.75rem; font-weight: 500; color: #cbd5e1;
+    display: flex; align-items: center; gap: 6px; transition: all 0.3s ease;
 }
-
-.badge i {
-    color: #60a5fa;
-    font-size: 0.85rem;
-}
-
-.badge:hover {
-    background: rgba(59, 130, 246, 0.2);
-    border-color: #3b82f6;
-    color: #fff;
-}
+.badge i { color: #60a5fa; font-size: 0.85rem; }
+.badge:hover { background: rgba(59, 130, 246, 0.2); border-color: #3b82f6; color: #fff; }
 
 /* Social Links */
-.social-links {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-bottom: 10px;
-}
-
-.social-icon {
-    font-size: 1.8rem;
-    color: #cbd5e1;
-    text-decoration: none;
-    transition: transform 0.3s ease, color 0.3s ease;
-}
-
+.social-links { display: flex; justify-content: center; gap: 25px; margin-bottom: 10px; }
+.social-icon { font-size: 1.8rem; color: #cbd5e1; text-decoration: none; transition: transform 0.3s ease, color 0.3s ease; }
 .social-icon:hover { transform: translateY(-5px); }
 .social-icon.youtube:hover { color: #ff0000; }
 .social-icon.instagram:hover { color: #e1306c; }
-.social-icon.twitter:hover { color: #f8fafc; } /* X icon white on hover */
+.social-icon.twitter:hover { color: #f8fafc; }
 
-/* Settings & Privacy Section */
-.settings-menu {
-    display: flex;
-    flex-direction: column;
+/* =========================================
+   DYNAMIC CONTENT CLASSES (Injected via JS)
+   ========================================= */
+
+/* App Section - 2 Column Grid */
+.content-grid-2 {
+    display: grid;
+    /* This creates exactly 2 columns on mobile, saving space */
+    grid-template-columns: repeat(2, 1fr);
     gap: 15px;
-    margin-bottom: 25px;
 }
 
-.settings-link {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255, 255, 255, 0.05);
-    padding: 15px 20px;
-    border-radius: 12px;
-    text-decoration: none;
-    color: #f8fafc;
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    transition: 0.3s;
+.app-card {
+    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column;
+    align-items: center; justify-content: space-between; text-align: center;
+    height: 100%; /* Keeps cards equal height */
 }
 
-.settings-link:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: #c084fc;
+.app-icon-img {
+    width: 50px; height: 50px; border-radius: 12px; margin-bottom: 10px; object-fit: cover;
 }
 
-.settings-link span {
-    flex: 1;
+.app-meta {
+    font-size: 0.65rem; color: #94a3b8; margin-bottom: 12px; line-height: 1.4;
+}
+
+/* Document & Notes List Style */
+.list-card {
+    background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px;
+    border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center;
+    justify-content: space-between; gap: 15px; margin-bottom: 15px;
+}
+
+.list-info {
+    flex: 1; /* Takes available space */
+    min-width: 0; /* IMP: Prevents long text from pushing the button out */
     text-align: left;
-    margin-left: 15px;
-    font-weight: 500;
-    font-size: 0.9rem;
 }
 
+.list-info h4 {
+    font-size: 0.95rem; margin-bottom: 3px;
+    word-wrap: break-word; /* Allows long text to wrap to next line */
+}
+
+/* Settings Menu */
+.settings-menu { display: flex; flex-direction: column; gap: 15px; margin-bottom: 25px; }
+.settings-link {
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(255, 255, 255, 0.05); padding: 15px 20px; border-radius: 12px;
+    text-decoration: none; color: #f8fafc; border: 1px solid rgba(255, 255, 255, 0.1); transition: 0.3s;
+}
+.settings-link:hover { background: rgba(255, 255, 255, 0.1); border-color: #c084fc; }
+.settings-link span { flex: 1; text-align: left; margin-left: 15px; font-weight: 500; font-size: 0.9rem; }
 .settings-link i:first-child { color: #3b82f6; font-size: 1.1rem; }
-.settings-link .arrow { color: #94a3b8; font-size: 0.8rem; }
+.footer-copyright { padding-top: 15px; border-top: 1px solid rgba(255, 255, 255, 0.1); color: #64748b; font-size: 0.75rem; }
 
-.footer-copyright {
-    padding-top: 15px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: #64748b;
-    font-size: 0.75rem;
-}
-
-/* 🆕 SLEEK BOTTOM FLOATING MENU (1-Line Only) */
+/* SLEEK BOTTOM FLOATING MENU (Adjusted for 5 icons) */
 .bottom-menu {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(15, 23, 42, 0.85);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 30px; /* Pill shape */
-    padding: 8px 15px;
-    display: flex;
-    justify-content: space-between;
-    width: 90%;
-    max-width: 400px;
-    z-index: 100;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 30px;
+    padding: 8px 10px; display: flex; justify-content: space-between;
+    width: 95%; max-width: 450px; z-index: 100; box-shadow: 0 10px 30px rgba(0,0,0,0.6);
 }
 
 .menu-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 8px 12px;
-    border-radius: 15px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: #64748b;
-    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 8px 10px; border-radius: 15px; cursor: pointer; transition: all 0.3s ease;
+    color: #64748b; flex: 1;
 }
 
-.menu-item:hover, .menu-item.active {
-    color: #3b82f6; /* Blue highlight */
+.menu-item:hover, .menu-item.active { color: #3b82f6; }
+.menu-item i { font-size: 1.15rem; margin-bottom: 4px; transition: 0.3s; }
+.menu-item.active i { transform: translateY(-2px); }
+.menu-item span { font-size: 0.65rem; font-weight: 500; }
+
+/* Buttons */
+.btn {
+    flex-shrink: 0; /* Prevents button from getting squished */
+    padding: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600;
+    transition: 0.3s; background: #3b82f6; color: white; text-align: center;
 }
-
-.menu-item i { 
-    font-size: 1.2rem; 
-    margin-bottom: 4px; 
-    transition: 0.3s;
-}
-
-.menu-item.active i {
-    transform: translateY(-2px);
-}
-
-.menu-item span { 
-    font-size: 0.7rem; 
-    font-weight: 500; 
-}
-
-/* Password Modal */
-.modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(10px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 999;
-}
-
-.glass-modal {
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    padding: 30px;
-    width: 90%;
-    max-width: 350px;
-    text-align: center;
-}
-
-.glass-modal input {
-    width: 100%; padding: 12px 15px; margin: 20px 0;
-    border-radius: 10px; border: none; outline: none;
-    background: rgba(255, 255, 255, 0.2); color: white; font-size: 1rem;
-    text-align: center; letter-spacing: 2px;
-}
-
-.error-msg { color: #ef4444; font-size: 0.85rem; margin-top: -10px; margin-bottom: 15px; }
-
-.modal-buttons { display: flex; gap: 10px; }
-.btn { flex: 1; padding: 10px; border: none; border-radius: 10px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+.btn-small { padding: 8px 12px; font-size: 0.75rem; white-space: nowrap; } /* Specifically for document view button */
+.btn:hover { background: #2563eb; }
 .cancel-btn { background: rgba(255, 255, 255, 0.1); color: white; }
 .cancel-btn:hover { background: rgba(255, 255, 255, 0.2); }
-.submit-btn { background: #3b82f6; color: white; }
-.submit-btn:hover { background: #2563eb; }
 
-/* Desktop & TV Views */
+/* Password Modal */
+.modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center; z-index: 999; }
+.glass-modal { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 20px; padding: 30px; width: 90%; max-width: 350px; text-align: center; }
+.glass-modal input { width: 100%; padding: 12px 15px; margin: 20px 0; border-radius: 10px; border: none; outline: none; background: rgba(255, 255, 255, 0.2); color: white; font-size: 1rem; text-align: center; letter-spacing: 2px; }
+.error-msg { color: #ef4444; font-size: 0.85rem; margin-top: -10px; margin-bottom: 15px; }
+.modal-buttons { display: flex; gap: 10px; }
+
+/* Desktop */
 @media (min-width: 768px) {
     .bottom-menu { max-width: 500px; padding: 10px 25px; }
-    .menu-item i { font-size: 1.4rem; }
+    .menu-item i { font-size: 1.3rem; }
     .menu-item span { font-size: 0.8rem; }
-    .glass-container { max-width: 800px; }
 }
