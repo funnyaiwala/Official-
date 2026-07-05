@@ -45,7 +45,8 @@ const errorMsg = document.getElementById("error-msg");
 const sectionTitle = document.getElementById("section-title");
 const contentArea = document.getElementById("content-area");
 
-// Event Listeners for Bottom Menu
+// 🆕 Event Listeners for Bottom Menu (Added Home)
+document.getElementById("nav-home").addEventListener("click", showProfile);
 document.getElementById("nav-apps").addEventListener("click", () => requestAccess("apps"));
 document.getElementById("nav-documents").addEventListener("click", () => requestAccess("documents"));
 document.getElementById("nav-notes").addEventListener("click", () => requestAccess("notes"));
@@ -76,6 +77,10 @@ function requestAccess(section) {
 document.getElementById("cancel-btn").addEventListener("click", () => {
     passwordModal.classList.add("hidden");
     requestedSection = "";
+    // Wapas home icon ko active kar do agar cancel kiya
+    if(profileSection.classList.contains("hidden") === false) {
+        updateActiveMenu("nav-home");
+    }
 });
 
 document.getElementById("submit-btn").addEventListener("click", verifyPassword);
@@ -104,7 +109,7 @@ function hideAllSections() {
 function showProfile() {
     hideAllSections();
     profileSection.classList.remove("hidden");
-    document.querySelectorAll('.menu-item').forEach(item => item.classList.remove('active'));
+    updateActiveMenu("nav-home");
 }
 
 function showSettings() {
@@ -131,46 +136,53 @@ function updateActiveMenu(activeId) {
 async function renderContent(section) {
     contentArea.innerHTML = `<p style="text-align: center; color: #94a3b8;"><i class="fa-solid fa-spinner fa-spin"></i> Fetching Data from Server...</p>`;
     
-    // Auto-detect Website URL for Viewer API
     let currentUrl = window.location.href.split('index.html')[0];
     if(!currentUrl.endsWith('/')) currentUrl += '/';
 
     try {
         const querySnapshot = await getDocs(collection(db, section));
-        let html = `<div style="padding: 20px 0;"><div style="display: flex; flex-direction: column; gap: 15px;">`;
+        
+        // 🆕 App section me CSS Grid layout add kiya gaya hai
+        let wrapperClass = section === "apps" ? "content-grid-2" : "list-layout";
+        let html = `<div style="padding: 10px 0;"><div class="${wrapperClass}">`;
         let itemsFound = false;
 
         querySnapshot.forEach((docSnap) => {
             itemsFound = true;
             const data = docSnap.data();
             
-            // Standard File Path
             let filePath = `uploads/${data.fileName}`;
-            let viewerLink = filePath; // Default
+            let viewerLink = filePath;
 
-            // Extract Exact File Extension (e.g., "DOCX", "PPT", "PDF")
-            let ext = data.fileName.split('.').pop().toUpperCase();
+            // Extract Exact File Extension
+            let ext = data.fileName ? data.fileName.split('.').pop().toUpperCase() : "FILE";
 
-            // Microsoft Office Web Viewer Logic (No Login Required!)
+            // Microsoft Office Web Viewer Logic
             let isOfficeFile = ["DOC", "DOCX", "PPT", "PPTX", "XLS", "XLSX"].includes(ext);
-
             if (section === "documents" && isOfficeFile) {
                 let absoluteUrl = currentUrl + filePath;
-                // Using Microsoft's official viewer (best for presentations, requires no login)
                 viewerLink = `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(absoluteUrl)}`;
             }
 
-            // APPS SECTION
+            // APPS SECTION (Now with Image, Size, Requirements)
             if (section === "apps") {
+                // Agar custom icon (image) na ho, toh default android icon dikhega
+                let iconHtml = data.appIcon ? 
+                    `<img src="uploads/${data.appIcon}" class="app-icon-img" alt="App Icon">` : 
+                    `<i class="fa-brands fa-android" style="font-size: 2.5rem; color: #3b82f6; margin-bottom: 10px;"></i>`;
+
                 html += `
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1);">
-                        <i class="fa-brands fa-android" style="font-size: 2.5rem; color: #3b82f6; margin-bottom: 10px;"></i>
-                        <h3 style="margin-bottom: 5px;">${data.title}</h3>
-                        <p style="font-size: 0.85rem; color: #94a3b8; margin-bottom: 15px;">${data.desc}</p>
-                        <a href="${filePath}" download class="submit-btn btn" style="display:inline-block; flex: none; width: auto; padding: 10px 20px; text-decoration:none; font-size: 0.9rem;">Download APK</a>
+                    <div class="app-card">
+                        ${iconHtml}
+                        <h3 style="margin-bottom: 5px; font-size: 0.95rem; line-height: 1.2;">${data.title}</h3>
+                        <div class="app-meta">
+                            <span>Size: ${data.appSize || 'N/A'}</span><br>
+                            <span>Req: ${data.appReq || 'Android'}</span>
+                        </div>
+                        <a href="${filePath}" download class="submit-btn btn btn-small" style="width: 100%; text-decoration:none;">Download</a>
                     </div>`;
             } 
-            // DOCUMENTS SECTION
+            // DOCUMENTS SECTION (Fixed Layout for long text)
             else if (section === "documents") {
                 let icon = "fa-file-word";
                 if(data.type === "excel") icon = "fa-file-excel";
@@ -179,30 +191,30 @@ async function renderContent(section) {
                 else if(data.type === "svg") icon = "fa-bezier-curve";
 
                 html += `
-                    <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: space-between;">
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <i class="fa-solid ${icon}" style="font-size: 2rem; color: #f97316;"></i>
-                            <div style="text-align: left;">
-                                <h4 style="margin-bottom:2px; font-size: 1rem;">${data.title}</h4>
-                                <span style="font-size: 0.70rem; color: #94a3b8; text-transform:uppercase;">${ext} FILE</span>
-                            </div>
+                    <div class="list-card">
+                        <i class="fa-solid ${icon}" style="font-size: 2rem; color: #f97316; flex-shrink:0;"></i>
+                        <div class="list-info">
+                            <h4>${data.title}</h4>
+                            <span style="font-size: 0.65rem; color: #94a3b8; text-transform:uppercase;">${ext} FILE</span>
                         </div>
-                        <a href="${viewerLink}" target="_blank" class="submit-btn btn" style="flex: none; width: auto; padding: 8px 15px; font-size: 0.8rem; text-decoration:none;">View / Present</a>
+                        <a href="${viewerLink}" target="_blank" class="submit-btn btn btn-small" style="text-decoration:none;">View/Present</a>
                     </div>`;
             } 
             // NOTES SECTION
             else if (section === "notes") {
                 html += `
-                    <div style="background: rgba(255,255,255,0.05); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.1); text-align: left;">
-                        <h4 style="color: #c084fc; margin-bottom: 5px;">${data.title}</h4>
-                        <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom:15px;">${data.content}</p>
-                        <a href="${filePath}" target="_blank" class="submit-btn btn" style="flex: none; width: auto; padding: 8px 15px; font-size: 0.8rem; text-decoration:none; display:inline-block;">Read Note</a>
+                    <div class="list-card" style="align-items: flex-start; flex-direction: column; gap: 10px;">
+                        <div class="list-info" style="width: 100%;">
+                            <h4 style="color: #c084fc; margin-bottom: 5px; font-size:1rem;">${data.title}</h4>
+                            <p style="font-size: 0.8rem; color: #cbd5e1; line-height: 1.5;">${data.content}</p>
+                        </div>
+                        <a href="${filePath}" target="_blank" class="submit-btn btn btn-small" style="text-decoration:none; align-self: flex-end;">Read Note</a>
                     </div>`;
             }
         });
 
         if (!itemsFound) {
-            html += `<p style="text-align: center; color: #94a3b8;">No ${section} uploaded yet.</p>`;
+            html += `<p style="grid-column: 1 / -1; text-align: center; color: #94a3b8;">No ${section} uploaded yet.</p>`;
         }
 
         html += `</div></div>`;
