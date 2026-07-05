@@ -3,34 +3,63 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Santosh</title>
+    <title>Command Center | ZenV Admin</title>
+    
+    <!-- ================= SEO & META ================= -->
+    <meta name="theme-color" content="#050505">
+    
+    <!-- ================= STYLESHEETS ================= -->
     <link rel="stylesheet" href="admin-style.css">
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
-    <!-- Background Elements -->
-    <div class="bg-shape shape1"></div>
-    <div class="bg-shape shape2"></div>
+    <!-- Premium Background Mesh -->
+    <div class="bg-mesh">
+        <div class="bg-shape shape-primary"></div>
+        <div class="bg-shape shape-secondary"></div>
+        <div class="bg-shape shape-accent"></div>
+    </div>
+    <div class="noise-overlay"></div>
 
-    <!-- 1. Welcome Animation Screen -->
+    <!-- 1. System Welcome Screen -->
     <div id="welcome-screen" class="welcome-overlay">
-        <h1 class="welcome-text">
-            <span class="fade-in">WELCOME</span> 
-            <span class="pop-in highlight">SANTOS</span>
-        </h1>
+        <div class="welcome-content">
+            <i class="fa-solid fa-fingerprint auth-icon"></i>
+            <h1 class="welcome-text">
+                <span class="fade-in">SYSTEM</span> 
+                <span class="pop-in highlight">ONLINE</span>
+            </h1>
+            <p class="fade-in delay-text">Initializing secure connection...</p>
+        </div>
     </div>
 
     <!-- 2. Secure Login Screen -->
-    <div id="login-screen" class="dashboard-wrapper hidden" style="justify-content: center; align-items: center; height: 100vh;">
-        <div class="glass-box" style="padding: 40px; text-align: center; max-width: 400px; width: 100%;">
-            <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin" style="width: 80px; border-radius: 50%; margin-bottom: 20px; border: 2px solid #3b82f6;">
-            <h2 style="margin-bottom: 20px;">Admin Access</h2>
-            <input type="email" id="admin-email" placeholder="Admin Email" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none;">
-            <input type="password" id="admin-login-password" placeholder="Password" style="width: 100%; padding: 12px; margin: 10px 0; border-radius: 8px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); color: white; outline: none;">
-            <button id="login-btn" class="upload-btn" style="width: 100%; margin-top: 15px;">Login securely</button>
-            <p id="login-error" style="color: #ef4444; margin-top: 15px; font-size: 0.9rem;" class="hidden">Invalid Email or Password!</p>
+    <div id="login-screen" class="login-wrapper hidden">
+        <div class="premium-glass login-box fade-in-up">
+            <div class="admin-avatar-ring">
+                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin">
+            </div>
+            <h2>Admin Gateway</h2>
+            <p class="subtitle">Cryptographic authentication required</p>
+            
+            <div class="auth-form">
+                <div class="input-group">
+                    <i class="fa-solid fa-envelope"></i>
+                    <input type="email" id="admin-email" placeholder="Admin Email ID">
+                </div>
+                <div class="input-group">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="admin-login-password" placeholder="Master Password">
+                </div>
+                
+                <button id="login-btn" class="btn btn-primary w-100">
+                    Authenticate <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                </button>
+                <p id="login-error" class="error-msg hidden">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Invalid Credentials!
+                </p>
+            </div>
         </div>
     </div>
 
@@ -41,108 +70,202 @@
         <aside class="glass-sidebar">
             <div class="admin-profile-sm">
                 <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Admin">
-                <h3>Admin Panel</h3>
+                <div>
+                    <h3>Santosh K.</h3>
+                    <span class="status-badge"><i class="fa-solid fa-circle"></i> Admin</span>
+                </div>
             </div>
             
             <nav class="admin-menu">
                 <button class="nav-btn active" onclick="switchTab('dashboard')"><i class="fa-solid fa-chart-pie"></i> Dashboard</button>
                 <button class="nav-btn" onclick="switchTab('apps')"><i class="fa-brands fa-android"></i> Manage Apps</button>
-                <button class="nav-btn" onclick="switchTab('documents')"><i class="fa-solid fa-file-word"></i> Manage Docs</button>
-                <button class="nav-btn" onclick="switchTab('notes')"><i class="fa-solid fa-book"></i> Manage Notes</button>
-                <button class="nav-btn" onclick="switchTab('settings')"><i class="fa-solid fa-gear"></i> Settings</button>
-                <a href="index.html" class="nav-btn live-link"><i class="fa-solid fa-globe"></i> View Live Site</a>
-                <button class="nav-btn" onclick="logoutAdmin()" style="color: #ef4444; margin-top: 10px;"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+                <button class="nav-btn" onclick="switchTab('documents')"><i class="fa-solid fa-file-lines"></i> Manage Docs</button>
+                <button class="nav-btn" onclick="switchTab('notes')"><i class="fa-solid fa-book-open"></i> Manage Notes</button>
+                <button class="nav-btn" onclick="switchTab('settings')"><i class="fa-solid fa-shield-halved"></i> Security</button>
+                
+                <div class="menu-divider"></div>
+                
+                <a href="index.html" class="nav-btn live-link"><i class="fa-solid fa-globe"></i> Live Portal</a>
+                <button class="nav-btn logout-btn" onclick="logoutAdmin()"><i class="fa-solid fa-power-off"></i> Terminate Session</button>
             </nav>
         </aside>
 
         <!-- Main Content Area -->
         <main class="glass-content">
             
-            <!-- Dashboard Overview -->
-            <section id="dashboard-sec" class="admin-section active-sec">
-                <h2>Welcome Back, Santos!</h2>
-                <p>Manage all your uploads, documents, and settings from here.</p>
+            <!-- Dashboard Overview Section -->
+            <section id="dashboard-sec" class="admin-section active-sec fade-in-up">
+                <div class="section-header-admin">
+                    <h2>Welcome to Command Center</h2>
+                    <p>Monitor your active endpoints, manage uploads, and configure security settings.</p>
+                </div>
+                
                 <div class="stats-grid">
-                    <div class="stat-card"><h3>Apps</h3><p id="app-count"><i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i></p></div>
-                    <div class="stat-card"><h3>Documents</h3><p id="doc-count"><i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i></p></div>
-                    <div class="stat-card"><h3>Notes</h3><p id="note-count"><i class="fa-solid fa-spinner fa-spin" style="font-size: 1.5rem;"></i></p></div>
+                    <div class="stat-card">
+                        <div class="stat-icon apps-icon"><i class="fa-brands fa-android"></i></div>
+                        <div class="stat-info">
+                            <h3>Total Apps</h3>
+                            <p id="app-count"><i class="fa-solid fa-circle-notch fa-spin"></i></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon docs-icon"><i class="fa-solid fa-file-word"></i></div>
+                        <div class="stat-info">
+                            <h3>Documents</h3>
+                            <p id="doc-count"><i class="fa-solid fa-circle-notch fa-spin"></i></p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon notes-icon"><i class="fa-solid fa-book"></i></div>
+                        <div class="stat-info">
+                            <h3>Study Notes</h3>
+                            <p id="note-count"><i class="fa-solid fa-circle-notch fa-spin"></i></p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
-            <!-- 🆕 Manage Apps Section (Updated Fields) -->
-            <section id="apps-sec" class="admin-section hidden">
-                <h2><i class="fa-brands fa-android"></i> Add New App</h2>
-                <div class="upload-form glass-box">
-                    <input type="text" id="app-icon" placeholder="App Icon Name in uploads folder (e.g., logo.png)">
-                    <input type="text" id="app-title" placeholder="App Name (e.g., ZenV Media)">
-                    <input type="text" id="app-filename" placeholder="APK File Name in uploads (e.g., zenv.apk)">
-                    <input type="text" id="app-size" placeholder="App Size (e.g., 15 MB)">
-                    <input type="text" id="app-req" placeholder="Requirements (e.g., Android 7.0+)">
-                    <button class="upload-btn" onclick="uploadItem('apps')">Save App Info</button>
+            <!-- Manage Apps Section -->
+            <section id="apps-sec" class="admin-section hidden fade-in-up">
+                <div class="section-header-admin">
+                    <h2><i class="fa-brands fa-android text-blue"></i> App Deployment</h2>
+                    <p>Push new Android applications to the live server.</p>
                 </div>
-                <h3>Uploaded Apps</h3>
-                <div id="apps-list" class="item-list"><p>Loading...</p></div>
+                
+                <div class="upload-form premium-glass-panel">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>App Name</label>
+                            <input type="text" id="app-title" placeholder="e.g., ZenV Media">
+                        </div>
+                        <div class="input-group">
+                            <label>APK File Name</label>
+                            <input type="text" id="app-filename" placeholder="e.g., zenv.apk">
+                        </div>
+                        <div class="input-group">
+                            <label>App Icon (File Name)</label>
+                            <input type="text" id="app-icon" placeholder="e.g., logo.png">
+                        </div>
+                        <div class="input-group">
+                            <label>App Size</label>
+                            <input type="text" id="app-size" placeholder="e.g., 15 MB">
+                        </div>
+                        <div class="input-group">
+                            <label>Requirements</label>
+                            <input type="text" id="app-req" placeholder="e.g., Android 7.0+">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-15" onclick="uploadItem('apps')"><i class="fa-solid fa-cloud-arrow-up"></i> Deploy App</button>
+                </div>
+                
+                <h3 class="list-heading">Active Deployments</h3>
+                <div id="apps-list" class="item-list"><div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div></div>
             </section>
 
             <!-- Manage Documents Section -->
-            <section id="documents-sec" class="admin-section hidden">
-                <h2><i class="fa-solid fa-file-word"></i> Add Document</h2>
-                <div class="upload-form glass-box">
-                    <input type="text" id="doc-title" placeholder="Document Title">
-                    <select id="doc-type">
-                        <option value="word">Word / Doc</option>
-                        <option value="excel">Excel / Xlsx</option>
-                        <option value="ppt">PowerPoint / PPT</option>
-                        <option value="html">HTML / Web</option>
-                        <option value="svg">SVG / XML Vector</option>
-                    </select>
-                    <input type="text" id="doc-filename" placeholder="File Name (e.g., resume.docx)">
-                    <button class="upload-btn" onclick="uploadItem('documents')">Save Document Info</button>
+            <section id="documents-sec" class="admin-section hidden fade-in-up">
+                <div class="section-header-admin">
+                    <h2><i class="fa-solid fa-file-lines text-green"></i> Document Repository</h2>
+                    <p>Upload professional documents and presentations.</p>
                 </div>
-                <h3>Uploaded Documents</h3>
-                <div id="documents-list" class="item-list"><p>Loading...</p></div>
+                
+                <div class="upload-form premium-glass-panel">
+                    <div class="form-grid">
+                        <div class="input-group">
+                            <label>Document Title</label>
+                            <input type="text" id="doc-title" placeholder="Enter title">
+                        </div>
+                        <div class="input-group">
+                            <label>Document Type</label>
+                            <div class="select-wrapper">
+                                <select id="doc-type">
+                                    <option value="word">Word / Doc</option>
+                                    <option value="excel">Excel / Xlsx</option>
+                                    <option value="ppt">PowerPoint / PPT</option>
+                                    <option value="html">HTML / Web</option>
+                                    <option value="svg">SVG / XML Vector</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group full-width">
+                            <label>File Name</label>
+                            <input type="text" id="doc-filename" placeholder="e.g., resume.docx">
+                        </div>
+                    </div>
+                    <button class="btn btn-primary w-100 mt-15" onclick="uploadItem('documents')"><i class="fa-solid fa-cloud-arrow-up"></i> Save Document</button>
+                </div>
+                
+                <h3 class="list-heading">Stored Documents</h3>
+                <div id="documents-list" class="item-list"><div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div></div>
             </section>
 
             <!-- Manage Notes Section -->
-            <section id="notes-sec" class="admin-section hidden">
-                <h2><i class="fa-solid fa-book"></i> Add Notes</h2>
-                <div class="upload-form glass-box">
-                    <input type="text" id="note-title" placeholder="Note Title">
-                    <textarea id="note-content" placeholder="Write your note description here..." rows="4"></textarea>
-                    <input type="text" id="note-filename" placeholder="File Name (e.g., biology_ch1.pdf)">
-                    <button class="upload-btn" onclick="uploadItem('notes')">Save Note Info</button>
+            <section id="notes-sec" class="admin-section hidden fade-in-up">
+                <div class="section-header-admin">
+                    <h2><i class="fa-solid fa-book-open text-purple"></i> Knowledge Base</h2>
+                    <p>Publish study materials and written notes.</p>
                 </div>
-                <h3>Uploaded Notes</h3>
-                <div id="notes-list" class="item-list"><p>Loading...</p></div>
+                
+                <div class="upload-form premium-glass-panel">
+                    <div class="input-group">
+                        <label>Note Title</label>
+                        <input type="text" id="note-title" placeholder="Enter topic">
+                    </div>
+                    <div class="input-group">
+                        <label>Description / Content snippet</label>
+                        <textarea id="note-content" placeholder="Write a brief description..." rows="3"></textarea>
+                    </div>
+                    <div class="input-group">
+                        <label>PDF/File Name</label>
+                        <input type="text" id="note-filename" placeholder="e.g., biology_ch1.pdf">
+                    </div>
+                    <button class="btn btn-primary w-100 mt-15" onclick="uploadItem('notes')"><i class="fa-solid fa-cloud-arrow-up"></i> Publish Note</button>
+                </div>
+                
+                <h3 class="list-heading">Published Notes</h3>
+                <div id="notes-list" class="item-list"><div class="loading-state"><i class="fa-solid fa-circle-notch fa-spin"></i> Loading...</div></div>
             </section>
 
             <!-- Settings Section -->
-            <section id="settings-sec" class="admin-section hidden">
-                <h2><i class="fa-solid fa-gear"></i> Security Settings</h2>
-                <div class="upload-form glass-box">
-                    <label style="color: #cbd5e1; font-size: 0.9rem;">Change User Password (Default 310726)</label>
-                    <input type="text" id="new-password" placeholder="Enter new user access password">
-                    <button class="upload-btn" onclick="changePassword()" style="background: #ef4444;">Update Password in Database</button>
-                    <p id="password-msg" class="success-msg hidden">Password Updated Successfully on Server!</p>
+            <section id="settings-sec" class="admin-section hidden fade-in-up">
+                <div class="section-header-admin">
+                    <h2><i class="fa-solid fa-shield-halved text-red"></i> Security Protocols</h2>
+                    <p>Manage access keys and system security.</p>
+                </div>
+                
+                <div class="upload-form premium-glass-panel">
+                    <div class="security-warning">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        <span>Warning: Changing the master password will instantly update the cryptographic key for all live visitors.</span>
+                    </div>
+                    <div class="input-group mt-15">
+                        <label>New Master Access Password</label>
+                        <input type="text" id="new-password" placeholder="Enter new highly secure key">
+                    </div>
+                    <button class="btn btn-danger w-100 mt-15" onclick="changePassword()"><i class="fa-solid fa-key"></i> Update Cryptographic Key</button>
+                    <p id="password-msg" class="success-msg hidden"><i class="fa-solid fa-check-circle"></i> Key updated securely on server!</p>
                 </div>
             </section>
 
         </main>
     </div>
 
-    <!-- 🆕 Edit Item Modal (Hidden by default) -->
-    <div id="edit-modal" class="modal-overlay hidden" style="z-index: 10000; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center;">
-        <div class="glass-box" style="padding: 30px; width: 90%; max-width: 500px;">
-            <h2 style="margin-bottom: 20px; color: #fff;">Edit Details</h2>
-            
-            <!-- Dynamic Form Container -->
-            <div id="edit-form-container" class="upload-form" style="padding: 0;">
-                <!-- Fields will be injected here via JS -->
+    <!-- Edit Modal Overlay -->
+    <div id="edit-modal" class="modal-overlay hidden">
+        <div class="premium-glass login-box edit-box scale-in">
+            <div class="modal-header">
+                <h2><i class="fa-solid fa-pen-to-square"></i> Edit Entry</h2>
+                <button class="close-icon-btn" onclick="closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
             </div>
             
-            <div style="display: flex; gap: 10px; margin-top: 20px;">
-                <button onclick="closeEditModal()" class="upload-btn" style="flex: 1; background: rgba(255,255,255,0.1); color: white;">Cancel</button>
-                <button id="save-edit-btn" class="upload-btn" style="flex: 1; background: #10b981;">Save Changes</button>
+            <!-- Dynamic Form Container -->
+            <div id="edit-form-container" class="upload-form edit-form-wrapper">
+                <!-- Fields injected via JS -->
+            </div>
+            
+            <div class="modal-actions mt-15">
+                <button onclick="closeEditModal()" class="btn btn-ghost w-100">Cancel</button>
+                <button id="save-edit-btn" class="btn btn-primary w-100"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
             </div>
         </div>
     </div>
