@@ -45,23 +45,28 @@ const errorMsg = document.getElementById("error-msg");
 const sectionTitle = document.getElementById("section-title");
 const contentArea = document.getElementById("content-area");
 
-// Mobile Menu Logic
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const mobileNavPanel = document.querySelector('.mobile-nav-panel');
+// ==========================================
+// MOBILE MENU SLIDER LOGIC (FIXED)
+// ==========================================
+const mobileMenuBtn = document.getElementById('mobile-menu-toggle');
+const mobileNavPanel = document.getElementById('mobile-nav-panel');
 
 mobileMenuBtn.addEventListener('click', () => {
     mobileNavPanel.classList.toggle('show');
     const icon = mobileMenuBtn.querySelector('i');
     if (mobileNavPanel.classList.contains('show')) {
-        icon.classList.replace('ph-list', 'ph-x');
+        icon.classList.replace('fa-bars', 'fa-xmark');
     } else {
-        icon.classList.replace('ph-x', 'ph-list');
+        icon.classList.replace('fa-xmark', 'fa-bars');
     }
 });
 
 function closeMobileMenu() {
     mobileNavPanel.classList.remove('show');
-    mobileMenuBtn.querySelector('i').classList.replace('ph-x', 'ph-list');
+    const icon = mobileMenuBtn.querySelector('i');
+    if(icon && icon.classList.contains('fa-xmark')) {
+        icon.classList.replace('fa-xmark', 'fa-bars');
+    }
 }
 
 // Navigation Listeners (Desktop & Mobile)
@@ -81,12 +86,14 @@ navMappings.forEach(nav => {
     // Mobile Nav
     const mobElement = document.getElementById(nav.id + '-mobile');
     if(mobElement) mobElement.addEventListener("click", () => {
-        closeMobileMenu();
+        closeMobileMenu(); // Close menu when option is selected
         nav.action();
     });
 });
 
-// Security Access Logic
+// ==========================================
+// SECURITY ACCESS LOGIC (KEYBOARD ISSUE FIXED)
+// ==========================================
 function requestAccess(section) {
     requestedSection = section;
     if (isUnlocked) {
@@ -95,7 +102,7 @@ function requestAccess(section) {
         passwordInput.value = "";
         errorMsg.classList.add("hidden");
         passwordModal.classList.remove("hidden");
-        setTimeout(() => passwordInput.focus(), 100);
+        // FIX: Removed passwordInput.focus() so keyboard doesn't open automatically
     }
 }
 
@@ -160,8 +167,7 @@ function openSection(section) {
 
     // Update Title
     const formattedTitle = section.charAt(0).toUpperCase() + section.slice(1);
-    sectionTitle.innerText = `${formattedTitle} Repository`;
-    document.querySelector('.section-meta').innerText = `Securely fetching ${section} data from ZenV servers.`;
+    sectionTitle.innerText = formattedTitle;
 
     renderContent(section);
 }
@@ -177,13 +183,15 @@ function updateActiveMenu(activeId) {
     if(mobElement) mobElement.classList.add('active');
 }
 
-// FETCH & RENDER DATA WITH CORPORATE UI
+// ==========================================
+// FETCH & RENDER DATA WITH MATERIAL UI
+// ==========================================
 async function renderContent(section) {
     // Professional Loading State
     contentArea.innerHTML = `
-        <div class="corporate-loader">
-            <i class="ph ph-spinner-gap spinner-icon"></i>
-            <div>Establishing secure connection...</div>
+        <div class="material-loader">
+            <i class="fa-solid fa-circle-notch fa-spin"></i>
+            <div>Loading data...</div>
         </div>`;
     
     let currentUrl = window.location.href.split('index.html')[0];
@@ -212,54 +220,54 @@ async function renderContent(section) {
             // APPS SECTION
             if (section === "apps") {
                 let iconHtml = data.appIcon ? 
-                    `<img src="uploads/${data.appIcon}" alt="App Icon">` : 
-                    `<i class="ph ph-android-logo" style="font-size: 48px; color: var(--accent-blue);"></i>`;
+                    `<img src="uploads/${data.appIcon}" alt="App Icon" style="width:50px; height:50px; border-radius:12px; margin-bottom:15px; object-fit:cover;">` : 
+                    `<i class="fa-brands fa-android" style="font-size: 40px; color: var(--primary); margin-bottom:15px;"></i>`;
 
                 html += `
-                    <div class="corp-app-card">
-                        <div class="app-icon-wrap">
-                            ${iconHtml}
-                        </div>
+                    <div class="material-card">
+                        ${iconHtml}
                         <h3>${data.title}</h3>
-                        <div class="app-details">
-                            <span><strong>Size:</strong> ${data.appSize || 'N/A'}</span>
-                            <span><strong>Requires:</strong> ${data.appReq || 'Android'}</span>
-                        </div>
-                        <a href="${filePath}" download class="btn btn-primary btn-full">
-                            Download Package
+                        <p>
+                            <strong>Size:</strong> ${data.appSize || 'N/A'}<br>
+                            <strong>Req:</strong> ${data.appReq || 'Android'}
+                        </p>
+                        <a href="${filePath}" download class="btn btn-filled">
+                            Download
                         </a>
                     </div>`;
             } 
             // DOCUMENTS SECTION
             else if (section === "documents") {
-                let icon = "ph-file-text";
-                if(data.type === "excel") icon = "ph-file-xls";
-                else if(data.type === "ppt") icon = "ph-projector-screen";
-                else if(data.type === "html") icon = "ph-file-code";
-                else if(data.type === "svg") icon = "ph-bezier-curve";
+                let icon = "fa-file-lines";
+                if(data.type === "excel") icon = "fa-file-excel";
+                else if(data.type === "ppt") icon = "fa-file-powerpoint";
+                else if(data.type === "html") icon = "fa-file-code";
+                else if(data.type === "svg") icon = "fa-bezier-curve";
 
                 html += `
-                    <div class="corp-list-item">
-                        <div class="list-icon"><i class="ph ${icon}"></i></div>
+                    <div class="material-list-item">
+                        <div class="icon-circle"><i class="fa-solid ${icon}"></i></div>
                         <div class="list-content">
                             <h4>${data.title}</h4>
                             <p>${ext} Format</p>
                         </div>
-                        <a href="${viewerLink}" target="_blank" class="btn btn-outline">
-                            View Document
+                        <a href="${viewerLink}" target="_blank" class="btn btn-text">
+                            View
                         </a>
                     </div>`;
             } 
             // NOTES SECTION
             else if (section === "notes") {
                 html += `
-                    <div class="corp-list-item" style="align-items: flex-start;">
-                        <div class="list-icon"><i class="ph ph-book-open-text"></i></div>
-                        <div class="list-content">
-                            <h4>${data.title}</h4>
-                            <p style="margin-top: 8px;">${data.content}</p>
+                    <div class="material-list-item" style="align-items: flex-start; flex-direction: column;">
+                        <div style="display: flex; gap: 15px; width: 100%; align-items: center; margin-bottom: 5px;">
+                            <div class="icon-circle"><i class="fa-solid fa-book-open"></i></div>
+                            <div class="list-content">
+                                <h4>${data.title}</h4>
+                            </div>
                         </div>
-                        <a href="${filePath}" target="_blank" class="btn btn-outline">
+                        <p style="margin-bottom: 15px; margin-top:5px; line-height: 1.5; font-size:0.9rem;">${data.content}</p>
+                        <a href="${filePath}" target="_blank" class="btn btn-filled" style="align-self: flex-start;">
                             Read Note
                         </a>
                     </div>`;
@@ -268,9 +276,9 @@ async function renderContent(section) {
 
         if (!itemsFound) {
             html += `
-                <div class="corporate-loader">
-                    <i class="ph ph-folder-open" style="font-size: 2.5rem; margin-bottom: 16px; opacity: 0.5;"></i>
-                    <div>No resources available in this repository.</div>
+                <div class="material-loader">
+                    <i class="fa-solid fa-folder-open" style="font-size: 2.5rem; margin-bottom: 16px; opacity: 0.5; color:var(--text-muted);"></i>
+                    <div>No data uploaded yet.</div>
                 </div>`;
         }
 
@@ -278,9 +286,9 @@ async function renderContent(section) {
 
     } catch (error) {
         contentArea.innerHTML = `
-            <div class="corporate-loader" style="color: #ef4444;">
-                <i class="ph ph-warning-circle" style="font-size: 2.5rem; margin-bottom: 16px;"></i>
-                <div>System failed to fetch data. Please contact administrator.</div>
+            <div class="material-loader" style="color: #dc2626;">
+                <i class="fa-solid fa-triangle-exclamation" style="font-size: 2.5rem; margin-bottom: 16px;"></i>
+                <div>Error fetching data.</div>
             </div>`;
         console.error(error);
     }
