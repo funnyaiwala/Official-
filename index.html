@@ -5,29 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- ================= SEO & META TAGS ================= -->
-    <title>Santosh Kumar Rana | Official Portal</title>
-    <meta name="description" content="Official website and digital portal of Santosh Kumar Rana, Founder of ZenV Media. Access professional documents, applications, and study materials.">
+    <title>Funnyaiwala8 | Official Website</title>
+    <meta name="description" content="Official website of Santosh Kumar Rana (Funnyaiwala8). Developer, Creator, and Tech Enthusiast.">
     <meta name="author" content="Santosh Kumar Rana">
     <meta name="robots" content="index, follow">
-
-    <!-- ================= OPEN GRAPH TAGS ================= -->
-    <meta property="og:title" content="Santosh Kumar Rana | Official Portal">
-    <meta property="og:description" content="Official digital hub of Santosh Kumar Rana. Android Developer and Founder of ZenV Media.">
-    <meta property="og:image" content="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png">
-    <meta property="og:type" content="website">
+    
+    <!-- Theme Color for Material You (Light Theme) -->
+    <meta name="theme-color" content="#ffffff">
 
     <!-- ================= FAVICON ================= -->
     <link rel="icon" type="image/png" href="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png">
 
     <!-- ================= STYLESHEETS & FONTS ================= -->
-    <!-- Using Inter font for a clean, corporate, highly readable look -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Modern Sans-Serif font for Material You look -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
-    <!-- Phosphor Icons for a more professional, consistent icon set compared to FontAwesome -->
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <!-- FontAwesome for precise brand icons (Android, YouTube, Facebook, X, Instagram) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 </head>
 <body>
 
@@ -35,146 +32,151 @@
     <header class="official-header">
         <div class="container header-container">
             <div class="brand-logo" id="nav-home" style="cursor: pointer;">
-                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="ZenV Media Logo">
-                <span>ZenV Media</span>
+                <!-- Updated Brand Name -->
+                <span>Funnyaiwala8</span>
             </div>
             
             <nav class="desktop-nav">
-                <button class="nav-link active" id="nav-apps"><i class="ph ph-app-window"></i> Applications</button>
-                <button class="nav-link" id="nav-documents"><i class="ph ph-file-text"></i> Documents</button>
-                <button class="nav-link" id="nav-notes"><i class="ph ph-books"></i> Notes</button>
-                <button class="nav-link" id="nav-settings"><i class="ph ph-gear"></i> Settings</button>
+                <button class="nav-link active" id="nav-apps"><i class="fa-solid fa-mobile-screen"></i> Apps</button>
+                <button class="nav-link" id="nav-documents"><i class="fa-solid fa-file-lines"></i> Documents</button>
+                <button class="nav-link" id="nav-notes"><i class="fa-solid fa-book"></i> Notes</button>
+                <button class="nav-link" id="nav-settings"><i class="fa-solid fa-gear"></i> Settings</button>
             </nav>
 
-            <!-- Mobile Menu Toggle (Handled in CSS/JS for responsiveness) -->
-            <button class="mobile-menu-btn" aria-label="Open Menu">
-                <i class="ph ph-list"></i>
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open Menu">
+                <i class="fa-solid fa-bars"></i>
             </button>
         </div>
     </header>
 
-    <!-- Mobile Navigation Panel -->
-    <div class="mobile-nav-panel hidden">
-        <button class="nav-link active" id="nav-home-mobile"><i class="ph ph-house"></i> Home</button>
-        <button class="nav-link" id="nav-apps-mobile"><i class="ph ph-app-window"></i> Applications</button>
-        <button class="nav-link" id="nav-documents-mobile"><i class="ph ph-file-text"></i> Documents</button>
-        <button class="nav-link" id="nav-notes-mobile"><i class="ph ph-books"></i> Notes</button>
-        <button class="nav-link" id="nav-settings-mobile"><i class="ph ph-gear"></i> Settings</button>
+    <!-- Mobile Navigation Panel (Slider) -->
+    <div class="mobile-nav-panel" id="mobile-nav-panel">
+        <button class="nav-link active" id="nav-home-mobile"><i class="fa-solid fa-house"></i> Home</button>
+        <button class="nav-link" id="nav-apps-mobile"><i class="fa-solid fa-mobile-screen"></i> Apps</button>
+        <button class="nav-link" id="nav-documents-mobile"><i class="fa-solid fa-file-lines"></i> Documents</button>
+        <button class="nav-link" id="nav-notes-mobile"><i class="fa-solid fa-book"></i> Notes</button>
+        <button class="nav-link" id="nav-settings-mobile"><i class="fa-solid fa-gear"></i> Settings</button>
     </div>
 
     <!-- Main Content Wrapper -->
     <main class="main-container container">
         
-        <!-- Profile / Hero Section -->
+        <!-- Profile Section (Based on your sketch) -->
         <section id="profile-section" class="section-block active-section">
-            <div class="hero-grid">
-                <div class="hero-content">
-                    <span class="hero-eyebrow">Official Portal</span>
-                    <h1 class="hero-title">Santosh Kumar Rana</h1>
-                    <p class="hero-subtitle">Founder & Lead Developer at ZenV Media</p>
-                    <p class="hero-description">
-                        Welcome to my official digital workspace. This portal serves as a secure distribution center for proprietary Android applications, technical documentation, and structured academic notes. 
-                    </p>
-                    
-                    <div class="professional-tags">
-                        <span class="tag">B.Sc Zoology</span>
-                        <span class="tag">Android Development</span>
-                        <span class="tag">Web Engineering</span>
-                        <span class="tag">AI Integration</span>
+            
+            <!-- Animated Gradient Name -->
+            <h1 class="hero-name-animate">Santosh Kumar Rana</h1>
+            
+            <!-- Bio Section -->
+            <div class="info-section">
+                <h2 class="side-heading">Bio</h2>
+                <div class="capsule-container">
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-brands fa-android"></i></div>
+                        <p><strong>Developer</strong> - Developed ZenV media</p>
                     </div>
-
-                    <div class="social-actions">
-                        <a href="https://youtube.com/@funnyaiwala8" target="_blank" class="social-btn"><i class="ph ph-youtube-logo"></i> YouTube</a>
-                        <a href="https://x.com/funnyaiwala8" target="_blank" class="social-btn"><i class="ph ph-x-logo"></i> Twitter</a>
-                        <a href="https://www.instagram.com/funnyaiwala8/" target="_blank" class="social-btn"><i class="ph ph-instagram-logo"></i> Instagram</a>
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-solid fa-play"></i></div>
+                        <p><strong>Creator</strong> - funny ai content creator</p>
                     </div>
-                </div>
-                
-                <div class="hero-image-wrapper">
-                    <div class="image-frame">
-                        <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Santosh Kumar Rana" class="profile-pic">
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-solid fa-microchip"></i></div>
+                        <p><strong>Tech</strong> - Tech and ai enthusiast</p>
+                    </div>
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-solid fa-graduation-cap"></i></div>
+                        <p><strong>Education</strong> - Bsc 2nd year zoology student, KSUB Degree college, Bhanjanagar</p>
                     </div>
                 </div>
             </div>
+
+            <!-- Other Skills Section -->
+            <div class="info-section">
+                <h2 class="side-heading">Other skills</h2>
+                <div class="capsule-container">
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-solid fa-code"></i></div>
+                        <p>Web developer</p>
+                    </div>
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-solid fa-pen-nib"></i></div>
+                        <p>Graphics designer</p>
+                    </div>
+                    <div class="info-capsule">
+                        <div class="icon-circle"><i class="fa-solid fa-video"></i></div>
+                        <p>Video editor</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thanks & Footer Section -->
+            <div class="thanks-section">
+                <h2 class="thanks-text">Thanks for visit</h2>
+                <p class="follow-text">Follow us on ......</p>
+                <div class="social-icons-row">
+                    <a href="https://youtube.com/@funnyaiwala8" target="_blank" class="social-icon"><i class="fa-brands fa-youtube"></i></a>
+                    <a href="https://www.facebook.com/profile.php?id=61591866413735" target="_blank" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+                    <a href="https://x.com/funnyaiwala8" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://www.instagram.com/funnyaiwala8/" target="_blank" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+            </div>
+
         </section>
 
         <!-- Dynamic Content Section (Apps, Docs, Notes) -->
         <section id="content-section" class="section-block hidden">
             <div class="section-header">
-                <h2 id="section-title">Loading Hub...</h2>
-                <p class="section-meta">Securely fetching data from ZenV servers.</p>
+                <h2 id="section-title">Loading...</h2>
             </div>
             
             <div id="content-area" class="content-grid">
-                <div class="corporate-loader">
-                    <i class="ph ph-spinner-gap spinner-icon"></i>
-                    <span>Establishing secure connection...</span>
+                <div class="material-loader">
+                    <i class="fa-solid fa-circle-notch fa-spin"></i>
+                    <span>Loading data...</span>
                 </div>
             </div>
         </section>
 
-        <!-- Settings & Legal Section -->
+        <!-- Settings Section -->
         <section id="settings-section" class="section-block hidden">
             <div class="section-header">
-                <h2>System Settings & Legal</h2>
-                <p class="section-meta">Manage your preferences and view corporate policies.</p>
+                <h2>Settings</h2>
             </div>
             
             <div class="settings-list">
-                <a href="privacy.html" class="settings-list-item">
-                    <div class="item-icon"><i class="ph ph-shield-check"></i></div>
-                    <div class="item-details">
-                        <h3>Privacy Policy</h3>
-                        <p>Read how we handle and protect data at ZenV Media.</p>
+                <a href="privacy.html" class="settings-card">
+                    <div class="settings-card-left">
+                        <div class="settings-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                        <span>Privacy Policy</span>
                     </div>
-                    <i class="ph ph-caret-right action-icon"></i>
+                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
                 </a>
-                
-                <!-- Placeholder for future settings -->
-                <div class="settings-list-item disabled">
-                    <div class="item-icon"><i class="ph ph-bell"></i></div>
-                    <div class="item-details">
-                        <h3>Notifications</h3>
-                        <p>System alerts (Currently inactive)</p>
-                    </div>
-                    <i class="ph ph-lock-key action-icon"></i>
-                </div>
             </div>
         </section>
         
     </main>
 
-    <!-- Corporate Footer -->
+    <!-- Professional Footer -->
     <footer class="official-footer">
         <div class="container footer-container">
-            <div class="footer-left">
-                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Logo" class="footer-logo">
-                <span>&copy; 2026 funnyaiwala8 Inc. All rights reserved.</span>
-            </div>
-            <div class="footer-right">
-                <span>v2.0.1 (Stable Build)</span>
-            </div>
+            <span>&copy; 2026 Funnyaiwala8. All rights reserved.</span>
         </div>
     </footer>
 
-    <!-- Clean Corporate Password Modal -->
+    <!-- Password Modal -->
     <div id="password-modal" class="modal-overlay hidden">
-        <div class="corporate-modal">
-            <div class="modal-header-sec">
-                <i class="ph ph-lock-key corporate-lock"></i>
-                <h3>Authentication Required</h3>
-            </div>
-            <div class="modal-body">
-                <p>This section contains restricted resources. Please provide the access clearance code.</p>
-                <div class="form-group">
-                    <label for="access-password">Security Clearance Code</label>
-                    <input type="password" id="access-password" placeholder="Enter code" autocomplete="off">
-                    <span id="error-msg" class="error-msg hidden"><i class="ph ph-warning-circle"></i> Authentication failed.</span>
-                </div>
+        <div class="material-modal">
+            <h3>Authentication</h3>
+            <p>Enter the password to access this section.</p>
+            <div class="form-group">
+                <!-- Removed autofocus so keyboard doesn't pop up automatically -->
+                <input type="password" id="access-password" placeholder="Password" autocomplete="off">
+                <span id="error-msg" class="error-msg hidden"><i class="fa-solid fa-circle-exclamation"></i> Incorrect Password!</span>
             </div>
             <div class="modal-footer">
-                <button id="cancel-btn" class="btn btn-outline">Cancel</button>
-                <button id="submit-btn" class="btn btn-primary">Verify Identity</button>
+                <button id="cancel-btn" class="btn btn-text">Cancel</button>
+                <button id="submit-btn" class="btn btn-filled">Unlock</button>
             </div>
         </div>
     </div>
