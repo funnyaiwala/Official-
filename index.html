@@ -10,7 +10,6 @@
     <meta name="author" content="Santosh Kumar Rana">
     <meta name="robots" content="index, follow">
     
-    <!-- Theme Color for Material You (Light Theme) -->
     <meta name="theme-color" content="#ffffff">
 
     <!-- ================= FAVICON ================= -->
@@ -19,12 +18,14 @@
     <!-- ================= STYLESHEETS & FONTS ================= -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Modern Sans-Serif font for Material You look -->
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome for precise brand icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <!-- ================= IMAGE EDITOR CDN ================= -->
+    <!-- Yeh library image view karne aur crop/filter/enhance karne ka kaam karegi -->
+    <script src="https://scaleflex.cloudimg.io/v7/plugins/filerobot-image-editor/latest/filerobot-image-editor.min.js"></script>
 </head>
 <body>
 
@@ -32,7 +33,6 @@
     <header class="official-header">
         <div class="container header-container">
             <div class="brand-logo" id="nav-home" style="cursor: pointer;">
-                <!-- Profile Photo added to header as requested -->
                 <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Funnyaiwala8" class="header-profile-pic">
                 <span>Funnyaiwala8</span>
             </div>
@@ -44,14 +44,13 @@
                 <button class="nav-link" id="nav-settings"><i class="fa-solid fa-gear"></i> Settings</button>
             </nav>
 
-            <!-- Mobile Menu Toggle -->
             <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open Menu">
                 <i class="fa-solid fa-bars"></i>
             </button>
         </div>
     </header>
 
-    <!-- Mobile Navigation Panel (Slider) -->
+    <!-- Mobile Navigation Panel -->
     <div class="mobile-nav-panel" id="mobile-nav-panel">
         <button class="nav-link active" id="nav-home-mobile"><i class="fa-solid fa-house"></i> Home</button>
         <button class="nav-link" id="nav-apps-mobile"><i class="fa-solid fa-mobile-screen"></i> Apps</button>
@@ -66,10 +65,8 @@
         <!-- Profile Section -->
         <section id="profile-section" class="section-block active-section">
             
-            <!-- Animated Gradient Name (No big photo here) -->
             <h1 class="hero-name-animate">Santosh Kumar Rana</h1>
             
-            <!-- Bio Section -->
             <div class="info-section">
                 <h2 class="side-heading">Bio</h2>
                 <div class="capsule-container">
@@ -92,7 +89,6 @@
                 </div>
             </div>
 
-            <!-- Other Skills Section -->
             <div class="info-section">
                 <h2 class="side-heading">Other skills</h2>
                 <div class="capsule-container">
@@ -111,7 +107,6 @@
                 </div>
             </div>
 
-            <!-- Thanks & Footer Section -->
             <div class="thanks-section">
                 <h2 class="thanks-text">Thanks for visit</h2>
                 <p class="follow-text">Follow us on ......</p>
@@ -122,10 +117,9 @@
                     <a href="https://www.instagram.com/funnyaiwala8/" target="_blank" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
                 </div>
             </div>
-
         </section>
 
-        <!-- Dynamic Content Section (Apps, Docs, Notes) -->
+        <!-- Dynamic Content Section -->
         <section id="content-section" class="section-block hidden">
             <div class="section-header">
                 <h2 id="section-title">Loading...</h2>
@@ -155,7 +149,6 @@
                 </a>
             </div>
         </section>
-        
     </main>
 
     <!-- Professional Footer -->
@@ -178,6 +171,14 @@
                 <button id="cancel-btn" class="btn btn-text">Cancel</button>
                 <button id="submit-btn" class="btn btn-filled">Unlock</button>
             </div>
+        </div>
+    </div>
+
+    <!-- NEW: Pro Image Viewer & Editor Modal -->
+    <div id="image-editor-modal" class="modal-overlay hidden" style="z-index: 9999;">
+        <div class="editor-container">
+            <button id="close-editor-btn" class="close-editor-icon"><i class="fa-solid fa-xmark"></i></button>
+            <div id="editor-workspace"></div>
         </div>
     </div>
 
