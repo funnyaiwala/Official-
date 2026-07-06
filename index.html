@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- ================= SEO & META TAGS ================= -->
-    <title>Funnyaiwala8 | Official Website</title>
-    <meta name="description" content="Official website of Santosh Kumar Rana (Funnyaiwala8). Developer, Creator, and Tech Enthusiast.">
+    <title>Santosh Kumar Rana | Portfolio</title>
+    <meta name="description" content="Official website of Santosh Kumar Rana. Developer, Creator, and Tech Enthusiast.">
     <meta name="author" content="Santosh Kumar Rana">
     <meta name="robots" content="index, follow">
     
@@ -22,30 +22,32 @@
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    
-    <!-- Laggy 3rd party image editor script completely removed -->
 </head>
 <body>
 
-    <!-- Professional Top Navigation Bar -->
-    <header class="official-header">
-        <div class="container header-container">
-            <div class="brand-logo" id="nav-home" style="cursor: pointer;">
-                <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Funnyaiwala8" class="header-profile-pic">
-                <span>Funnyaiwala8</span>
-            </div>
-            
-            <nav class="desktop-nav">
-                <button class="nav-link active" id="nav-apps"><i class="fa-solid fa-mobile-screen"></i> Apps</button>
-                <button class="nav-link" id="nav-documents"><i class="fa-solid fa-file-lines"></i> Documents</button>
-                <button class="nav-link" id="nav-notes"><i class="fa-solid fa-book"></i> Notes</button>
-                <button class="nav-link" id="nav-settings"><i class="fa-solid fa-gear"></i> Settings</button>
-            </nav>
-
-            <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open Menu">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+    <!-- ================= DESKTOP SIDEBAR ================= -->
+    <aside class="desktop-sidebar">
+        <div class="sidebar-brand">
+            <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Logo" class="brand-pic">
         </div>
+        
+        <nav class="sidebar-nav">
+            <button class="nav-link active" id="nav-home"><i class="fa-solid fa-house"></i> Home</button>
+            <button class="nav-link" id="nav-apps"><i class="fa-solid fa-mobile-screen"></i> Apps</button>
+            <button class="nav-link" id="nav-documents"><i class="fa-solid fa-file-lines"></i> Documents</button>
+            <button class="nav-link" id="nav-notes"><i class="fa-solid fa-book"></i> Notes</button>
+            <button class="nav-link" id="nav-settings"><i class="fa-solid fa-gear"></i> Settings</button>
+        </nav>
+    </aside>
+
+    <!-- ================= MOBILE HEADER ================= -->
+    <header class="mobile-header">
+        <div class="brand-logo">
+            <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Logo" class="header-profile-pic">
+        </div>
+        <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open Menu">
+            <i class="fa-solid fa-bars"></i>
+        </button>
     </header>
 
     <!-- Mobile Navigation Panel -->
@@ -57,105 +59,125 @@
         <button class="nav-link" id="nav-settings-mobile"><i class="fa-solid fa-gear"></i> Settings</button>
     </div>
 
-    <!-- Main Content Wrapper -->
-    <main class="main-container container">
+    <!-- ================= MAIN WORKSPACE ================= -->
+    <div class="main-workspace">
+        <main class="main-container container">
+            
+            <!-- 1. PROFILE SECTION -->
+            <section id="profile-section" class="section-block active-section">
+                
+                <!-- Facebook Style Banner & Profile Info -->
+                <div class="fb-header-card">
+                    <!-- Banner Image -->
+                    <div class="fb-cover">
+                        <img src="https://i.ibb.co/FLzPZLGN/ume80g.jpg" alt="Cover Banner">
+                    </div>
+                    <!-- Profile Pic & Name -->
+                    <div class="fb-profile-row">
+                        <div class="fb-avatar">
+                            <img src="https://i.ibb.co/k6K54PhW/file-000000008ff8720ba2285ca75cc7ffde.png" alt="Profile Picture">
+                        </div>
+                        <div class="fb-name">
+                            <h1>Santosh Kumar Rana</h1>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Bio Section -->
+                <div class="info-section" style="margin-top: 25px;">
+                    <h2 class="side-heading">Bio</h2>
+                    <div class="capsule-container">
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-brands fa-android"></i></div>
+                            <p><strong>Developer</strong> - Developed ZenV media</p>
+                        </div>
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-solid fa-play"></i></div>
+                            <p><strong>Creator</strong> - funny ai content creator</p>
+                        </div>
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-solid fa-microchip"></i></div>
+                            <p><strong>Tech</strong> - Tech and ai enthusiast</p>
+                        </div>
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-solid fa-graduation-cap"></i></div>
+                            <p><strong>Education</strong> - Bsc 2nd year zoology student, KSUB Degree college, Bhanjanagar</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skills Section -->
+                <div class="info-section">
+                    <h2 class="side-heading">Other skills</h2>
+                    <div class="capsule-container">
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-solid fa-code"></i></div>
+                            <p>Web developer</p>
+                        </div>
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-solid fa-pen-nib"></i></div>
+                            <p>Graphics designer</p>
+                        </div>
+                        <div class="info-capsule">
+                            <div class="icon-circle"><i class="fa-solid fa-video"></i></div>
+                            <p>Video editor</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer Thanks -->
+                <div class="thanks-section">
+                    <h2 class="thanks-text">Thanks for visit</h2>
+                    <p class="follow-text">Follow us on ......</p>
+                    <div class="social-icons-row">
+                        <a href="https://youtube.com/@funnyaiwala8" target="_blank" class="social-icon"><i class="fa-brands fa-youtube"></i></a>
+                        <a href="https://www.facebook.com/profile.php?id=61591866413735" target="_blank" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
+                        <a href="https://x.com/funnyaiwala8" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://www.instagram.com/funnyaiwala8/" target="_blank" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. DYNAMIC CONTENT SECTION -->
+            <section id="content-section" class="section-block hidden">
+                <div class="section-header">
+                    <h2 id="section-title">Loading...</h2>
+                </div>
+                <div id="content-area" class="content-grid">
+                    <div class="material-loader">
+                        <i class="fa-solid fa-circle-notch fa-spin"></i>
+                        <span>Loading data...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. SETTINGS SECTION -->
+            <section id="settings-section" class="section-block hidden">
+                <div class="section-header">
+                    <h2>Settings</h2>
+                </div>
+                <div class="settings-list">
+                    <a href="privacy.html" class="settings-card">
+                        <div class="settings-card-left">
+                            <div class="settings-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                            <span>Privacy Policy</span>
+                        </div>
+                        <i class="fa-solid fa-chevron-right arrow-icon"></i>
+                    </a>
+                </div>
+            </section>
+
+        </main>
         
-        <!-- Profile Section -->
-        <section id="profile-section" class="section-block active-section">
-            
-            <h1 class="hero-name-animate">Santosh Kumar Rana</h1>
-            
-            <div class="info-section">
-                <h2 class="side-heading">Bio</h2>
-                <div class="capsule-container">
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-brands fa-android"></i></div>
-                        <p><strong>Developer</strong> - Developed ZenV media</p>
-                    </div>
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-solid fa-play"></i></div>
-                        <p><strong>Creator</strong> - funny ai content creator</p>
-                    </div>
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-solid fa-microchip"></i></div>
-                        <p><strong>Tech</strong> - Tech and ai enthusiast</p>
-                    </div>
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-solid fa-graduation-cap"></i></div>
-                        <p><strong>Education</strong> - Bsc 2nd year zoology student, KSUB Degree college, Bhanjanagar</p>
-                    </div>
-                </div>
+        <!-- Professional Footer -->
+        <footer class="official-footer">
+            <div class="container footer-container">
+                <span>&copy; 2026 Santosh Kumar Rana. All rights reserved.</span>
             </div>
+        </footer>
+    </div>
 
-            <div class="info-section">
-                <h2 class="side-heading">Other skills</h2>
-                <div class="capsule-container">
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-solid fa-code"></i></div>
-                        <p>Web developer</p>
-                    </div>
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-solid fa-pen-nib"></i></div>
-                        <p>Graphics designer</p>
-                    </div>
-                    <div class="info-capsule">
-                        <div class="icon-circle"><i class="fa-solid fa-video"></i></div>
-                        <p>Video editor</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="thanks-section">
-                <h2 class="thanks-text">Thanks for visit</h2>
-                <p class="follow-text">Follow us on ......</p>
-                <div class="social-icons-row">
-                    <a href="https://youtube.com/@funnyaiwala8" target="_blank" class="social-icon"><i class="fa-brands fa-youtube"></i></a>
-                    <a href="https://www.facebook.com/profile.php?id=61591866413735" target="_blank" class="social-icon"><i class="fa-brands fa-facebook"></i></a>
-                    <a href="https://x.com/funnyaiwala8" target="_blank" class="social-icon"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://www.instagram.com/funnyaiwala8/" target="_blank" class="social-icon"><i class="fa-brands fa-instagram"></i></a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Dynamic Content Section -->
-        <section id="content-section" class="section-block hidden">
-            <div class="section-header">
-                <h2 id="section-title">Loading...</h2>
-            </div>
-            
-            <div id="content-area" class="content-grid">
-                <div class="material-loader">
-                    <i class="fa-solid fa-circle-notch fa-spin"></i>
-                    <span>Loading data...</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Settings Section -->
-        <section id="settings-section" class="section-block hidden">
-            <div class="section-header">
-                <h2>Settings</h2>
-            </div>
-            
-            <div class="settings-list">
-                <a href="privacy.html" class="settings-card">
-                    <div class="settings-card-left">
-                        <div class="settings-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                        <span>Privacy Policy</span>
-                    </div>
-                    <i class="fa-solid fa-chevron-right arrow-icon"></i>
-                </a>
-            </div>
-        </section>
-    </main>
-
-    <!-- Professional Footer -->
-    <footer class="official-footer">
-        <div class="container footer-container">
-            <span>&copy; 2026 Funnyaiwala8. All rights reserved.</span>
-        </div>
-    </footer>
-
+    <!-- ================= MODALS ================= -->
     <!-- Password Modal -->
     <div id="password-modal" class="modal-overlay hidden">
         <div class="material-modal">
@@ -172,7 +194,7 @@
         </div>
     </div>
 
-    <!-- Official Style Fast Native Image Viewer (Like Google Drive) -->
+    <!-- Image Viewer Modal (Google Drive Style) -->
     <div id="image-viewer-modal" class="modal-overlay hidden" style="z-index: 9999; flex-direction: column;">
         <div class="viewer-top-bar">
             <span id="viewer-title" class="viewer-title-text">Image Viewer</span>
