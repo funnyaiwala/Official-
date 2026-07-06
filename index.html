@@ -24,7 +24,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <!-- ================= IMAGE EDITOR CDN ================= -->
-    <!-- Yeh library image view karne aur crop/filter/enhance karne ka kaam karegi -->
     <script src="https://scaleflex.cloudimg.io/v7/plugins/filerobot-image-editor/latest/filerobot-image-editor.min.js"></script>
 </head>
 <body>
@@ -174,7 +173,15 @@
         </div>
     </div>
 
-    <!-- NEW: Pro Image Viewer & Editor Modal -->
+    <!-- Simple Image Viewer Modal (For just viewing) -->
+    <div id="image-viewer-modal" class="modal-overlay hidden" style="z-index: 9999;">
+        <div class="viewer-container">
+            <button id="close-viewer-btn" class="close-editor-icon"><i class="fa-solid fa-xmark"></i></button>
+            <img id="viewer-image-src" src="" alt="View Image" class="viewer-image">
+        </div>
+    </div>
+
+    <!-- Pro Image Editor Modal (For cropping/filtering) -->
     <div id="image-editor-modal" class="modal-overlay hidden" style="z-index: 9999;">
         <div class="editor-container">
             <button id="close-editor-btn" class="close-editor-icon"><i class="fa-solid fa-xmark"></i></button>
