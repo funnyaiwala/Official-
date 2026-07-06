@@ -396,6 +396,24 @@ body {
 .btn-text { background: transparent; color: var(--text-secondary); }
 .btn-text:hover { background: #f3f4f6; color: var(--text-primary); }
 
+.action-btns {
+    display: flex;
+    gap: 8px;
+}
+.btn-small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    border-radius: var(--radius-btn);
+    background: #f3f4f6;
+    color: var(--text-primary);
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.btn-small:hover {
+    background: #e5e7eb;
+}
+
 /* =========================================
    5. SETTINGS SECTION
    ========================================= */
@@ -491,12 +509,32 @@ body {
 }
 
 /* =========================================
-   8. IMAGE EDITOR & VIEWER (NEW)
+   8. IMAGE VIEWER & EDITOR (NEW)
    ========================================= */
-#image-editor-modal {
+#image-editor-modal, #image-viewer-modal {
     background: rgba(0, 0, 0, 0.9); /* Darker backdrop for studio feel */
 }
 
+/* Viewer Styles */
+.viewer-container {
+    width: 90vw;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.viewer-image {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: var(--radius-sm);
+    object-fit: contain;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    animation: scaleInName 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Editor Styles */
 .editor-container {
     width: 95vw;
     height: 95vh;
@@ -550,4 +588,6 @@ body {
     .hero-name-animate { font-size: 2.2rem; }
     .info-capsule { padding: 12px 15px; }
     .editor-container { width: 100vw; height: 100vh; border-radius: 0; }
+    .viewer-container { width: 100vw; height: 100vh; }
+    .viewer-image { border-radius: 0; }
 }
