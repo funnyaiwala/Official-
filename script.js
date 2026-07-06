@@ -48,41 +48,24 @@ mobileMenuBtn.addEventListener('click', () => {
 });
 
 // ==========================================
-// IMAGE VIEWER LOGIC (Only Viewing)
+// FAST NATIVE IMAGE VIEWER LOGIC 
 // ==========================================
 const viewerModal = document.getElementById('image-viewer-modal');
 const viewerImageSrc = document.getElementById('viewer-image-src');
+const viewerTitle = document.getElementById('viewer-title');
+const viewerDownloadBtn = document.getElementById('viewer-download-btn');
 
 document.getElementById('close-viewer-btn').addEventListener('click', () => {
     viewerModal.classList.add('hidden');
-    viewerImageSrc.src = ""; // Clear memory
+    viewerImageSrc.src = ""; // Memory clean karo
 });
 
-window.openImageViewer = function(imageUrl) {
+// Window function taaki HTML onclick use kar sake
+window.openImageViewer = function(imageUrl, imageTitle) {
+    viewerTitle.innerText = imageTitle || 'Image File';
     viewerImageSrc.src = imageUrl;
+    viewerDownloadBtn.href = imageUrl;
     viewerModal.classList.remove('hidden');
-};
-
-// ==========================================
-// IMAGE EDITOR LOGIC (Filerobot Editor)
-// ==========================================
-const editorModal = document.getElementById('image-editor-modal');
-
-document.getElementById('close-editor-btn').addEventListener('click', () => {
-    editorModal.classList.add('hidden');
-    document.getElementById('editor-workspace').innerHTML = ''; 
-});
-
-window.openImageEditor = function(imageUrl) {
-    editorModal.classList.remove('hidden');
-    const config = {
-        source: imageUrl,
-        onClose: (reason) => { 
-            editorModal.classList.add('hidden'); 
-            document.getElementById('editor-workspace').innerHTML = ''; 
-        }
-    };
-    new FilerobotImageEditor(document.querySelector('#editor-workspace'), config).render();
 };
 
 // Navigation Setup
@@ -151,7 +134,7 @@ function updateActiveMenu(activeId) {
     if(document.getElementById(activeId + '-mobile')) document.getElementById(activeId + '-mobile').classList.add('active');
 }
 
-// Render Data with Distinct View & Edit buttons for Images
+// Render Data
 async function renderContent(section) {
     contentArea.innerHTML = `<div class="material-loader"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading...</span></div>`;
     
@@ -184,21 +167,17 @@ async function renderContent(section) {
                     </div>`;
             } else if (section === "notes") {
                 if (isImage) {
-                    // Two clear buttons for images
+                    // Fast Viewer trigger directly on the card
                     html += `
-                        <div class="material-list-item">
+                        <div class="material-list-item" style="cursor: pointer;" onclick="openImageViewer('${filePath}', '${data.title}')">
                             <div class="icon-circle"><i class="fa-solid fa-image"></i></div>
                             <div class="list-content">
                                 <h4>${data.title}</h4>
-                                <p>Image File</p>
-                            </div>
-                            <div class="action-btns">
-                                <button onclick="openImageViewer('${filePath}')" class="btn-small">View</button>
-                                <button onclick="openImageEditor('${filePath}')" class="btn-small" style="background: var(--primary); color: #fff;">Edit</button>
+                                <p>Tap to View Image</p>
                             </div>
                         </div>`;
                 } else {
-                    // Standard single button for non-image files (PDFs, Docs, etc.)
+                    // Standard document reader
                     html += `
                         <div class="material-list-item">
                             <div class="icon-circle"><i class="fa-solid fa-book"></i></div>
