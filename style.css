@@ -46,7 +46,7 @@ body {
 .hidden { display: none !important; }
 
 /* =========================================
-   2. DESKTOP SIDEBAR (NEW)
+   2. DESKTOP SIDEBAR
    ========================================= */
 .desktop-sidebar {
     position: fixed;
@@ -108,7 +108,7 @@ body {
    3. MOBILE HEADER & NAV (Hidden on Desktop)
    ========================================= */
 .mobile-header {
-    display: none; /* Hidden on desktop */
+    display: none; 
     position: fixed;
     top: 0; left: 0; width: 100%;
     height: 65px;
@@ -121,8 +121,6 @@ body {
     justify-content: space-between;
     padding: 0 20px;
 }
-
-.header-profile-pic { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; }
 
 .mobile-menu-btn {
     background: transparent; border: none; color: var(--text-primary);
@@ -167,21 +165,21 @@ body {
     margin-bottom: 30px;
 }
 
+/* Banner Image Dynamically Resizes Without Cropping */
 .fb-cover {
     width: 100%;
-    height: 250px;
-    background-color: #e5e7eb;
+    background-color: #000; /* Dark background behind image if needed */
 }
 
 .fb-cover img {
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto; /* Ensures the whole banner fits proportionally */
+    display: block;
 }
 
 .fb-profile-row {
     display: flex;
-    align-items: flex-end;
+    align-items: flex-end; /* Keeps Avatar and Text aligned at bottom */
     padding: 0 30px 25px;
     position: relative;
 }
@@ -192,7 +190,7 @@ body {
     border-radius: 50%;
     border: 5px solid var(--bg-surface);
     background: var(--bg-surface);
-    margin-top: -75px; /* Pulls it up into the cover */
+    margin-top: -65px; /* Overlaps cover photo dynamically */
     z-index: 2;
     flex-shrink: 0;
 }
@@ -206,16 +204,27 @@ body {
 
 .fb-name {
     margin-left: 20px;
-    margin-bottom: 15px; /* Aligns text properly next to avatar */
+    margin-bottom: 15px; 
 }
 
-.fb-name h1 {
-    font-size: 2rem;
+/* Animated Gradient Name */
+.hero-name-animate {
+    font-size: clamp(1.8rem, 4vw, 2.5rem);
     font-weight: 700;
-    color: var(--text-primary);
     letter-spacing: -0.5px;
-    line-height: 1.1;
+    background: linear-gradient(90deg, var(--primary), #009688, var(--primary));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: gradientShine 4s linear infinite, scaleInName 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    opacity: 0;
+    transform-origin: left;
+    line-height: 1.2;
+    white-space: nowrap;
 }
+
+@keyframes gradientShine { to { background-position: 200% center; } }
+@keyframes scaleInName { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
 /* Bio & Skills Layout */
 .info-section { margin-bottom: 35px; }
@@ -298,7 +307,7 @@ body {
 .btn-text:hover { background: #f3f4f6; color: var(--text-primary); }
 
 /* =========================================
-   6. SETTINGS SECTION
+   6. SETTINGS & MODALS
    ========================================= */
 .settings-list { display: flex; flex-direction: column; gap: 12px; }
 .settings-card {
@@ -312,57 +321,34 @@ body {
 .settings-icon { width: 36px; height: 36px; background: #e8f0fe; color: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
 .settings-card span { font-weight: 500; }
 
-/* =========================================
-   7. FOOTER
-   ========================================= */
-.official-footer { padding: 25px 0; text-align: center; color: var(--text-muted); font-size: 0.85rem; margin-top: auto; }
-
-/* =========================================
-   8. MODALS & VIEWER
-   ========================================= */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.4); 
-    display: flex; align-items: center; justify-content: center; z-index: 2000;
+    background: rgba(0, 0, 0, 0.4); display: flex; align-items: center; justify-content: center; z-index: 2000;
 }
-
 .material-modal {
     background: var(--bg-surface); border-radius: 24px; padding: 30px;
     width: 90%; max-width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);
 }
-
 .material-modal h3 { font-size: 1.4rem; margin-bottom: 8px; color: var(--text-primary); }
 .material-modal p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px; }
-.form-group input {
-    width: 100%; padding: 14px 16px; border: none; background: #f3f4f6;
-    border-radius: 12px; font-size: 1rem; outline: none; transition: box-shadow 0.2s;
-}
+.form-group input { width: 100%; padding: 14px 16px; border: none; background: #f3f4f6; border-radius: 12px; font-size: 1rem; outline: none; }
 .form-group input:focus { background: #fff; box-shadow: 0 0 0 2px var(--primary); }
 .error-msg { display: flex; align-items: center; gap: 5px; color: #dc2626; font-size: 0.85rem; margin-top: 10px; font-weight: 500; }
 .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
 
-/* NATIVE IMAGE VIEWER (White Material Adaptive) */
-#image-viewer-modal {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-}
-.viewer-top-bar {
-    width: 100%; height: 65px; display: flex; align-items: center; justify-content: space-between;
-    padding: 0 20px; background: var(--bg-surface); border-bottom: 1px solid #e5e7eb; box-shadow: 0 1px 2px rgba(0,0,0,0.03); flex-shrink: 0;
-}
+/* Image Viewer */
+#image-viewer-modal { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.viewer-top-bar { width: 100%; height: 65px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: var(--bg-surface); border-bottom: 1px solid #e5e7eb; }
 .viewer-title-text { font-weight: 600; color: var(--text-primary); font-size: 1.1rem; }
 .viewer-actions { display: flex; gap: 10px; }
-.viewer-icon-btn {
-    width: 40px; height: 40px; border-radius: 50%; background: #f3f4f6; color: var(--text-secondary);
-    border: none; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none;
-}
+.viewer-icon-btn { width: 40px; height: 40px; border-radius: 50%; background: #f3f4f6; color: var(--text-secondary); border: none; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; cursor: pointer; text-decoration: none; }
 .viewer-icon-btn:hover { background: #e5e7eb; color: var(--text-primary); }
 .viewer-container { flex: 1; width: 100%; display: flex; align-items: center; justify-content: center; padding: 20px; overflow: hidden; }
 .viewer-image { max-width: 100%; max-height: 100%; border-radius: var(--radius-card); object-fit: contain; box-shadow: var(--soft-shadow); }
 
+
 /* =========================================
-   9. RESPONSIVE DESIGN (Mobile View)
+   7. RESPONSIVE DESIGN (Mobile View)
    ========================================= */
 @media (max-width: 900px) {
     /* Hide Desktop Sidebar */
@@ -373,18 +359,31 @@ body {
     
     /* Adjust Main Workspace */
     .main-workspace { margin-left: 0; width: 100%; }
-    
-    /* Add padding for mobile header */
     body { padding-top: 65px; }
-    .main-container { padding: 20px; }
+    .main-container { padding: 15px; }
     
     /* FB Profile Banner Mobile Adjustments */
-    .fb-cover { height: 150px; }
-    .fb-profile-row { padding: 0 15px 15px; flex-direction: column; align-items: center; text-align: center; }
-    .fb-avatar { width: 110px; height: 110px; margin-top: -55px; border-width: 4px; }
-    .fb-name { margin-left: 0; margin-top: 15px; }
-    .fb-name h1 { font-size: 1.6rem; }
+    /* Maintain Flex Row to keep Avatar and Name Side-by-Side */
+    .fb-profile-row { 
+        padding: 0 15px 15px; 
+        flex-direction: row; 
+        align-items: flex-end; 
+    }
     
-    .viewer-top-bar { padding: 0 15px; }
-    .viewer-container { padding: 15px; }
+    .fb-avatar { 
+        width: 100px; 
+        height: 100px; 
+        margin-top: -45px; 
+        border-width: 4px; 
+    }
+    
+    .fb-name { 
+        margin-left: 15px; 
+        margin-bottom: 10px; 
+    }
+    
+    .hero-name-animate { 
+        font-size: clamp(1.4rem, 4vw, 1.8rem); /* Adjusted for mobile row fitting */
+        white-space: normal; /* Allow text to wrap if it's too long */
+    }
 }
