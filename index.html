@@ -22,9 +22,8 @@
     
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-
-    <!-- ================= IMAGE EDITOR CDN ================= -->
-    <script src="https://scaleflex.cloudimg.io/v7/plugins/filerobot-image-editor/latest/filerobot-image-editor.min.js"></script>
+    
+    <!-- Laggy 3rd party image editor script completely removed -->
 </head>
 <body>
 
@@ -173,23 +172,20 @@
         </div>
     </div>
 
-    <!-- Simple Image Viewer Modal (For just viewing) -->
-    <div id="image-viewer-modal" class="modal-overlay hidden" style="z-index: 9999;">
-        <div class="viewer-container">
-            <button id="close-viewer-btn" class="close-editor-icon"><i class="fa-solid fa-xmark"></i></button>
-            <img id="viewer-image-src" src="" alt="View Image" class="viewer-image">
+    <!-- Official Style Fast Native Image Viewer (Like Google Drive) -->
+    <div id="image-viewer-modal" class="modal-overlay hidden" style="z-index: 9999; flex-direction: column;">
+        <div class="viewer-top-bar">
+            <span id="viewer-title" class="viewer-title-text">Image Viewer</span>
+            <div class="viewer-actions">
+                <a id="viewer-download-btn" href="#" download class="viewer-icon-btn" title="Download Image"><i class="fa-solid fa-download"></i></a>
+                <button id="close-viewer-btn" class="viewer-icon-btn" title="Close"><i class="fa-solid fa-xmark"></i></button>
+            </div>
         </div>
-    </div>
-
-    <!-- Pro Image Editor Modal (For cropping/filtering) -->
-    <div id="image-editor-modal" class="modal-overlay hidden" style="z-index: 9999;">
-        <div class="editor-container">
-            <button id="close-editor-btn" class="close-editor-icon"><i class="fa-solid fa-xmark"></i></button>
-            <div id="editor-workspace"></div>
+        <div class="viewer-container">
+            <img id="viewer-image-src" src="" alt="View Image" class="viewer-image">
         </div>
     </div>
 
     <script type="module" src="script.js"></script>
 </body>
 </html>
-
