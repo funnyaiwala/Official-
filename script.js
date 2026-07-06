@@ -1,4 +1,3 @@
-
 // Firebase SDKs Import
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -48,18 +47,40 @@ mobileMenuBtn.addEventListener('click', () => {
     mobileNavPanel.classList.toggle('show');
 });
 
-// Image Editor Logic
+// ==========================================
+// IMAGE VIEWER LOGIC (Only Viewing)
+// ==========================================
+const viewerModal = document.getElementById('image-viewer-modal');
+const viewerImageSrc = document.getElementById('viewer-image-src');
+
+document.getElementById('close-viewer-btn').addEventListener('click', () => {
+    viewerModal.classList.add('hidden');
+    viewerImageSrc.src = ""; // Clear memory
+});
+
+window.openImageViewer = function(imageUrl) {
+    viewerImageSrc.src = imageUrl;
+    viewerModal.classList.remove('hidden');
+};
+
+// ==========================================
+// IMAGE EDITOR LOGIC (Filerobot Editor)
+// ==========================================
 const editorModal = document.getElementById('image-editor-modal');
+
 document.getElementById('close-editor-btn').addEventListener('click', () => {
     editorModal.classList.add('hidden');
-    document.getElementById('editor-workspace').innerHTML = ''; // Clear workspace
+    document.getElementById('editor-workspace').innerHTML = ''; 
 });
 
 window.openImageEditor = function(imageUrl) {
     editorModal.classList.remove('hidden');
     const config = {
         source: imageUrl,
-        onClose: (reason) => { editorModal.classList.add('hidden'); }
+        onClose: (reason) => { 
+            editorModal.classList.add('hidden'); 
+            document.getElementById('editor-workspace').innerHTML = ''; 
+        }
     };
     new FilerobotImageEditor(document.querySelector('#editor-workspace'), config).render();
 };
@@ -80,7 +101,7 @@ navMappings.forEach(nav => {
     if(mob) mob.addEventListener("click", () => { mobileNavPanel.classList.remove('show'); nav.action(); });
 });
 
-// Security Access (Keyboard fix: removed .focus())
+// Security Access
 function requestAccess(section) {
     requestedSection = section;
     if (isUnlocked) {
@@ -130,7 +151,7 @@ function updateActiveMenu(activeId) {
     if(document.getElementById(activeId + '-mobile')) document.getElementById(activeId + '-mobile').classList.add('active');
 }
 
-// Render Data
+// Render Data with Distinct View & Edit buttons for Images
 async function renderContent(section) {
     contentArea.innerHTML = `<div class="material-loader"><i class="fa-solid fa-circle-notch fa-spin"></i><span>Loading...</span></div>`;
     
@@ -143,7 +164,7 @@ async function renderContent(section) {
             const filePath = `uploads/${data.fileName}`;
             const ext = data.fileName ? data.fileName.split('.').pop().toLowerCase() : "";
             
-            // Image Check
+            // Check if file is an image
             const isImage = ['jpg', 'jpeg', 'png', 'gif', 'webp'].includes(ext);
 
             if (section === "apps") {
@@ -162,13 +183,32 @@ async function renderContent(section) {
                         <a href="${filePath}" target="_blank" class="btn btn-text">Open</a>
                     </div>`;
             } else if (section === "notes") {
-                // If it's an image, trigger editor, else normal link
-                const clickAction = isImage ? `onclick="openImageEditor('${filePath}')"` : `href="${filePath}" target="_blank"`;
-                html += `
-                    <div class="material-list-item" style="cursor:pointer;" ${clickAction}>
-                        <div class="icon-circle"><i class="fa-solid ${isImage ? 'fa-image' : 'fa-book'}"></i></div>
-                        <div class="list-content"><h4>${data.title}</h4><p>${isImage ? 'Click to Edit/View' : 'Read Note'}</p></div>
-                    </div>`;
+                if (isImage) {
+                    // Two clear buttons for images
+                    html += `
+                        <div class="material-list-item">
+                            <div class="icon-circle"><i class="fa-solid fa-image"></i></div>
+                            <div class="list-content">
+                                <h4>${data.title}</h4>
+                                <p>Image File</p>
+                            </div>
+                            <div class="action-btns">
+                                <button onclick="openImageViewer('${filePath}')" class="btn-small">View</button>
+                                <button onclick="openImageEditor('${filePath}')" class="btn-small" style="background: var(--primary); color: #fff;">Edit</button>
+                            </div>
+                        </div>`;
+                } else {
+                    // Standard single button for non-image files (PDFs, Docs, etc.)
+                    html += `
+                        <div class="material-list-item">
+                            <div class="icon-circle"><i class="fa-solid fa-book"></i></div>
+                            <div class="list-content">
+                                <h4>${data.title}</h4>
+                                <p>Read Note</p>
+                            </div>
+                            <a href="${filePath}" target="_blank" class="btn btn-text">Read</a>
+                        </div>`;
+                }
             }
         });
         contentArea.innerHTML = html || `<p style="text-align:center; padding:40px;">No content found.</p>`;
