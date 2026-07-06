@@ -71,7 +71,6 @@ body {
     align-items: center;
 }
 
-/* Header Profile Photo Styling */
 .brand-logo {
     display: flex;
     align-items: center;
@@ -116,7 +115,6 @@ body {
 .nav-link:hover { color: var(--text-primary); background: #f3f4f6; }
 .nav-link.active { color: var(--primary); background: #e8f0fe; }
 
-/* Mobile Menu Button */
 .mobile-menu-btn {
     display: none;
     background: transparent;
@@ -127,7 +125,6 @@ body {
     padding: 5px;
 }
 
-/* Proper Sliding Mobile Menu */
 .mobile-nav-panel {
     position: fixed;
     top: 65px; 
@@ -172,7 +169,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Gradient Animated Name */
 .hero-name-animate {
     font-size: clamp(2.2rem, 6vw, 3rem);
     font-weight: 700;
@@ -187,19 +183,10 @@ body {
     transform-origin: left;
 }
 
-@keyframes gradientShine {
-    to { background-position: 200% center; }
-}
+@keyframes gradientShine { to { background-position: 200% center; } }
+@keyframes scaleInName { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-@keyframes scaleInName {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
-}
-
-/* Bio & Skills Layout */
-.info-section {
-    margin-bottom: 35px;
-}
+.info-section { margin-bottom: 35px; }
 
 .side-heading {
     font-size: 1.25rem;
@@ -222,7 +209,6 @@ body {
     border-radius: 4px;
 }
 
-/* Curved Capsules (No Borders, Light Shadow) */
 .capsule-container {
     display: flex;
     flex-direction: column;
@@ -259,193 +245,83 @@ body {
     flex-shrink: 0;
 }
 
-.info-capsule p {
-    font-size: 0.95rem;
-    color: var(--text-secondary);
-    line-height: 1.5;
-}
+.info-capsule p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.5; }
+.info-capsule strong { color: var(--text-primary); font-weight: 600; }
 
-.info-capsule strong {
-    color: var(--text-primary);
-    font-weight: 600;
-}
+.thanks-section { text-align: center; margin-top: 50px; padding-top: 30px; }
+.thanks-text { font-size: 1.8rem; font-weight: 700; color: var(--text-primary); margin-bottom: 5px; }
+.follow-text { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
 
-/* Thanks Section */
-.thanks-section {
-    text-align: center;
-    margin-top: 50px;
-    padding-top: 30px;
-}
-
-.thanks-text {
-    font-size: 1.8rem;
-    font-weight: 700;
-    color: var(--text-primary);
-    margin-bottom: 5px;
-}
-
-.follow-text {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-bottom: 20px;
-}
-
-.social-icons-row {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
+.social-icons-row { display: flex; justify-content: center; gap: 20px; }
 .social-icon {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: var(--bg-surface);
-    color: var(--text-secondary);
-    font-size: 1.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    box-shadow: var(--soft-shadow);
-    transition: all 0.3s ease;
+    width: 50px; height: 50px; border-radius: 50%;
+    background: var(--bg-surface); color: var(--text-secondary);
+    font-size: 1.5rem; display: flex; align-items: center; justify-content: center;
+    text-decoration: none; box-shadow: var(--soft-shadow); transition: all 0.3s ease;
 }
-
 .social-icon:hover {
-    background: var(--primary);
-    color: #fff;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 15px rgba(11, 87, 208, 0.2);
+    background: var(--primary); color: #fff;
+    transform: translateY(-3px); box-shadow: 0 6px 15px rgba(11, 87, 208, 0.2);
 }
 
 /* =========================================
    4. CONTENT GRIDS (Apps, Docs, Notes)
    ========================================= */
-.section-header {
-    margin-bottom: 30px;
-}
-.section-header h2 {
-    font-size: 1.75rem;
-    font-weight: 700;
-    color: var(--text-primary);
-}
+.section-header { margin-bottom: 30px; }
+.section-header h2 { font-size: 1.75rem; font-weight: 700; color: var(--text-primary); }
 
-.content-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
-}
+.content-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
 
-.material-loader {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 50px 0;
-    color: var(--text-secondary);
-    font-weight: 500;
-}
-.material-loader i {
-    font-size: 2rem;
-    color: var(--primary);
-    margin-bottom: 15px;
-}
+.material-loader { grid-column: 1 / -1; text-align: center; padding: 50px 0; color: var(--text-secondary); font-weight: 500; }
+.material-loader i { font-size: 2rem; color: var(--primary); margin-bottom: 15px; }
 
-/* Material Cards (No Borders, Light Shadow) */
 .material-card {
-    background: var(--bg-surface);
-    border: none;
-    border-radius: var(--radius-card);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--soft-shadow);
+    background: var(--bg-surface); border: none; border-radius: var(--radius-card);
+    padding: 20px; display: flex; flex-direction: column; box-shadow: var(--soft-shadow);
 }
 .material-card h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 5px; }
 .material-card p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 15px; flex: 1; }
 
 .material-list-item {
-    background: var(--bg-surface);
-    border: none;
-    border-radius: var(--radius-card);
-    padding: 15px 20px;
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    box-shadow: var(--soft-shadow);
+    background: var(--bg-surface); border: none; border-radius: var(--radius-card);
+    padding: 15px 20px; display: flex; align-items: center; gap: 15px; box-shadow: var(--soft-shadow);
 }
 .material-list-item .icon-circle { width: 40px; height: 40px; font-size: 1.1rem; }
 .list-content { flex: 1; min-width: 0; }
 .list-content h4 { font-size: 1rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px; }
 .list-content p { font-size: 0.8rem; color: var(--text-secondary); }
 
-/* Buttons */
 .btn {
-    padding: 10px 24px;
-    font-size: 0.95rem;
-    font-weight: 500;
-    border-radius: var(--radius-btn);
-    cursor: pointer;
-    transition: all 0.2s;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
+    padding: 10px 24px; font-size: 0.95rem; font-weight: 500; border-radius: var(--radius-btn);
+    cursor: pointer; transition: all 0.2s; border: none; display: inline-flex;
+    align-items: center; justify-content: center; text-decoration: none;
 }
 .btn-filled { background: var(--primary); color: #fff; }
 .btn-filled:hover { background: var(--primary-hover); box-shadow: 0 4px 10px rgba(11, 87, 208, 0.2); }
 .btn-text { background: transparent; color: var(--text-secondary); }
 .btn-text:hover { background: #f3f4f6; color: var(--text-primary); }
 
-.action-btns {
-    display: flex;
-    gap: 8px;
-}
+.action-btns { display: flex; gap: 8px; }
 .btn-small {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-    border-radius: var(--radius-btn);
-    background: #f3f4f6;
-    color: var(--text-primary);
-    border: none;
-    cursor: pointer;
-    transition: 0.2s;
+    padding: 6px 12px; font-size: 0.8rem; border-radius: var(--radius-btn);
+    background: #f3f4f6; color: var(--text-primary); border: none; cursor: pointer; transition: 0.2s;
 }
-.btn-small:hover {
-    background: #e5e7eb;
-}
+.btn-small:hover { background: #e5e7eb; }
 
 /* =========================================
    5. SETTINGS SECTION
    ========================================= */
-.settings-list {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
+.settings-list { display: flex; flex-direction: column; gap: 12px; }
 .settings-card {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: var(--bg-surface);
-    border: none;
-    box-shadow: var(--soft-shadow);
-    padding: 16px 20px;
-    border-radius: var(--radius-card);
-    text-decoration: none;
-    color: var(--text-primary);
-    transition: background 0.2s;
+    display: flex; align-items: center; justify-content: space-between;
+    background: var(--bg-surface); border: none; box-shadow: var(--soft-shadow);
+    padding: 16px 20px; border-radius: var(--radius-card); text-decoration: none;
+    color: var(--text-primary); transition: background 0.2s;
 }
-.settings-card:hover {
-    background: #f9fafb;
-}
-.settings-card-left {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-}
+.settings-card:hover { background: #f9fafb; }
+.settings-card-left { display: flex; align-items: center; gap: 15px; }
 .settings-icon {
-    width: 36px; height: 36px;
-    background: #e8f0fe; color: var(--primary);
+    width: 36px; height: 36px; background: #e8f0fe; color: var(--primary);
     border-radius: 50%; display: flex; align-items: center; justify-content: center;
 }
 .settings-card span { font-weight: 500; }
@@ -455,128 +331,113 @@ body {
    6. FOOTER
    ========================================= */
 .official-footer {
-    padding: 25px 0;
-    text-align: center;
-    background: transparent;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-top: auto;
+    padding: 25px 0; text-align: center; background: transparent;
+    color: var(--text-muted); font-size: 0.85rem; margin-top: auto;
 }
 
 /* =========================================
-   7. MODAL (Clean White)
+   7. PASSWORD MODAL (Clean White)
    ========================================= */
 .modal-overlay {
     position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-    background: rgba(0, 0, 0, 0.5); 
+    background: rgba(0, 0, 0, 0.4); 
     display: flex; align-items: center; justify-content: center;
     z-index: 2000;
 }
 
 .material-modal {
-    background: var(--bg-surface);
-    border-radius: 24px;
-    padding: 30px;
-    width: 90%;
-    max-width: 380px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+    background: var(--bg-surface); border-radius: 24px; padding: 30px;
+    width: 90%; max-width: 380px; box-shadow: 0 10px 40px rgba(0,0,0,0.15);
     animation: scaleInName 0.3s ease forwards;
 }
 
 .material-modal h3 { font-size: 1.4rem; margin-bottom: 8px; color: var(--text-primary); }
 .material-modal p { color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 25px; }
-
 .form-group input {
-    width: 100%;
-    padding: 14px 16px;
-    border: none;
-    background: #f3f4f6;
-    border-radius: 12px;
-    font-size: 1rem;
-    outline: none;
-    transition: box-shadow 0.2s;
+    width: 100%; padding: 14px 16px; border: none; background: #f3f4f6;
+    border-radius: 12px; font-size: 1rem; outline: none; transition: box-shadow 0.2s;
 }
 .form-group input:focus { background: #fff; box-shadow: 0 0 0 2px var(--primary); }
-.error-msg {
-    display: flex; align-items: center; gap: 5px;
-    color: #dc2626; font-size: 0.85rem; margin-top: 10px; font-weight: 500;
-}
-.modal-footer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-    margin-top: 25px;
-}
+.error-msg { display: flex; align-items: center; gap: 5px; color: #dc2626; font-size: 0.85rem; margin-top: 10px; font-weight: 500; }
+.modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 25px; }
+
 
 /* =========================================
-   8. IMAGE VIEWER & EDITOR (NEW)
+   8. NATIVE IMAGE VIEWER (White Material You)
    ========================================= */
-#image-editor-modal, #image-viewer-modal {
-    background: rgba(0, 0, 0, 0.9); /* Darker backdrop for studio feel */
+#image-viewer-modal {
+    /* Frosted glass white adaptive background */
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
 }
 
-/* Viewer Styles */
-.viewer-container {
-    width: 90vw;
-    height: 90vh;
+.viewer-top-bar {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    background: var(--bg-surface);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+    flex-shrink: 0;
+}
+
+.viewer-title-text {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 60%;
+}
+
+.viewer-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.viewer-icon-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f3f4f6;
+    color: var(--text-secondary);
+    border: none;
+    font-size: 1.1rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    cursor: pointer;
+    transition: 0.2s;
+    text-decoration: none;
+}
+
+.viewer-icon-btn:hover {
+    background: #e5e7eb;
+    color: var(--text-primary);
+}
+
+.viewer-container {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow: hidden;
 }
 
 .viewer-image {
     max-width: 100%;
     max-height: 100%;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-card); /* Soft corners for the image */
     object-fit: contain;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    box-shadow: var(--soft-shadow); /* Light drop shadow so it stands out against white */
     animation: scaleInName 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-/* Editor Styles */
-.editor-container {
-    width: 95vw;
-    height: 95vh;
-    background: var(--bg-surface);
-    border-radius: var(--radius-card);
-    position: relative;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
-    animation: scaleInName 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-}
-
-.close-editor-icon {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    z-index: 100;
-    background: var(--bg-surface);
-    border: none;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    font-size: 1.4rem;
-    color: var(--text-primary);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    transition: 0.2s;
-}
-
-.close-editor-icon:hover {
-    background: #fef2f2;
-    color: #dc2626;
-}
-
-#editor-workspace {
-    width: 100%;
-    height: 100%;
-    flex: 1;
 }
 
 /* =========================================
@@ -587,7 +448,6 @@ body {
     .mobile-menu-btn { display: block; }
     .hero-name-animate { font-size: 2.2rem; }
     .info-capsule { padding: 12px 15px; }
-    .editor-container { width: 100vw; height: 100vh; border-radius: 0; }
-    .viewer-container { width: 100vw; height: 100vh; }
-    .viewer-image { border-radius: 0; }
+    .viewer-top-bar { padding: 0 15px; }
+    .viewer-container { padding: 15px; }
 }
